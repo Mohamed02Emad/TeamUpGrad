@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 data class MyResponse(
-    val articles: MutableList<Model>,
+    val articles: MutableList<User>,
     val status: String,
     val totalResults: Int
 )

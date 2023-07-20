@@ -36,14 +36,6 @@ object Module {
         return BaseRepositoryImpl(db.myDao, context)
     }
 
-    // TODO: add in the future
-//    @Provides
-//    @Singleton
-//    fun provideDataStore(
-//        @ApplicationContext appContext: Context
-//    ): DataStoreImpl {
-//        return DataStoreImpl(appContext)
-//    }
 
     @Provides
     @Singleton
