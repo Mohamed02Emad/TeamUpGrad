@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var dataStore: DataStoreImpl
 
+    private var isUserLoggedIn : Boolean? = null
     private var isOnBoardingFinished : Boolean? = null
 
     private lateinit var navHostFragment: NavHostFragment
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         lifecycleScope.launch(Dispatchers.IO) {
             isOnBoardingFinished = dataStore.getIsOnBoardingFinished()
+            isUserLoggedIn = dataStore.getIsLoggedIn()
         }
         setupNavigation()
         setupBottomNavigationVisibility()
@@ -85,4 +87,7 @@ class MainActivity : AppCompatActivity() {
         return isOnBoardingFinished ?: dataStore.getIsOnBoardingFinished()
     }
 
+    suspend fun isUserLoggedIn(): Boolean {
+        return isUserLoggedIn ?: dataStore.getIsLoggedIn()
+    }
 }

@@ -53,9 +53,13 @@ class SplashFragment : Fragment() {
     private fun handleDirections() {
         (activity as MainActivity).undoFullScreen()
         lifecycleScope.launch {
-            if ((activity as MainActivity).isOnBoardingFinished()) {
+            val isOnBoardingFinnished = (activity as MainActivity).isOnBoardingFinished()
+            val isLoggedIn = (activity as MainActivity).isUserLoggedIn()
+            if (isLoggedIn){
                 openHomeFragment()
-            } else {
+            } else if(isOnBoardingFinnished) {
+                openLoginFragment()
+            }else{
                 openOnBoardingFragment()
             }
         }
@@ -69,4 +73,7 @@ class SplashFragment : Fragment() {
         findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment2())
     }
 
+    private fun openLoginFragment() {
+        findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
+    }
 }
