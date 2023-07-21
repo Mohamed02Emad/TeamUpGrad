@@ -15,7 +15,8 @@ data class Team(
 //    var email: String,
 //    var track : String?,
     var bio: String?,
-    var numOfMembers: Int?
+    var numOfMembers: Int?,
+    var listOfMembers : List<User>
 //    var imageUrl : String?,
 //    var githubUrl : String?,
 //    var facebookUrl : String?,
