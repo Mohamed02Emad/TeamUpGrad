@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="margin_auth_start">18dp</dimen>
+
+    <dimen name="text_account_auth_margin_bottom">24dp</dimen>
+    <dimen name="textView_auth_margin_top">18dp</dimen>
+
+    <dimen name="editView_auth_margin_top">16dp</dimen>
+    <dimen name="editView_auth_padding">12dp</dimen>
+
+    <dimen name="button_auth_margin_start_end">30dp</dimen>
+    <dimen name="button_auth_margin_top">35dp</dimen>
+    <dimen name="button_auth_padding_top">15dp</dimen>
+    <dimen name="button_auth_padding_bottom">15dp</dimen>
+
+    <dimen name="text_have_account_auth_margin_top">10dp</dimen>
+
+    <dimen name="layout_have_account_auth_margin_top">10dp</dimen>
+</resources>
