@@ -17,7 +17,7 @@
             android:layout_width="105dp"
             android:layout_height="105dp"
             android:padding="10dp"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/ellipse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

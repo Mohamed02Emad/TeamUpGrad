@@ -4,6 +4,10 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.MemberDataModelBinding
@@ -34,16 +38,27 @@ class MembersAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val member = members?.get(position)
 
-        if (member != null) {
-            val img = Uri.parse(member.imageUrl)
-            if(img!= null)
-            holder.binding.itemImage.setImageURI(img)
-            else{
+        val img = holder.binding.itemImage
+        if(member?.imageUrl!= null){
+            Glide.with(img)
+                .load(member?.imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerInside()
+                .into(img)
+        }
+        else
+            img.setImageResource(R.drawable.ellipse)
 
-            }
-            holder.binding.itemName.text=member.name
-            holder.binding.itemPosition.text=member.track
-        }else{
+        holder.binding.itemName.text=member?.name
+        holder.binding.itemPosition.text=member?.track
+
+        holder.binding.gitHub.setOnClickListener {
+
+        }
+        holder.binding.facebook.setOnClickListener {
+
+        }
+        holder.binding.linkedIn.setOnClickListener {
 
         }
 
