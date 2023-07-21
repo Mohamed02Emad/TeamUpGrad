@@ -8,7 +8,9 @@ import com.mo_chatting.chatapp.data.dataStore.DataStoreImpl
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.models.OnBoarding
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -25,7 +27,7 @@ class OnBoardingViewModel @Inject constructor() : ViewModel() {
         onBoardings.add(OnBoarding(R.drawable.ic_conversation_pana, "Chat with your team members to discuss ideas"))
     }
 
-    suspend fun setIsOnBoardingFinished(isOnBoardingFinished: Boolean) = withContext(Dispatchers.IO){
+    fun setIsOnBoardingFinished(isOnBoardingFinished: Boolean) = CoroutineScope(Dispatchers.IO).launch{
         dataStoreImpl.setIsOnBoardingFinished(isOnBoardingFinished)
     }
     fun isFirstPage(currentPage: Int): Boolean = currentPage == 0

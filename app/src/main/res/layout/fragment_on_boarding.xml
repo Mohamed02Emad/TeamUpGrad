@@ -27,7 +27,37 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="40dp"
-        />
+        android:layout_marginBottom="70dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_next"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/next_button_ripple"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_next" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginBottom="20dp"
+        android:paddingHorizontal="20dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:text="@string/skip"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
