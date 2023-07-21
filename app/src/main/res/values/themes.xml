@@ -5,8 +5,10 @@
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:navigationBarColor">@color/white</item>
-        <item name="android:windowSplashScreenBackground" tools:targetApi="s">#1BE45E</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/primary_blue</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/logo</item>
         <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">400</item>
+        <item name="fontFamily">@font/crimson_text_regular</item>
     </style>
 
     <style name="Theme.Cat_Hackathon" parent="Base.Theme.Cat_Hackathon" />

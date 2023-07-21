@@ -14,9 +14,11 @@ import androidx.navigation.fragment.findNavController
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.databinding.FragmentSplashBinding
 import com.team.cat_hackathon.presentation.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SplashFragment : Fragment() {
 
     var systemVersion : Int? = null
