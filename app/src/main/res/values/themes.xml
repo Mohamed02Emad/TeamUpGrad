@@ -1,8 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Cat_Hackathon" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/primary_blue</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/logo</item>
+        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">400</item>
+        <item name="fontFamily">@font/crimson_text_regular</item>
     </style>
 
     <style name="Theme.Cat_Hackathon" parent="Base.Theme.Cat_Hackathon" />
@@ -64,4 +70,10 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">#979797</item>
     </style>
+
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>

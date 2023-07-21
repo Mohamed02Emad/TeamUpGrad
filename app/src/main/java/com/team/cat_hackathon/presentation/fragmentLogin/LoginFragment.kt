@@ -16,12 +16,11 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class LoginFragment : Fragment() {
-
-
     private lateinit var binding: FragmentLoginBinding
     private lateinit var passwordEditView: EditText
     private lateinit var emailEditView: EditText
     private lateinit var loginButton: AppCompatButton
+
     private lateinit var signupTextView: TextView
 
 
@@ -42,10 +41,10 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding=FragmentLoginBinding.inflate(layoutInflater)
         init()
         return binding.root
+
     }
 
     companion object {
