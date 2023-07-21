@@ -1,8 +1,8 @@
 package com.team.cat_hackathon.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -48,8 +48,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNavigationVisibility() {
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                //todo: add all fragments in bottom navigation
-                R.id.homeFragment -> {
+                R.id.homeFragment, R.id.settingsFragment, R.id.editProfileFragment, R.id.teamsFragment -> {
                     bottomNavigationView.visibility = View.VISIBLE
                 }
                 else -> {
@@ -80,7 +79,7 @@ class MainActivity : AppCompatActivity() {
             controller.hide(WindowInsetsCompat.Type.navigationBars())
             controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
-        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.primary_blue)
     }
 
     suspend fun isOnBoardingFinished(): Boolean {
@@ -90,4 +89,5 @@ class MainActivity : AppCompatActivity() {
     suspend fun isUserLoggedIn(): Boolean {
         return isUserLoggedIn ?: dataStore.getIsLoggedIn()
     }
+
 }
