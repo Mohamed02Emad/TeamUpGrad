@@ -4,23 +4,18 @@
     <item
         android:id="@+id/homeFragment"
         android:title="@string/home"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_home"
         />
 
     <item
-        android:id="@+id/teamsFragment"
-        android:title="@string/teams"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:id="@+id/chatsFragment"
+        android:title="@string/chats"
+        android:icon="@drawable/ic_chat"
         />
     <item
-        android:id="@+id/editProfileFragment"
-        android:title="@string/editProfile"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:id="@+id/moreFragment"
+        android:title="@string/more"
+        android:icon="@drawable/ic_more"
         />
 
-    <item
-        android:id="@+id/settingsFragment"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_launcher_foreground"
-        />
 </menu>

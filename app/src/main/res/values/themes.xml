@@ -13,6 +13,11 @@
 
     <style name="Theme.Cat_Hackathon" parent="Base.Theme.Cat_Hackathon" />
 
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="roundedImageViewRounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

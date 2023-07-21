@@ -1,6 +1,7 @@
 
 
-import com.team.cat_hackathon.data.models.MyResponse
+import com.team.cat_hackathon.data.models.TeamsResponse
+import com.team.cat_hackathon.data.models.UsersResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -15,7 +16,7 @@ interface MyAPI {
         email: String? = null,
         @Query("password")
         password: String? = null
-    ): Response<MyResponse>
+    ): Response<TeamsResponse>
 
     @GET(getEverything)
     suspend fun searchForNews(
@@ -25,5 +26,19 @@ interface MyAPI {
         pageNumber: Int = 1,
         @Query("pageSize")
         pageSize: Int = 20
-    ): Response<MyResponse>
+    ): Response<TeamsResponse>
+
+
+    //todo : add this from backend
+    @GET("")
+    abstract fun getTeamsByQuery(
+        @Query("")
+        query: String?
+    ): Response<TeamsResponse>
+
+    @GET("")
+    abstract fun getIndividualsByQuery(
+        @Query("")
+        query: String?
+    ): Response<UsersResponse>
 }

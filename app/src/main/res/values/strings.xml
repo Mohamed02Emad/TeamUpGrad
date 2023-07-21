@@ -7,4 +7,8 @@
     <string name="teams">teams</string>
     <string name="editProfile">edit profile</string>
     <string name="skip">Skip</string>
+    <string name="chats">chats</string>
+    <string name="more">more</string>
+    <string name="Teams">Teams</string>
+    <string name="Individuals">Individuals</string>
 </resources>

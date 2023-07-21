@@ -104,4 +104,16 @@
         android:name="com.team.cat_hackathon.presentation.fragmentEditProfile.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/chatsFragment"
+        android:name="com.team.cat_hackathon.presentation.fragmentChats.ChatsFragment"
+        android:label="fragment_chats"
+        tools:layout="@layout/fragment_chats" />
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.team.cat_hackathon.presentation.fragmentMore.MoreFragment"
+        android:label="fragment_more"
+        tools:layout="@layout/fragment_more" />
+
 </navigation>
