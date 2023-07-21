@@ -6,11 +6,13 @@ import com.mo_chatting.chatapp.data.dataStore.DataStoreImpl
 import com.team.cat_hackathon.data.models.LoginResponse
 import com.team.cat_hackathon.data.models.User
 import retrofit2.Response
-import kotlin.math.log
 
 class AuthRepository(val dataStoreImpl: DataStoreImpl) {
     suspend fun loginUser(username: String?, password: String?, deviceName: String?):Response<LoginResponse>{
-        return RetrofitInstance.api.loginUser(username, password, deviceName)
+        Log.d("mohamed", "loginUser: sending")
+        val response = RetrofitInstance.api.loginUser(username, password, deviceName)
+        Log.d("mohamed", "loginUser: received ")
+        return response
     }
 
     suspend fun cacheUSer(user: User, accessToken: String) {

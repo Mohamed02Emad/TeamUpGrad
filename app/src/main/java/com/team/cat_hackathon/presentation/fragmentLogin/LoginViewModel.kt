@@ -1,6 +1,7 @@
 package com.team.cat_hackathon.presentation.fragmentLogin
 
 import android.os.Build
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,13 +38,19 @@ class LoginViewModel @Inject constructor(val repository: AuthRepository) : ViewM
     suspend fun loginUser(username: String?, password: String?) {
         val deviceName = getDeviceName()
         _loginRequestState.postValue(RequestState.Loading())
+
         val response = repository.loginUser(username, password, deviceName)
+        //val response = repository.loginUser("test@gmail.com", "password", deviceName)
+
         _loginRequestState.postValue(handleUserResponse(response))
     }
 
     private fun handleUserResponse(response: Response<LoginResponse>): RequestState<LoginResponse> {
         if (response.isSuccessful) {
             response.body()?.let { result ->
+
+            //    Log.d("mohamed", result.user.toString())
+
                 return RequestState.Sucess(result)
             }
         }

@@ -59,8 +59,9 @@
 
 
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_login"
+        android:background="@drawable/button_auth_background"
         style="@style/button_Auth"
         android:text="@string/login"
         android:layout_marginTop="90dp"

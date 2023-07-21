@@ -1,6 +1,7 @@
 package com.team.cat_hackathon.presentation.fragmentLogin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,8 @@ class LoginFragment : Fragment() {
             state?.let {
                 when (state){
                     is RequestState.Error -> {
-                        showSnackbar(  "error" , requireContext() , binding.root)
+                       // showSnackbar( state.message ?: "error" , requireContext() , binding.root)
+                        Log.d("mohamed",  state.message.toString())
                     }
                     is RequestState.Loading -> {
 

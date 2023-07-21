@@ -117,7 +117,8 @@ class DataStoreImpl(
 
         }.first().toString()
         User(
-            bio, created_at, email, email_verified_at, facebookUrl, githubUrl, id, imageUrl, isInTeam, isLeader, linkedinUrl, name, track, updated_at
+            id , name , email , email_verified_at , track , bio , imageUrl , githubUrl , facebookUrl , linkedinUrl ,
+            isLeader , isInTeam , created_at , updated_at
         )
     }
 
