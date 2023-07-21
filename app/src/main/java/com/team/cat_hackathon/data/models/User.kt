@@ -1,24 +1,24 @@
 package com.team.cat_hackathon.data.models
 
-import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
 
-@Keep
-@Parcelize
 @Entity
+@Keep
 data class User(
-    @PrimaryKey val id : Int,
-    var name: String,
-    var email: String,
-    var track : String?,
     var bio: String?,
-    var imageUrl : String?,
-    var githubUrl : String?,
-    var facebookUrl : String?,
-    var linkedInUrl : String?,
-    var teamName : String?,
-    var isLeader : Boolean
-): Parcelable
+    var created_at: String?,
+    var email: String,
+    var email_verified_at: String?,
+    var facebookUrl: String?,
+    var githubUrl: String?,
+   @PrimaryKey var id: Int,
+    var imageUrl: String?,
+    var isInTeam: Int,
+    var isLeader: Int,
+    var linkedinUrl: String?,
+    var name: String,
+    var track: String?,
+    var updated_at: String?
+)

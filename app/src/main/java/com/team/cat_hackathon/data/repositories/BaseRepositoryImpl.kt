@@ -13,7 +13,7 @@ class BaseRepositoryImpl (val dao : MyDao , val context : Context) {
             email = email,
             password = password
         )
-    }
 
+    }
 
 }

@@ -1,15 +1,27 @@
 
 
+import com.team.cat_hackathon.data.api.LOGIN_ENDPOINT
+import com.team.cat_hackathon.data.models.LoginResponse
 import com.team.cat_hackathon.data.models.MyResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface MyAPI {
 
-    //Todo: change methods to fit our api later
+    @POST(LOGIN_ENDPOINT)
+    suspend fun loginUser(
+        @Query("email")
+        email: String? = null,
+        @Query("password")
+        password: String? = null,
+        @Query("device_name")
+        deviceName: String? = null
+    ): Response<LoginResponse>
 
-    @GET(getUser)
+    @GET("")
     suspend fun getUser(
         @Query("email")
         email: String? = null,
@@ -17,7 +29,7 @@ interface MyAPI {
         password: String? = null
     ): Response<MyResponse>
 
-    @GET(getEverything)
+    @GET("")
     suspend fun searchForNews(
         @Query("q")
         searchQuery: String,
