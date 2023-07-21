@@ -3,4 +3,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">home</string>
+    <string name="emailTV">Email</string>
+    <string name="emailEV">Enter Your Email</string>
+    <string name="nameTV">Username</string>
+    <string name="nameEV">Enter Your Name</string>
+    <string name="passwordTV">Password</string>
+    <string name="passwordEV">Enter Your Password</string>
+    <string name="login">Login</string>
+    <string name="accountTV">create an account</string>
+    <string name="have_accountTV">Have an account?</string>
+    <string name="register">Register</string>
+    <string name="signup_text">Create Your account</string>
+    <string name="login_text">Login to your account</string>
 </resources>

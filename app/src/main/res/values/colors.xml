@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="color_background">#FFFFFFFF</color>
     <color name="color_text">#FF000000</color>
+    <color name="text_auth">#454545</color>
+    <color name="editText_hint_auth">#979797</color>
 </resources>
