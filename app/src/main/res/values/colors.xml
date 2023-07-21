@@ -5,6 +5,7 @@
     <color name="primary_blue">#005893</color>
     <color name="main_title">#454545</color>
     <color name="color_hint">#979797</color>
+    <color name="color_dots">#D9D9D9</color>
     <color name="color_background">#FFFFFFFF</color>
     <color name="color_text">#FF000000</color>
 </resources>

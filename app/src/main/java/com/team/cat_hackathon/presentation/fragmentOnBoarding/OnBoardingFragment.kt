@@ -29,7 +29,6 @@ class OnBoardingFragment : Fragment() {
     ): View{
         binding = FragmentOnBoardingBinding.inflate(layoutInflater)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,7 +39,7 @@ class OnBoardingFragment : Fragment() {
     private fun setOnBoardingAdapter() {
         myAdapter = OnBoardingAdapter(viewModel.onBoardings)
         binding.viewPager.adapter = myAdapter
-
+        binding.dotsIndicator.attachTo(binding.viewPager)
     }
 
 }

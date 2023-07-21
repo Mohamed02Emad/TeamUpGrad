@@ -105,4 +105,7 @@ dependencies {
 
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    //onBoarding dots
+    implementation("com.tbuonomo:dotsindicator:5.0")
 }
