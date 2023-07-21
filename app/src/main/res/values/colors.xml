@@ -9,4 +9,8 @@
 
     <color name="color_background">#FFFFFFFF</color>
     <color name="color_text">#FF000000</color>
+    <color name="team_description">#7D7D7D</color>
+    <color name="view_button">#3B5998</color>
+    <color name="ripple_color">#DCDCDC</color>
+    <color name="grey">#555555</color>
 </resources>

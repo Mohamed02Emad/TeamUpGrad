@@ -12,13 +12,14 @@ import kotlinx.parcelize.Parcelize
 data class Team(
     @PrimaryKey val id : Int,
     var name: String,
-    var email: String,
-    var track : String?,
+//    var email: String,
+//    var track : String?,
     var bio: String?,
-    var imageUrl : String?,
-    var githubUrl : String?,
-    var facebookUrl : String?,
-    var linkedInUrl : String?,
-    var teamName : String?,
-    var isLeader : Boolean
+    var numOfMembers: Int?
+//    var imageUrl : String?,
+//    var githubUrl : String?,
+//    var facebookUrl : String?,
+//    var linkedInUrl : String?,
+//    var teamName : String?,
+//    var isLeader : Boolean
 ): Parcelable
