@@ -42,10 +42,10 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding=FragmentLoginBinding.inflate(layoutInflater)
         init()
         return binding.root
+
     }
 
     companion object {
