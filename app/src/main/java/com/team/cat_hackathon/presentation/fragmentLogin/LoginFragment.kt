@@ -7,21 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import com.google.android.material.button.MaterialButton
+import androidx.appcompat.widget.AppCompatButton
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.databinding.FragmentLoginBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
 
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var passwordEditView: EditText
     private lateinit var emailEditView: EditText
-    private lateinit var loginButton: MaterialButton
+    private lateinit var loginButton: AppCompatButton
+
     private lateinit var signupTextView: TextView
 
 

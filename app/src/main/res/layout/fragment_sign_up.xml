@@ -1,14 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.fragmentSignUp.SignUpFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/imageView_signup"
+        android:src="@drawable/signup_img"
+        style="@style/imageView_Auth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/textView_signup"
+        android:text="@string/signup_text"
+        style="@style/textView_account_Auth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_signup" />
+
+    <TextView
+        android:id="@+id/textView_username_signup"
+        android:text="@string/nameTV"
+        style="@style/textView_Auth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_signup" />
+
+    <EditText
+        android:id="@+id/editText_username_signup"
+        style="@style/editView_Auth"
+        android:hint="@string/nameEV"
+        android:inputType="text"
+        android:background="@drawable/edit_text_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_username_signup" />
+
+    <TextView
+        android:id="@+id/textView_email_signup"
+        android:text="@string/emailTV"
+        style="@style/textView_Auth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_username_signup" />
+
+    <EditText
+        android:id="@+id/editText_email_signup"
+        android:hint="@string/emailEV"
+        android:inputType="textEmailAddress"
+        style="@style/editView_Auth"
+        android:background="@drawable/edit_text_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_email_signup" />
+
+    <TextView
+        android:id="@+id/textView_password_signup"
+        android:text="@string/passwordTV"
+        style="@style/textView_Auth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_email_signup" />
+
+    <EditText
+        android:id="@+id/editText_password_signup"
+        android:hint="@string/passwordEV"
+        android:inputType="numberPassword"
+        style="@style/editView_Auth"
+        android:background="@drawable/edit_text_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_password_signup" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signupButton"
+        style="@style/button_Auth"
+        android:text="@string/register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_password_signup" />
+
+    <LinearLayout
+        style="@style/layout_account_Auth"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signupButton">
+
+        <TextView
+            android:id="@+id/textView_account_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/have_accountTV"
+            android:textColor="#979797"
+            android:textSize="14sp"
+            android:layout_margin="8dp"/>
+
+        <TextView
+            android:id="@+id/textView_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
