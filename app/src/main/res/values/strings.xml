@@ -27,4 +27,7 @@
     <string name="team_description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </string>
     <string name="Individuals">Individuals</string>
     <string name="View">View</string>
+    <string name="team_members_names">Team Members Names</string>
+    <string name="join">Join</string>
+    <string name="team_name">Team Name</string>
 </resources>
