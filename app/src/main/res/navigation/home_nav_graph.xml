@@ -123,5 +123,10 @@
         android:name="com.team.cat_hackathon.presentation.fragmentMore.MoreFragment"
         android:label="fragment_more"
         tools:layout="@layout/fragment_more" />
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.team.cat_hackathon.presentation.fragmentNotification.NotificationFragment"
+        android:label="fragment_notification"
+        tools:layout="@layout/fragment_notification" />
 
 </navigation>

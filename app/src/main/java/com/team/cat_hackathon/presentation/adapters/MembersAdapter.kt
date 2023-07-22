@@ -39,15 +39,16 @@ class MembersAdapter(
         val member = members?.get(position)
 
         val img = holder.binding.itemImage
-        if(member?.imageUrl!= null){
+        member?.imageUrl?.let{url->
             Glide.with(img)
-                .load(member?.imageUrl)
+                .load(member.imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerInside()
+                .error(R.drawable.ellipse)
                 .into(img)
         }
-        else
-            img.setImageResource(R.drawable.ellipse)
+
+
 
         holder.binding.itemName.text=member?.name
         holder.binding.itemPosition.text=member?.track

@@ -8,9 +8,9 @@
         />
 
     <item
-        android:id="@+id/chatsFragment"
-        android:title="@string/chats"
-        android:icon="@drawable/ic_chat"
+        android:id="@+id/notificationFragment"
+        android:title="@string/notifications"
+        android:icon="@drawable/ic_notification"
         />
     <item
         android:id="@+id/moreFragment"
