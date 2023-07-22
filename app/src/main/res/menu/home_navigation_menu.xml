@@ -8,14 +8,14 @@
         />
 
     <item
-        android:id="@+id/chatsFragment"
-        android:title="@string/chats"
-        android:icon="@drawable/ic_chat"
+        android:id="@+id/notificationFragment"
+        android:title="@string/notifications"
+        android:icon="@drawable/ic_notification"
         />
     <item
-        android:id="@+id/moreFragment"
-        android:title="@string/more"
-        android:icon="@drawable/ic_more"
+        android:id="@+id/settingsFragment"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings"
         />
 
 </menu>

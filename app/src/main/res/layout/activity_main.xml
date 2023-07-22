@@ -22,15 +22,15 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:background="@color/white"
-        android:backgroundTint="@color/white"
         android:pointerIcon="none"
         app:itemIconTint="@drawable/tab_color"
         app:itemTextColor="@drawable/tab_color"
-        app:labelVisibilityMode="selected"
+        app:labelVisibilityMode="labeled"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/home_navigation_menu" />
+        app:menu="@menu/home_navigation_menu"
+        app:itemActiveIndicatorStyle="@color/color_background"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

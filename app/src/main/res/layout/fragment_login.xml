@@ -34,6 +34,7 @@
         android:id="@+id/editText_email_login"
         android:hint="@string/emailEV"
         android:inputType="textEmailAddress"
+
         style="@style/editView_Auth"
         android:background="@drawable/edit_text_background"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,12 +56,14 @@
         android:background="@drawable/edit_text_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@+id/textView_password_login" />
 
 
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_login"
+        android:background="@drawable/button_auth_background"
         style="@style/button_Auth"
         android:text="@string/login"
         android:layout_marginTop="90dp"
@@ -93,7 +96,7 @@
             android:layout_marginBottom="8dp"
             android:text="@string/register"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/textView_account_login"
             app:layout_constraintTop_toBottomOf="@+id/button_login" />
     </LinearLayout>

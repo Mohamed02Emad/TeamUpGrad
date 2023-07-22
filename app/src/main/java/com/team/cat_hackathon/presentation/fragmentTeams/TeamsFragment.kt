@@ -50,7 +50,7 @@ class TeamsFragment : Fragment() {
     private fun initRecyclerView(){
         val recyclerView =binding.recyclerViewInTeam
         recyclerView.layoutManager = GridLayoutManager(requireContext(),2)
-        recyclerView.adapter= TeamAdapter()
+        //recyclerView.adapter= TeamAdapter()
     }
     private fun haveNoTeamUiVisibility(value : Boolean){
         binding.groupNotInTeam.isGone = !value

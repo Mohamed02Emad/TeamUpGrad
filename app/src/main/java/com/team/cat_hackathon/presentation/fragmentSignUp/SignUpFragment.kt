@@ -8,64 +8,103 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.androiddevs.mvvmnewsapp.data.api.RequestState
+import com.bumptech.glide.Glide.init
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.databinding.FragmentLoginBinding
 import com.team.cat_hackathon.databinding.FragmentSignUpBinding
+import com.team.cat_hackathon.utils.showSnackbar
+import com.team.cat_hackathon.utils.showToast
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
+@AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
-
     private lateinit var binding: FragmentSignUpBinding
-    private lateinit var passwordEditView: EditText
-    private lateinit var emailEditView: EditText
-    private lateinit var nameEditView: EditText
-    private lateinit var signupButton: AppCompatButton
-    private lateinit var loginButton: TextView
-
-
-
-
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private val viewModel : SignUpViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding=FragmentSignUpBinding.inflate(layoutInflater)
-        init()
         return binding.root
     }
 
-    companion object {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setOnClicks()
+        setObservers()
+    }
 
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SignUpFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun setObservers() {
+        viewModel.registerRequestState.observe(viewLifecycleOwner){state ->
+            state?.let {
+                when (state) {
+                    is RequestState.Error -> {
+                        showSnackbar(state.message ?: "error",requireContext(),binding.root)
+                    }
+                    is RequestState.Loading -> {
+                        //todo : show snack bar
+                    }
+                    is RequestState.Sucess -> {
+                        state.data.let {response ->
+                            lifecycleScope.launch {
+                                viewModel.cacheUserData(response!!.user, response.access_token)
+                                viewModel.setIsLoggedIn(true)
+                                navigateToHome()
+                            }
+                        }
+                    }
                 }
             }
+        }
     }
 
-    private fun init(){
-        nameEditView=binding.editTextUsernameSignup
-        emailEditView=binding.editTextEmailSignup
-        passwordEditView=binding.editTextPasswordSignup
-        signupButton=binding.signupButton
-        loginButton=binding.textViewLogin
+    private fun setOnClicks() {
+        binding.apply {
+            textViewLogin.setOnClickListener {
+                navigateToLogin()
+            }
+
+            editTextUsernameSignup.doAfterTextChanged {text->
+                val username = if (!text.isNullOrEmpty()) text.toString() else ""
+                viewModel.setName(username)
+            }
+
+            editTextEmailSignup.doAfterTextChanged {text->
+                val email = if (!text.isNullOrEmpty()) text.toString() else ""
+                viewModel.setEmail(email)
+            }
+
+            editTextPasswordSignup.doAfterTextChanged {text->
+                val password = if (!text.isNullOrEmpty()) text.toString() else ""
+                viewModel.setPassword(password)
+            }
+
+            signupButton.setOnClickListener {
+                lifecycleScope.launch {
+                    viewModel.registerUser(
+                        viewModel.name.value!!,
+                        viewModel.email.value!!,
+                        viewModel.password.value!!
+                    )
+                }
+            }
+        }
     }
+
+    private fun navigateToLogin() {
+        findNavController().navigateUp()
+    }
+
+    private fun navigateToHome(){
+        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragment2ToHomeFragment())
+    }
+
 }

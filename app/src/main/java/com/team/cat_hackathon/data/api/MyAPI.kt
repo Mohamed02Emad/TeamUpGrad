@@ -1,44 +1,34 @@
 
 
+import com.team.cat_hackathon.data.api.LOGIN_ENDPOINT
+import com.team.cat_hackathon.data.api.REGISTER_ENDPOINT
+import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.TeamsResponse
-import com.team.cat_hackathon.data.models.UsersResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface MyAPI {
 
-    //Todo: change methods to fit our api later
-
-    @GET(getUser)
-    suspend fun getUser(
+    @POST(LOGIN_ENDPOINT)
+    suspend fun loginUser(
+        @Query("email")
+        email: String? = null,
+        @Query("password")
+        password: String? = null,
+        @Query("device_name")
+        deviceName: String? = null
+    ): Response<AuthResponse>
+    @POST(REGISTER_ENDPOINT)
+    suspend fun registerUser(
+        @Query("name")
+        name: String? = null,
         @Query("email")
         email: String? = null,
         @Query("password")
         password: String? = null
-    ): Response<TeamsResponse>
-
-    @GET(getEverything)
-    suspend fun searchForNews(
-        @Query("q")
-        searchQuery: String,
-        @Query("page")
-        pageNumber: Int = 1,
-        @Query("pageSize")
-        pageSize: Int = 20
-    ): Response<TeamsResponse>
+    ): Response<AuthResponse>
 
 
-    //todo : add this from backend
-    @GET("")
-    abstract fun getTeamsByQuery(
-        @Query("")
-        query: String?
-    ): Response<TeamsResponse>
-
-    @GET("")
-    abstract fun getIndividualsByQuery(
-        @Query("")
-        query: String?
-    ): Response<UsersResponse>
 }

@@ -3,7 +3,8 @@ package com.team.cat_hackathon.di
 import android.content.Context
 import androidx.room.Room
 import com.mo_chatting.chatapp.data.dataStore.DataStoreImpl
-import com.team.cat_hackathon.data.repositories.BaseRepositoryImpl
+import com.team.cat_hackathon.data.repositories.AuthRepository
+import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
 import com.team.cat_hackathon.data.source.MyDatabase
 import dagger.Module
 import dagger.Provides
@@ -32,9 +33,18 @@ object Module {
     @Singleton
     fun provideBaseRepository(
         db: MyDatabase,
-        @ApplicationContext context: Context
-    ): BaseRepositoryImpl {
-        return BaseRepositoryImpl(db.myDao, context)
+        @ApplicationContext context: Context,
+        dataStoreImpl: DataStoreImpl
+    ): HomeRepositoryImpl {
+        return HomeRepositoryImpl(db.myDao, context , dataStoreImpl)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(
+        dataStoreImpl: DataStoreImpl
+    ): AuthRepository {
+        return AuthRepository(dataStoreImpl)
     }
 
     @Provides
