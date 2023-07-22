@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.cat_hackathon.R
+import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,12 +43,19 @@ class HomeFragment : Fragment() {
 //                users = viewModel.individualResponse?.articles,
 //                teams = viewModel.teamResponse?.articles
 //        )
+
+        // use fake data until we get data from backend
         myAdapter = HomeAdapter(
-                users = viewModel.getFakeUsers(40),
-                teams = viewModel.getFakeTeams(10)
+            users = viewModel.getFakeUsers(40),
+            teams = viewModel.getFakeTeams(10),
+            onTeamClicked
         )
 
         viewPager.adapter = myAdapter
+    }
+
+    val onTeamClicked: (Team) -> Unit = { team ->
+        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTeamsFragment(team))
     }
 
     private fun attachTabLayoutToViewPager() {

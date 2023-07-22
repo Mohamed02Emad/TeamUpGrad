@@ -41,6 +41,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_view"
         android:layout_width="69dp"
         android:layout_height="28dp"
         android:layout_marginTop="10dp"
