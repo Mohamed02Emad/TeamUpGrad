@@ -18,7 +18,11 @@
         android:id="@+id/settingsFragment"
         android:name="com.team.cat_hackathon.presentation.fragmentSettings.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.team.cat_hackathon.presentation.fragmentSplash.SplashFragment"
@@ -113,16 +117,7 @@
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
 
-    <fragment
-        android:id="@+id/chatsFragment"
-        android:name="com.team.cat_hackathon.presentation.fragmentChats.ChatsFragment"
-        android:label="fragment_chats"
-        tools:layout="@layout/fragment_chats" />
-    <fragment
-        android:id="@+id/moreFragment"
-        android:name="com.team.cat_hackathon.presentation.fragmentMore.MoreFragment"
-        android:label="fragment_more"
-        tools:layout="@layout/fragment_more" />
+
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.team.cat_hackathon.presentation.fragmentNotification.NotificationFragment"

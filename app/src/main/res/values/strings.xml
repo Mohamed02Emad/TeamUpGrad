@@ -28,4 +28,7 @@
     <string name="Individuals">Individuals</string>
     <string name="View">View</string>
     <string name="notifications">notifications</string>
+    <string name="edit_profile">Profile</string>
+    <string name="log_out">Log Out</string>
+    <string name="settings2">Settings</string>
 </resources>
