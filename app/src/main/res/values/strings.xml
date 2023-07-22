@@ -20,4 +20,11 @@
     <string name="teams">teams</string>
     <string name="editProfile">edit profile</string>
     <string name="skip">Skip</string>
+    <string name="chats">chats</string>
+    <string name="more">more</string>
+    <string name="Teams">Teams</string>
+    <string name="team_num">9/10</string>
+    <string name="team_description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </string>
+    <string name="Individuals">Individuals</string>
+    <string name="View">View</string>
 </resources>
