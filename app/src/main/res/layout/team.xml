@@ -29,6 +29,20 @@
         app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/joinText_inTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/team_margin_start"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/crimson_text_regular"
+        android:text="@string/join"
+        android:textSize="19sp"
+        android:textColor="@color/join_color"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/teamBio_inTeam"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/teamBio_inTeam"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,18 +81,18 @@
         app:layout_constraintTop_toBottomOf="@+id/teamMembers_inTeam"
         tools:listitem="@layout/member_data_model" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/joinButton_inTeam"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/button_auth_background"
-        android:text="@string/join"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:layout_marginStart="@dimen/team_margin_start"
-        android:layout_marginEnd="@dimen/team_margin_start"
-        android:layout_marginBottom="@dimen/team_margin_start"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/joinButton_inTeam"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:background="@drawable/button_auth_background"-->
+<!--        android:text="@string/join"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:layout_marginStart="@dimen/team_margin_start"-->
+<!--        android:layout_marginEnd="@dimen/team_margin_start"-->
+<!--        android:layout_marginBottom="@dimen/team_margin_start"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
