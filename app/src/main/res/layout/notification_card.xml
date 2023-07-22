@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:background="@drawable/team_model_background"
+    android:paddingBottom="20dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_user_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+        tools:background="@color/primary_blue" />
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/crimson_text_bold"
+        android:textColor="@color/color_text"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/iv_user_image"
+        app:layout_constraintTop_toTopOf="@id/iv_user_image"
+        tools:text="Mohamed Emad" />
+
+
+    <TextView
+        android:id="@+id/tv_user_track"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@id/iv_user_image"
+        app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+        tools:text="Mohamed Emad" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/btn_accept"
+        android:paddingHorizontal="18dp"
+        android:text=" Accept "
+        android:textAllCaps="false"
+        android:textColor="@color/color_background"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_reject"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_reject"
+        android:paddingHorizontal="18dp"
+        android:text=" Reject "
+        android:textAllCaps="false"
+        android:textColor="@color/primary_blue"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/btn_accept"
+        app:layout_constraintStart_toStartOf="@id/btn_accept"
+        app:layout_constraintTop_toBottomOf="@id/btn_accept" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
