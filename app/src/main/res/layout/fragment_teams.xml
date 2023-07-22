@@ -8,16 +8,141 @@
     tools:context=".presentation.fragmentTeams.TeamsFragment">
 
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/team_margin_start"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/arr_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/teamName_inTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/team_margin_start"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/crimson_text_regular"
+        android:textStyle="bold"
+        android:text="@string/team_name"
+        android:textSize="19sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/joinText_inTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/team_margin_start"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/crimson_text_regular"
+        android:text="@string/join"
+        android:textSize="19sp"
+        android:textColor="@color/join_color"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/teamBio_inTeam"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/teamBio_inTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/team_margin_start"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="@dimen/team_margin_start"
+        android:fontFamily="@font/crimson_text_bold"
+        android:text="@string/team_description"
+        android:textColor="@color/team_bio_color"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamName_inTeam" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/teamMembers_inTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/team_margin_start"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/crimson_text_semi_bold"
+        android:text="@string/team_members_names"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamBio_inTeam" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_inTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/team_margin_start"
+        android:layout_marginEnd="@dimen/team_margin_start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamMembers_inTeam"
+        tools:listitem="@layout/member_data_model" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_notInTeam"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:src="@drawable/explore_teams"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_notInTeam"
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:fontFamily="@font/crimson_text_bold"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/explore_txt"
+        android:textColor="@color/join_color"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_notInTeam" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_notInTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_explore_background"
+        android:fontFamily="@font/crimson_text_regular"
+        android:paddingStart="45dp"
+        android:paddingEnd="45dp"
+        android:text="@string/explore"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_notInTeam" />
+
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupInTeam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         app:constraint_referenced_ids="backButton,teamName_inTeam,joinText_inTeam,teamBio_inTeam,teamMembers_inTeam,recyclerView_inTeam"/>
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupNotInTeam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:constraint_referenced_ids="img_notInTeam,text_notInTeam,button_notInTeam"/>
 
 
