@@ -15,4 +15,6 @@
     <color name="grey">#555555</color>
     <color name="text_auth">#454545</color>
     <color name="editText_hint_auth">#979797</color>
+    <color name="team_bio_color">#555555</color>
+    <color name="join_color">#005893</color>
 </resources>
