@@ -8,6 +8,17 @@
     tools:context=".presentation.fragmentTeams.TeamsFragment">
 
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupInTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="backButton,teamName_inTeam,joinText_inTeam,teamBio_inTeam,teamMembers_inTeam,recyclerView_inTeam"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupNotInTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="img_notInTeam,text_notInTeam,button_notInTeam"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

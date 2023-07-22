@@ -81,18 +81,4 @@
         app:layout_constraintTop_toBottomOf="@+id/teamMembers_inTeam"
         tools:listitem="@layout/member_data_model" />
 
-<!--    <androidx.appcompat.widget.AppCompatButton-->
-<!--        android:id="@+id/joinButton_inTeam"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:background="@drawable/button_auth_background"-->
-<!--        android:text="@string/join"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:layout_marginStart="@dimen/team_margin_start"-->
-<!--        android:layout_marginEnd="@dimen/team_margin_start"-->
-<!--        android:layout_marginBottom="@dimen/team_margin_start"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
