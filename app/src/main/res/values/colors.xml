@@ -9,6 +9,10 @@
 
     <color name="color_background">#FFFFFFFF</color>
     <color name="color_text">#FF000000</color>
+    <color name="team_description">#7D7D7D</color>
+    <color name="view_button">#3B5998</color>
+    <color name="ripple_color">#DCDCDC</color>
+    <color name="grey">#555555</color>
     <color name="text_auth">#454545</color>
     <color name="editText_hint_auth">#979797</color>
 </resources>

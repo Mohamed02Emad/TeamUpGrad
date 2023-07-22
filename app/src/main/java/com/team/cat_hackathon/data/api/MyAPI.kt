@@ -27,7 +27,7 @@ interface MyAPI {
         email: String? = null,
         @Query("password")
         password: String? = null
-    ): Response<MyResponse>
+    ): Response<TeamsResponse>
 
     @GET("")
     suspend fun searchForNews(
@@ -37,5 +37,19 @@ interface MyAPI {
         pageNumber: Int = 1,
         @Query("pageSize")
         pageSize: Int = 20
-    ): Response<MyResponse>
+    ): Response<TeamsResponse>
+
+
+    //todo : add this from backend
+    @GET("")
+    abstract fun getTeamsByQuery(
+        @Query("")
+        query: String?
+    ): Response<TeamsResponse>
+
+    @GET("")
+    abstract fun getIndividualsByQuery(
+        @Query("")
+        query: String?
+    ): Response<UsersResponse>
 }

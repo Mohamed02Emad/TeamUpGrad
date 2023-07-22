@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNavigationVisibility() {
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment, R.id.settingsFragment, R.id.editProfileFragment, R.id.teamsFragment -> {
+                R.id.homeFragment, R.id.chatsFragment, R.id.moreFragment-> {
                     bottomNavigationView.visibility = View.VISIBLE
                 }
                 else -> {
