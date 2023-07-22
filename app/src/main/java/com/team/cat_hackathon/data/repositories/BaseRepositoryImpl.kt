@@ -15,9 +15,4 @@ class BaseRepositoryImpl (val dao : MyDao , val context : Context) {
         )
     }
 
-    fun getIndividualsByQuery(searchQuery: String?): Response<UsersResponse> {
-      return RetrofitInstance.api.getIndividualsByQuery(searchQuery)
-    }
-
-
 }
