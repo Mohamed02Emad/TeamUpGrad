@@ -13,4 +13,6 @@
     <color name="view_button">#3B5998</color>
     <color name="ripple_color">#DCDCDC</color>
     <color name="grey">#555555</color>
+    <color name="text_auth">#454545</color>
+    <color name="editText_hint_auth">#979797</color>
 </resources>
