@@ -33,9 +33,10 @@ object Module {
     @Singleton
     fun provideBaseRepository(
         db: MyDatabase,
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
+        dataStoreImpl: DataStoreImpl
     ): HomeRepositoryImpl {
-        return HomeRepositoryImpl(db.myDao, context)
+        return HomeRepositoryImpl(db.myDao, context , dataStoreImpl)
     }
 
     @Provides

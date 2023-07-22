@@ -28,12 +28,6 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
 
     var individualResponse: UsersResponse? = null
 
-    fun getTeamsByQuery(searchQuery : String?) = viewModelScope.launch {
-        _teamRequestState.postValue(RequestState.Loading())
-        val response = repository.getTeams(searchQuery)
-        _teamRequestState.postValue(handleDataFromTeamsRequest(response))
-    }
-
     private fun handleDataFromTeamsRequest(response: Response<TeamsResponse>): RequestState<TeamsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { result ->

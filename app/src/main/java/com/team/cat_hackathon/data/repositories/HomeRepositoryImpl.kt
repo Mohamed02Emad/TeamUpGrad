@@ -2,20 +2,17 @@ package com.team.cat_hackathon.data.repositories
 
 import RetrofitInstance
 import android.content.Context
+import com.mo_chatting.chatapp.data.dataStore.DataStoreImpl
 import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.TeamsResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.source.MyDao
 import retrofit2.Response
+import javax.inject.Inject
 import kotlin.random.Random
 
-class HomeRepositoryImpl (val dao : MyDao, val context : Context) {
+class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStoreImpl: DataStoreImpl) {
 
-    suspend fun getTeams(query: String?): Response<TeamsResponse> {
-        return RetrofitInstance.api.getTeams(
-            query = query
-        )
-    }
 
 
     fun getFakeTeams(numUser: Int):ArrayList<Team> {
@@ -64,6 +61,10 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context) {
             .map { Random.nextInt(0, charPool.size) }
             .map(charPool::get)
             .joinToString("")
+    }
+
+    suspend fun getCachedUser(): User {
+       return dataStoreImpl.getUser()
     }
 
 

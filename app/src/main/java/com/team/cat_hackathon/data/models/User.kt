@@ -8,18 +8,18 @@ import androidx.room.PrimaryKey
 @Entity
 @Keep
 data class User(
-    @PrimaryKey var id: Int,
-    var name: String,
-    var email: String,
-    var email_verified_at: String?,
-    var track: String?,
-    var bio: String?,
-    var imageUrl: String?,
-    var githubUrl: String?,
-    var facebookUrl: String?,
-    var linkedinUrl: String?,
-    var isLeader: Int,
-    var isInTeam: Int,
-    var created_at: String?,
-    var updated_at: String?
+    @PrimaryKey var id: Int = 0,
+    var name: String = " ",
+    var email: String =" ",
+    var email_verified_at: String?= null,
+    var track: String? = null,
+    var bio: String? = null,
+    var imageUrl: String? = null,
+    var githubUrl: String? = null,
+    var facebookUrl: String? = null,
+    var linkedinUrl: String? = null,
+    var isLeader: Int = 0,
+    var isInTeam: Int = 0,
+    var created_at: String? = null,
+    var updated_at: String? = null
 )

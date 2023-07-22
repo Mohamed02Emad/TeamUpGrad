@@ -1,7 +1,8 @@
 
 
 import com.team.cat_hackathon.data.api.LOGIN_ENDPOINT
-import com.team.cat_hackathon.data.models.LoginResponse
+import com.team.cat_hackathon.data.api.REGISTER_ENDPOINT
+import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.TeamsResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -18,12 +19,16 @@ interface MyAPI {
         password: String? = null,
         @Query("device_name")
         deviceName: String? = null
-    ): Response<LoginResponse>
+    ): Response<AuthResponse>
+    @POST(REGISTER_ENDPOINT)
+    suspend fun registerUser(
+        @Query("name")
+        name: String? = null,
+        @Query("email")
+        email: String? = null,
+        @Query("password")
+        password: String? = null
+    ): Response<AuthResponse>
 
-    @GET("")
-    abstract fun getTeams(
-        @Query("")
-        query: String?
-    ): Response<TeamsResponse>
 
 }
