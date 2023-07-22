@@ -37,9 +37,15 @@ class HomeFragment : Fragment() {
 
     private fun setViewPager() {
         viewPager = binding.viewPager
-        myAdapter =
-            HomeAdapter(users = viewModel.individualResponse?.articles,
-                teams = viewModel.teamResponse?.articles)
+//        myAdapter = HomeAdapter(
+//                users = viewModel.individualResponse?.articles,
+//                teams = viewModel.teamResponse?.articles
+//        )
+        myAdapter = HomeAdapter(
+                users = viewModel.getFakeUsers(40),
+                teams = viewModel.getFakeTeams(10)
+        )
+
         viewPager.adapter = myAdapter
     }
 
