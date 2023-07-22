@@ -34,6 +34,7 @@
         android:id="@+id/editText_email_login"
         android:hint="@string/emailEV"
         android:inputType="textEmailAddress"
+
         style="@style/editView_Auth"
         android:background="@drawable/edit_text_background"
         app:layout_constraintEnd_toEndOf="parent"

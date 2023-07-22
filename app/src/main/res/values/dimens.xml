@@ -11,8 +11,8 @@
 
     <dimen name="button_auth_margin_start_end">16dp</dimen>
     <dimen name="button_auth_margin_top">35dp</dimen>
-    <dimen name="button_auth_padding_top">15dp</dimen>
-    <dimen name="button_auth_padding_bottom">15dp</dimen>
+    <dimen name="button_auth_padding_top">10dp</dimen>
+    <dimen name="button_auth_padding_bottom">10dp</dimen>
 
     <dimen name="text_have_account_auth_margin_top">10dp</dimen>
 
