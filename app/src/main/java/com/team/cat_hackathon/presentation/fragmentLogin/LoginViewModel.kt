@@ -1,7 +1,6 @@
 package com.team.cat_hackathon.presentation.fragmentLogin
 
 import android.os.Build
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +10,9 @@ import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.AuthRepository
 import com.team.cat_hackathon.utils.CAN_LOGIN
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
@@ -40,7 +41,6 @@ class LoginViewModel @Inject constructor(val repository: AuthRepository) : ViewM
         _loginRequestState.postValue(RequestState.Loading())
 
         val response = repository.loginUser(username, password, deviceName)
-        //val response = repository.loginUser("test@gmail.com", "password", deviceName)
 
         _loginRequestState.postValue(handleUserResponse(response))
     }
@@ -48,9 +48,6 @@ class LoginViewModel @Inject constructor(val repository: AuthRepository) : ViewM
     private fun handleUserResponse(response: Response<LoginResponse>): RequestState<LoginResponse> {
         if (response.isSuccessful) {
             response.body()?.let { result ->
-
-            //    Log.d("mohamed", result.user.toString())
-
                 return RequestState.Sucess(result)
             }
         }
@@ -74,8 +71,16 @@ class LoginViewModel @Inject constructor(val repository: AuthRepository) : ViewM
         return CAN_LOGIN
     }
 
-    suspend fun cacheUserData(user: User, accessToken: String) = withContext(Dispatchers.IO){
-      repository.cacheUSer(user , accessToken)
+    suspend fun cacheUserData(user: User, accessToken: String) {
+      repository.cacheUSer(user, accessToken)
+    }
+
+    suspend fun setIsLoggedIn(isLoggedIn: Boolean){
+        repository.setUserIsLogged(true)
+    }
+
+    suspend fun getIsLogged(): String {
+         return repository.getIsLogged().toString()
     }
 
 

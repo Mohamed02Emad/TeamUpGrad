@@ -8,64 +8,39 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide.init
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.databinding.FragmentLoginBinding
 import com.team.cat_hackathon.databinding.FragmentSignUpBinding
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class SignUpFragment : Fragment() {
 
-
     private lateinit var binding: FragmentSignUpBinding
-    private lateinit var passwordEditView: EditText
-    private lateinit var emailEditView: EditText
-    private lateinit var nameEditView: EditText
-    private lateinit var signupButton: AppCompatButton
-    private lateinit var loginButton: TextView
-
-
-
-
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding=FragmentSignUpBinding.inflate(layoutInflater)
-        init()
         return binding.root
     }
 
-    companion object {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setOnClicks()
+    }
 
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SignUpFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun setOnClicks() {
+        binding.apply {
+            textViewLogin.setOnClickListener {
+                navigateToLogin()
             }
+        }
     }
 
-    private fun init(){
-        nameEditView=binding.editTextUsernameSignup
-        emailEditView=binding.editTextEmailSignup
-        passwordEditView=binding.editTextPasswordSignup
-        signupButton=binding.signupButton
-        loginButton=binding.textViewLogin
+    private fun navigateToLogin() {
+        findNavController().navigateUp()
     }
+
 }

@@ -11,11 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.androiddevs.mvvmnewsapp.data.api.RequestState
+import com.team.cat_hackathon.databinding.FragmentLoginBinding
 import com.team.cat_hackathon.utils.CAN_LOGIN
 import com.team.cat_hackathon.utils.showSnackbar
-import com.team.cat_hackathon.databinding.FragmentLoginBinding
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -44,28 +46,23 @@ class LoginFragment : Fragment() {
             state?.let {
                 when (state){
                     is RequestState.Error -> {
-                       // showSnackbar( state.message ?: "error" , requireContext() , binding.root)
-                        Log.d("mohamed",  state.message.toString())
+                        showSnackbar( "error" , requireContext() , binding.root)
                     }
                     is RequestState.Loading -> {
-
+                       //todo : show progress bar
                     }
                     is RequestState.Sucess -> {
                         lifecycleScope.launch {
-                            val user = state.data?.let { response ->
-                                viewModel.cacheUserData(response.user ,response.access_token)
-                                showToast(response.code.toString() , requireContext())
-                                //navigateToHomeScreen()
+                            state.data?.let { response ->
+                                viewModel.cacheUserData(response.user, response.access_token)
+                                viewModel.setIsLoggedIn(true)
+                                navigateToHomeScreen()
                             }
                         }
                     }
                 }
             }
         }
-    }
-
-    private fun navigateToHomeScreen() {
-        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
     }
 
     private fun setOnClicks() {
@@ -87,17 +84,30 @@ class LoginFragment : Fragment() {
                     viewModel.validateData(viewModel.email.value, viewModel.password.value)
 
                 if (canSendRequestState == CAN_LOGIN) {
-
+                    //todo : uncomment this when needed
                     lifecycleScope.launch {
-                        viewModel.loginUser(viewModel.email.value, viewModel.password.value)
+                   //     viewModel.loginUser(viewModel.email.value, viewModel.password.value)
+                        viewModel.setIsLoggedIn(true)
+                        navigateToHomeScreen()
                     }
-
                 } else {
                     showSnackbar(canSendRequestState, requireContext(), binding.root)
                 }
             }
 
+            textViewSignup.setOnClickListener {
+                navigateToSignUp()
+            }
+
         }
+    }
+
+    private fun navigateToSignUp() {
+        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment2())
+    }
+
+    private fun navigateToHomeScreen() {
+        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
     }
 
 }

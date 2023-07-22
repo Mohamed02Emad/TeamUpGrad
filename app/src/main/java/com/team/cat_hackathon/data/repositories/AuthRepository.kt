@@ -20,4 +20,12 @@ class AuthRepository(val dataStoreImpl: DataStoreImpl) {
         dataStoreImpl.insertToken(accessToken)
     }
 
+    suspend fun setUserIsLogged(b: Boolean) {
+        dataStoreImpl.setIsLoggedIn(b)
+    }
+
+    suspend fun getIsLogged(): Boolean {
+        return dataStoreImpl.getIsLoggedIn()
+    }
+
 }
