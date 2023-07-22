@@ -30,6 +30,7 @@
     <string name="team_members_names">Team Members Names</string>
     <string name="join">Join Us</string>
     <string name="explore">Explore</string>
+    <string name="search">Search</string>
     <string name="team_name">Team Name</string>
     <string name="explore_txt">you are not on a team , you can join a team or create new team</string>
 </resources>
