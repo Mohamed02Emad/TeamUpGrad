@@ -50,9 +50,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout_login"
-        android:hint="@string/passwordEV"
         style="@style/password_layout_Auth"
-        app:hintTextColor="@color/editText_hint_auth"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/editText_hint_auth"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,6 +60,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText_password_login"
             style="@style/password_editView_Auth"
+            android:hint="@string/passwordEV"
             android:inputType="textPassword"
             android:background="@drawable/edit_text_background" />
 
