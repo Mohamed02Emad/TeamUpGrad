@@ -13,6 +13,14 @@ import kotlin.random.Random
 
 class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStoreImpl: DataStoreImpl) {
 
+
+    suspend fun getCachedUser(): User {
+        return dataStoreImpl.getUser()
+    }
+
+    suspend fun updateUser(user: User) {
+
+    }
     suspend fun getHomeData(): Response<AllDataResponse> {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
         Log.d("mohamed", token)
@@ -63,10 +71,6 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStore
             .map { Random.nextInt(0, charPool.size) }
             .map(charPool::get)
             .joinToString("")
-    }
-
-    suspend fun getCachedUser(): User {
-       return dataStoreImpl.getUser()
     }
 
 
