@@ -59,7 +59,7 @@
         android:id="@+id/btn_reject"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="14dp"
         android:background="@drawable/btn_reject"
         android:paddingHorizontal="18dp"
         android:text=" Reject "
