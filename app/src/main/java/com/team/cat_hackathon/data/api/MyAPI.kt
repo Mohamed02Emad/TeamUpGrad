@@ -4,9 +4,10 @@ import com.team.cat_hackathon.data.api.GET_ALL_DATA_ENDPOINT
 import com.team.cat_hackathon.data.api.LOGIN_ENDPOINT
 import com.team.cat_hackathon.data.api.REGISTER_ENDPOINT
 import com.team.cat_hackathon.data.models.AuthResponse
-import com.team.cat_hackathon.data.models.TeamsResponse
+import com.team.cat_hackathon.data.models.AllDataResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -31,8 +32,10 @@ interface MyAPI {
         password: String? = null
     ): Response<AuthResponse>
 
+
+    //todo : not working
     @GET(GET_ALL_DATA_ENDPOINT)
-    suspend fun getAllData(): Response<TeamsResponse>
+    suspend fun getAllData(@Header("Authorization") Authorization : String) : Response<AllDataResponse>
 
 
 }

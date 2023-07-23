@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.androiddevs.mvvmnewsapp.data.api.RequestState
@@ -16,6 +17,7 @@ import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.databinding.FragmentHomeBinding
 import com.team.cat_hackathon.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -35,6 +37,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            viewModel.requestHomeData()
+        }
         setViewPager()
         setObservers()
         attachTabLayoutToViewPager()
@@ -58,6 +63,11 @@ class HomeFragment : Fragment() {
 
                     is RequestState.Sucess -> {
                         //todo : test this later
+                        showSnackbar(
+                            requestState.data!!.users[0].name,
+                            requireContext(),
+                            binding.root
+                        )
                         myAdapter.teamsAdapter.notifyDataSetChanged()
                         myAdapter.usersAdapter.notifyDataSetChanged()
                     }
