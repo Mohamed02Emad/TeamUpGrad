@@ -59,7 +59,7 @@ class TeamsFragment : Fragment() {
         binding.groupInTeam.isGone = !value
     }
     private fun onClickBack(){
-        binding.backButton.setOnClickListener{
+        binding.btnBack.setOnClickListener{
 
         }
     }
