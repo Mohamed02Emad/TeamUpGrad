@@ -62,26 +62,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_email_signup" />
 
-    <EditText
-        android:id="@+id/editText_password_signup"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_signup"
         android:hint="@string/passwordEV"
-        style="@style/editView_Auth"
-        android:background="@drawable/edit_text_background"
+        style="@style/password_layout_Auth"
+        app:hintTextColor="@color/editText_hint_auth"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/editText_hint_auth"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/textView_password_signup" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_password_signup">
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editText_password_login"
+        style="@style/password_editView_Auth"
+        android:inputType="textPassword"
+        android:background="@drawable/edit_text_background" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signupButton"
         style="@style/button_Auth"
         android:background="@drawable/button_auth_background"
         android:text="@string/register"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_password_signup" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_signup" />
 
     <LinearLayout
         style="@style/layout_account_Auth"
@@ -94,16 +103,19 @@
             android:id="@+id/textView_account_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/crimson_text_bold"
             android:text="@string/have_accountTV"
             android:textColor="#979797"
-            android:textSize="14sp"
+            android:textSize="17sp"
             android:layout_margin="8dp"/>
 
         <TextView
             android:id="@+id/textView_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/crimson_text_regular"
             android:text="@string/login"
+            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginTop="8dp"

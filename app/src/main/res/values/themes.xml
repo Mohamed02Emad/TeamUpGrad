@@ -39,7 +39,7 @@
     </style>
     <style name="imageView_Auth">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">200dp</item>
         <item name="android:layout_marginTop">12dp</item>
         <item name="android:layout_marginBottom">15dp</item>
     </style>
@@ -88,7 +88,7 @@
         <item name="android:layout_marginTop">@dimen/editView_auth_margin_top</item>
         <item name="android:paddingHorizontal">@dimen/editView_auth_padding</item>
     </style>
-    <style name="password_layout_Auth">
+    <style name="password_layout_Auth" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
