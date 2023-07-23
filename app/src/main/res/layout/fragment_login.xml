@@ -71,21 +71,22 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_login"
         style="@style/button_Auth"
-        android:layout_marginTop="120dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button_auth_background"
         android:text="@string/login"
         android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_login" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         style="@style/layout_account_Auth"
+        android:layout_marginBottom="125dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_login">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/textView_account_login"
@@ -106,10 +107,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/crimson_text_regular"
-            android:textStyle="bold"
             android:text="@string/register"
             android:textColor="@color/black"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView_account_login"
             app:layout_constraintTop_toBottomOf="@+id/button_login" />
     </LinearLayout>
