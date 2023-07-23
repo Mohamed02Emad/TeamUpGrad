@@ -15,8 +15,7 @@
 
 
     <style name="TabLayoutTextStyle">
-        <item name="android:textSize">22sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
   </style>
     <style name="textView_Auth">
         <item name="android:layout_width">wrap_content</item>
