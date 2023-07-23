@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/color_background"
-
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
 
@@ -25,6 +24,7 @@
         android:layout_height="65dp"
         android:background="@color/white"
         android:pointerIcon="none"
+        android:elevation="8dp"
         app:itemIconTint="@drawable/tab_color"
         app:itemTextColor="@drawable/tab_color"
         app:labelVisibilityMode="labeled"
