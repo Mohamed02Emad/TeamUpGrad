@@ -52,6 +52,7 @@
         android:id="@+id/textInputLayout_login"
         android:hint="@string/passwordEV"
         style="@style/password_layout_Auth"
+        app:hintTextColor="@color/editText_hint_auth"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/editText_hint_auth"
         app:layout_constraintEnd_toEndOf="parent"
