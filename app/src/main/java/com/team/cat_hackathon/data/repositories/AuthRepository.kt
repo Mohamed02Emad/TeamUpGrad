@@ -33,6 +33,10 @@ class AuthRepository(val dataStoreImpl: DataStoreImpl) {
         dataStoreImpl.insertToken(accessToken)
     }
 
+    suspend fun clearDataStore(){
+        dataStoreImpl.logOut()
+    }
+
     suspend fun setUserIsLogged(b: Boolean) {
         dataStoreImpl.setIsLoggedIn(b)
     }

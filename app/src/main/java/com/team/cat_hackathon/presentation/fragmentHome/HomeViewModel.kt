@@ -37,6 +37,8 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
 
         return RequestState.Error(response.message())
     }
+
+    //todo: delete later
    fun getFakeUsers(number: Int):ArrayList<User>{
        return repository.getFakeUsers(number)
    }

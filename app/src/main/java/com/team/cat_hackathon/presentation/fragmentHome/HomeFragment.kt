@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            viewModel.requestHomeData()
+         //   viewModel.requestHomeData()
         }
         setViewPager()
         setObservers()
@@ -95,9 +95,14 @@ class HomeFragment : Fragment() {
         viewModel.homeDataResponse?.teams?.let {
             teams.addAll(it)
         }
+//        myAdapter = HomeAdapter(
+//                users = users,
+//                teams = teams,
+//            onTeamClicked
+//        )
         myAdapter = HomeAdapter(
-                users = users,
-                teams = teams,
+                users = viewModel.getFakeUsers(20),
+                teams = viewModel.getFakeTeams(10),
             onTeamClicked
         )
 
