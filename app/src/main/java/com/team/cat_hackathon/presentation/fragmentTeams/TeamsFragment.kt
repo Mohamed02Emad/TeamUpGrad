@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.databinding.FragmentTeamsBinding
+import com.team.cat_hackathon.presentation.MainActivity
 
 class TeamsFragment : Fragment() {
 
@@ -29,6 +32,33 @@ class TeamsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val team = navArgs.team
 
+        setViewsVisibility(team)
+        setOnClicks()
+    }
+
+    private fun setOnClicks() {
+        binding.apply {
+            btnBack.setOnClickListener{
+                findNavController().navigateUp()
+            }
+
+            joinTextInTeam.setOnClickListener{
+
+            }
+
+            buttonNotInTeam.setOnClickListener{
+                navigateToHome()
+            }
+
+
+        }
+    }
+
+    private fun navigateToHome() {
+        (activity as MainActivity).navigateToHome()
+    }
+
+    private fun setViewsVisibility(team: Team?) {
         if (team != null) {
             haveTeamUiVisibility(true)
             haveNoTeamUiVisibility(false)
@@ -38,8 +68,8 @@ class TeamsFragment : Fragment() {
             //  haveTeamUiVisibility(true)
             // haveNoTeamUiVisibility(false)
             // }else{
-             haveTeamUiVisibility(false)
-             haveNoTeamUiVisibility(true)
+            haveTeamUiVisibility(false)
+            haveNoTeamUiVisibility(true)
             // initRecyclerView()
             // }
 
@@ -61,14 +91,4 @@ class TeamsFragment : Fragment() {
         binding.groupInTeam.isGone = !value
     }
 
-    private fun onClickBack() {
-        binding.btnBack.setOnClickListener {
-
-        }
-    }
-    private fun onClickJoin(){
-        binding.joinTextInTeam.setOnClickListener{
-
-        }
-    }
 }
