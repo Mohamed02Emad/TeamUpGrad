@@ -13,7 +13,9 @@ import kotlin.random.Random
 
 class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStoreImpl: DataStoreImpl) {
 
-
+    suspend fun getHomeData(): Response<TeamsResponse> {
+      return RetrofitInstance.api.getAllData()
+    }
 
     fun getFakeTeams(numUser: Int):ArrayList<Team> {
         val teams = ArrayList<Team>()
@@ -66,6 +68,8 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStore
     suspend fun getCachedUser(): User {
        return dataStoreImpl.getUser()
     }
+
+
 
 
 }

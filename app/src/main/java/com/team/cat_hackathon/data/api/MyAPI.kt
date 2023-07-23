@@ -1,5 +1,6 @@
 
 
+import com.team.cat_hackathon.data.api.GET_ALL_DATA_ENDPOINT
 import com.team.cat_hackathon.data.api.LOGIN_ENDPOINT
 import com.team.cat_hackathon.data.api.REGISTER_ENDPOINT
 import com.team.cat_hackathon.data.models.AuthResponse
@@ -29,6 +30,9 @@ interface MyAPI {
         @Query("password")
         password: String? = null
     ): Response<AuthResponse>
+
+    @GET(GET_ALL_DATA_ENDPOINT)
+    suspend fun getAllData(): Response<TeamsResponse>
 
 
 }
