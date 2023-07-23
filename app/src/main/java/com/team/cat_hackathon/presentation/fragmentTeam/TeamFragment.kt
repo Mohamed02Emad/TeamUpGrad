@@ -22,6 +22,6 @@ class TeamFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvGda.text = navArgs.team.name
+   //     binding.tvGda.text = navArgs.team.name
     }
 }
