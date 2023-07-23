@@ -9,9 +9,9 @@
 
     <ImageView
         android:id="@+id/imageView_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         style="@style/imageView_Auth"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:src="@drawable/login_img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,6 @@
         android:id="@+id/editText_email_login"
         android:hint="@string/emailEV"
         android:inputType="textEmailAddress"
-
         style="@style/editView_Auth"
         android:background="@drawable/edit_text_background"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,42 +48,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_email_login" />
 
-    <EditText
-        android:id="@+id/editText_password_login"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_login"
         android:hint="@string/passwordEV"
-        style="@style/editView_Auth"
-        android:background="@drawable/edit_text_background"
+        style="@style/password_layout_Auth"
+        app:hintTextColor="@color/editText_hint_auth"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/editText_hint_auth"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/textView_password_login" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_password_login">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText_password_login"
+            style="@style/password_editView_Auth"
+            android:inputType="textPassword"
+            android:background="@drawable/edit_text_background" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_login"
-        android:background="@drawable/button_auth_background"
         style="@style/button_Auth"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/button_auth_background"
         android:text="@string/login"
-        android:layout_marginTop="90dp"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_password_login" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_login" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         style="@style/layout_account_Auth"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_login">
+
         <TextView
             android:id="@+id/textView_account_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/crimson_text_bold"
             android:text="@string/accountTV"
             android:textColor="#979797"
-            android:textSize="14sp"
-            android:layout_margin="8dp"
+            android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
@@ -94,6 +105,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:fontFamily="@font/crimson_text_regular"
+            android:textStyle="bold"
             android:text="@string/register"
             android:textColor="@color/black"
             android:textSize="16sp"
