@@ -82,7 +82,7 @@ class SignUpFragment : Fragment() {
                 viewModel.setEmail(email)
             }
 
-            editTextPasswordSignup.doAfterTextChanged {text->
+            editTextPasswordSignup.doAfterTextChanged { text->
                 val password = if (!text.isNullOrEmpty()) text.toString() else ""
                 viewModel.setPassword(password)
             }

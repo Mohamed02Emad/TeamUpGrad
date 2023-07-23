@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView_password_signup">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editText_password_login"
+        android:id="@+id/editText_password_signup"
         style="@style/password_editView_Auth"
         android:inputType="textPassword"
         android:hint="@string/passwordEV"
