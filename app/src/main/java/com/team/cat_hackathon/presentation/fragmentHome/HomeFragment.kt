@@ -14,6 +14,7 @@ import com.androiddevs.mvvmnewsapp.data.api.RequestState
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.models.Team
+import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentHomeBinding
 import com.team.cat_hackathon.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,8 +69,16 @@ class HomeFragment : Fragment() {
                             requireContext(),
                             binding.root
                         )
-                        myAdapter.teamsAdapter.notifyDataSetChanged()
-                        myAdapter.usersAdapter.notifyDataSetChanged()
+                        viewModel.homeDataResponse?.teams?.let{
+                            myAdapter.teamsAdapter.teams?.clear()
+                            myAdapter.teamsAdapter.teams?.addAll(it)
+                            myAdapter.teamsAdapter.notifyDataSetChanged()
+                        }
+                        viewModel.homeDataResponse?.users?.let{
+                            myAdapter.usersAdapter.members?.clear()
+                            myAdapter.usersAdapter.members?.addAll(it)
+                            myAdapter.usersAdapter.notifyDataSetChanged()
+                        }
                     }
                 }
             }
@@ -78,15 +87,17 @@ class HomeFragment : Fragment() {
 
     private fun setViewPager() {
         viewPager = binding.viewPager
-//        myAdapter = HomeAdapter(
-//                users = viewModel.individualResponse?.articles,
-//                teams = viewModel.teamResponse?.articles
-//        )
-
-        // use fake data until we get data from backend
+        val users = ArrayList<User>()
+        val teams = ArrayList<Team>()
+        viewModel.homeDataResponse?.users?.let {
+            users.addAll(it)
+        }
+        viewModel.homeDataResponse?.teams?.let {
+            teams.addAll(it)
+        }
         myAdapter = HomeAdapter(
-            users = viewModel.getFakeUsers(40),
-            teams = viewModel.getFakeTeams(10),
+                users = users,
+                teams = teams,
             onTeamClicked
         )
 

@@ -11,8 +11,8 @@ import com.team.cat_hackathon.presentation.adapters.MembersAdapter
 import com.team.cat_hackathon.presentation.adapters.TeamAdapter
 
 class HomeAdapter(
-    private val users: List<User>? = null,
-    private val teams: List<Team>? = null,
+    private val users: ArrayList<User>? = null,
+    private val teams: ArrayList<Team>? = null,
     val onTeamClicked: (team: Team) -> Unit
 ) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {

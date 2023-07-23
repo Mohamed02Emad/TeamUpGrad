@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.team.cat_hackathon.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
@@ -36,7 +38,9 @@ class SettingsFragment : Fragment() {
             }
 
             cardLogOut.setOnClickListener {
-
+                lifecycleScope.launch {
+                    viewModel.logOut()
+                }
             }
         }
     }

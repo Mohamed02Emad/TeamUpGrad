@@ -58,7 +58,7 @@ class DataStoreImpl(
         val githubUrl: String = user.githubUrl ?: ""
         val id: Int = user.id
         val imageUrl: String = user.imageUrl ?: ""
-        val isInTeam: Int = user.isInTeam
+        val isInTeam: Int = user.team_id
         val isLeader: Int = user.isLeader
         val linkedinUrl: String = user.linkedinUrl ?: ""
         val name: String = user.name
@@ -134,6 +134,11 @@ class DataStoreImpl(
         mDataStore.data.map { settings ->
             settings[stringPreferencesKey(TOKEN)] ?: ""
         }.first()
+    }
+
+    override suspend fun logOut() {
+        setIsLoggedIn(false)
+        insertUser(User())
     }
 
     override suspend fun getIsOnBoardingFinished(): Boolean = withContext(dispatcher) {
