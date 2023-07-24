@@ -10,16 +10,8 @@
     android:id="@+id/rv"
     android:layout_width="match_parent"
     android:clipToPadding="false"
-    android:padding="16dp"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="12dp"
     android:layout_height="match_parent"
     />
-
-    <TextView
-        android:id="@+id/tvv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="40sp"
-        android:textColor="@color/black"
-        />
 </androidx.constraintlayout.widget.ConstraintLayout>

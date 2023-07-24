@@ -34,8 +34,7 @@ class HomeAdapter(
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val recyclerView = holder.binding.rv
-        val tv = holder.binding.tvv
-        tv.isGone = true
+
         if (position == 0) {
             val layoutManager = LinearLayoutManager(holder.binding.root.context)
             recyclerView.layoutManager = layoutManager
