@@ -42,7 +42,7 @@ class LoginFragment : Fragment() {
             state?.let {
                 when (state){
                     is RequestState.Error -> {
-                        showSnackbar( "error" , requireContext() , binding.root)
+                        showSnackbar( state.message?:"error" , requireContext() , binding.root)
                     }
                     is RequestState.Loading -> {
                        //todo : show progress bar
