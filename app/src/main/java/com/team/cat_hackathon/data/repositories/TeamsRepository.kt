@@ -3,7 +3,6 @@ package com.team.cat_hackathon.data.repositories
 import RetrofitInstance
 import com.mo_chatting.chatapp.data.dataStore.DataStoreImpl
 import com.team.cat_hackathon.data.models.AllDataResponse
-import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.User
 import retrofit2.Response
 import kotlin.random.Random
@@ -56,6 +55,11 @@ class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
             .map { Random.nextInt(0, charPool.size) }
             .map(charPool::get)
             .joinToString("")
+    }
+
+    suspend fun sendJoinRequest(teamId: Int): Boolean {
+        val cachedUserId = getCachedUser().id
+        return true
     }
 
 }

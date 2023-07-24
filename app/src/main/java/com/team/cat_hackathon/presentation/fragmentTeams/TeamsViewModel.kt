@@ -42,6 +42,9 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
     }
 
     fun getFakeUsers(number: Int): ArrayList<User>? = repository.getFakeUsers(number)
+    suspend fun sendJoinRequest(teamId: Int) {
+        val response = repository.sendJoinRequest(teamId)
+    }
 
 
 }

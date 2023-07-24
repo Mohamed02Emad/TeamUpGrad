@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -50,19 +52,9 @@ class TeamsFragment : Fragment() {
 
     private fun setOnClicks() {
         binding.apply {
-            btnBack.setOnClickListener{
-                findNavController().navigateUp()
-            }
-
-            joinTextInTeam.setOnClickListener{
-
-            }
-
             buttonNotInTeam.setOnClickListener{
                 navigateToHome()
             }
-
-
         }
     }
 
@@ -74,16 +66,17 @@ class TeamsFragment : Fragment() {
         if (team != null) {
             haveTeamUiVisibility(true)
             haveNoTeamUiVisibility(false)
+
             //todo : get list from team object
             initRecyclerView(viewModel.getFakeUsers(7))
-            initCollapsing()
+            initCollapsing(false)
         } else {
             val userTeam = viewModel.getCurrentUserTeam()
             if (userTeam != null) {
                 haveTeamUiVisibility(true)
                 haveNoTeamUiVisibility(false)
                 initRecyclerView(viewModel.getFakeUsers(7))
-                initCollapsing()
+                initCollapsing(true)
             } else {
                 haveTeamUiVisibility(false)
                 haveNoTeamUiVisibility(true)
@@ -110,13 +103,42 @@ class TeamsFragment : Fragment() {
         binding.groupInTeam.isGone = !value
     }
 
-    private fun initCollapsing(){
+    private fun initCollapsing(isFromNavigation: Boolean) {
         this.activity?.let {
             (requireActivity() as MainActivity).setSupportActionBar(binding.myToolbar)
             (requireActivity() as MainActivity).getSupportActionBar()
                 ?.setDisplayShowTitleEnabled(false)
-            binding.toolbar.findViewById<CardView>(R.id.btn_back)
+            setBarViewsVisibility(isFromNavigation)
+            setBarClicks()
         }
+    }
+
+    private fun setBarViewsVisibility(isFromNavigation: Boolean) {
+        val btnBack = binding.toolbar.findViewById<CardView>(R.id.btn_back)
+        val btnJoin = binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam)
+
+        if (isFromNavigation)
+            btnBack.isGone = true
+
+        //todo : join button logic
+        //if user is in team remove join us
+        //if user is in team requests change text to requseted
+    }
+
+    private fun setBarClicks() {
+        val btnBack = binding.toolbar.findViewById<CardView>(R.id.btn_back)
+        val btnJoin = binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam)
+
+        btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        btnJoin.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.sendJoinRequest(4)
+            }
+        }
+
     }
 
 }
