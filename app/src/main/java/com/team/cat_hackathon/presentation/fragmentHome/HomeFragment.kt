@@ -38,11 +38,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
-         //   viewModel.requestHomeData()
-        }
         setViewPager()
         setObservers()
+        lifecycleScope.launch {
+        //    viewModel.requestHomeData()
+        }
         attachTabLayoutToViewPager()
     }
 
@@ -64,11 +64,6 @@ class HomeFragment : Fragment() {
 
                     is RequestState.Sucess -> {
                         //todo : test this later
-                        showSnackbar(
-                            requestState.data!!.users[0].name,
-                            requireContext(),
-                            binding.root
-                        )
                         viewModel.homeDataResponse?.teams?.let{
                             myAdapter.teamsAdapter.teams?.clear()
                             myAdapter.teamsAdapter.teams?.addAll(it)
