@@ -19,7 +19,8 @@ data class User(
     var facebookUrl: String? = null,
     var linkedinUrl: String? = null,
     var isLeader: Int = 0,
-    var isInTeam: Int = 0,
+    //todo this is why get all data doesnot work
+    var team_id: Int = 0,
     var created_at: String? = null,
     var updated_at: String? = null
 )

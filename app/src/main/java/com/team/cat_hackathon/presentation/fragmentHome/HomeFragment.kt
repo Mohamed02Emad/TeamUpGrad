@@ -2,7 +2,6 @@ package com.team.cat_hackathon.presentation.fragmentHome
 
 import HomeAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.androiddevs.mvvmnewsapp.data.api.RequestState
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.models.Team
+import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentHomeBinding
-import com.team.cat_hackathon.utils.showToast
+import com.team.cat_hackathon.utils.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -39,22 +38,66 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setViewPager()
+        setObservers()
+        lifecycleScope.launch {
+        //    viewModel.requestHomeData()
+        }
         attachTabLayoutToViewPager()
+    }
+
+    private fun setObservers() {
+        viewModel.homeDataRequestState.observe(viewLifecycleOwner) { requestState ->
+            requestState?.let {
+                when (requestState) {
+                    is RequestState.Error -> {
+                        showSnackbar(
+                            requestState.message ?: "Error",
+                            requireContext(),
+                            binding.root
+                        )
+                    }
+
+                    is RequestState.Loading -> {
+
+                    }
+
+                    is RequestState.Sucess -> {
+                        //todo : test this later
+                        viewModel.homeDataResponse?.teams?.let{
+                            myAdapter.teamsAdapter.teams?.clear()
+                            myAdapter.teamsAdapter.teams?.addAll(it)
+                            myAdapter.teamsAdapter.notifyDataSetChanged()
+                        }
+                        viewModel.homeDataResponse?.users?.let{
+                            myAdapter.usersAdapter.members?.clear()
+                            myAdapter.usersAdapter.members?.addAll(it)
+                            myAdapter.usersAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setViewPager() {
         viewPager = binding.viewPager
+        val users = ArrayList<User>()
+        val teams = ArrayList<Team>()
+        viewModel.homeDataResponse?.users?.let {
+            users.addAll(it)
+        }
+        viewModel.homeDataResponse?.teams?.let {
+            teams.addAll(it)
+        }
 //        myAdapter = HomeAdapter(
-//                users = viewModel.individualResponse?.articles,
-//                teams = viewModel.teamResponse?.articles
+//                users = users,
+//                teams = teams,
+//            onTeamClicked
 //        )
-
-        // use fake data until we get data from backend
         myAdapter = HomeAdapter(
-            users = viewModel.getFakeUsers(40),
-            teams = viewModel.getFakeTeams(10),
+                users = viewModel.getFakeUsers(20),
+                teams = viewModel.getFakeTeams(10),
             onTeamClicked
         )
 

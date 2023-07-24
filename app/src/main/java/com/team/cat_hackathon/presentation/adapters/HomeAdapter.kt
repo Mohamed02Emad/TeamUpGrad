@@ -11,8 +11,8 @@ import com.team.cat_hackathon.presentation.adapters.MembersAdapter
 import com.team.cat_hackathon.presentation.adapters.TeamAdapter
 
 class HomeAdapter(
-    private val users: List<User>? = null,
-    private val teams: List<Team>? = null,
+    private val users: ArrayList<User>? = null,
+    private val teams: ArrayList<Team>? = null,
     val onTeamClicked: (team: Team) -> Unit
 ) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
@@ -34,11 +34,12 @@ class HomeAdapter(
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val recyclerView = holder.binding.rv
+        teamsAdapter = TeamAdapter(teams , onTeamClicked)
+        usersAdapter = MembersAdapter(users)
 
         if (position == 0) {
             val layoutManager = LinearLayoutManager(holder.binding.root.context)
             recyclerView.layoutManager = layoutManager
-            teamsAdapter = TeamAdapter(teams , onTeamClicked)
             recyclerView.adapter = teamsAdapter
         } else {
             val gridLayoutManager = GridLayoutManager(
@@ -48,7 +49,6 @@ class HomeAdapter(
                 false
             )
             recyclerView.layoutManager = gridLayoutManager
-            usersAdapter = MembersAdapter(users)
             recyclerView.adapter = usersAdapter
         }
     }

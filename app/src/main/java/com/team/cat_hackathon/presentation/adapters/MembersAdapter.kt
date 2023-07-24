@@ -15,7 +15,7 @@ import com.team.cat_hackathon.databinding.TeamDataModelBinding
 
 
 class MembersAdapter(
-    private val members: List<User>? = null
+    val members: ArrayList<User>? = null
 ):RecyclerView.Adapter<MembersAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: MemberDataModelBinding) :

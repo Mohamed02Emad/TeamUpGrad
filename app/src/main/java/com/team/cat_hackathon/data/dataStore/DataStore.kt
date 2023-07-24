@@ -18,4 +18,6 @@ interface DataStore {
    suspend fun insertToken(token: String)
 
    suspend fun getToken(): String
+
+   suspend fun logOut()
 }

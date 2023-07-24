@@ -1,52 +1,44 @@
 package com.team.cat_hackathon.presentation.fragmentHome
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.androiddevs.mvvmnewsapp.data.api.RequestState
 import com.team.cat_hackathon.data.models.Team
-import com.team.cat_hackathon.data.models.TeamsResponse
+import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.User
-import com.team.cat_hackathon.data.models.UsersResponse
 import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : ViewModel() {
 
-    private val _teamRequestState: MutableLiveData<RequestState<TeamsResponse>> = MutableLiveData()
-    val teamRequestState: LiveData<RequestState<TeamsResponse>> = _teamRequestState
+    private val _homeDataRequestState: MutableLiveData<RequestState<AllDataResponse>> = MutableLiveData()
+    val homeDataRequestState: LiveData<RequestState<AllDataResponse>> = _homeDataRequestState
 
-    var teamResponse: TeamsResponse? = null
+    var homeDataResponse: AllDataResponse? = null
 
-    private val _individualRequestState: MutableLiveData<RequestState<UsersResponse>> = MutableLiveData()
-    val individualRequestState: LiveData<RequestState<UsersResponse>> = _individualRequestState
-
-    var individualResponse: UsersResponse? = null
-
-    private fun handleDataFromTeamsRequest(response: Response<TeamsResponse>): RequestState<TeamsResponse> {
-        if (response.isSuccessful) {
-            response.body()?.let { result ->
-                    teamResponse = result
-                return RequestState.Sucess(teamResponse)
-            }
-        }
-        return RequestState.Error(response.message())
+   suspend fun requestHomeData() {
+        _homeDataRequestState.postValue(RequestState.Loading())
+        val response = repository.getHomeData()
+       _homeDataRequestState.postValue(handleDataFromHomeRequest(response))
     }
-    private fun handleDataFromIndividualsRequest(response: Response<UsersResponse>): RequestState<UsersResponse> {
+    
+    private fun handleDataFromHomeRequest(response: Response<AllDataResponse>): RequestState<AllDataResponse> {
         if (response.isSuccessful) {
             response.body()?.let { result ->
-                    individualResponse = result
-                return RequestState.Sucess(individualResponse)
+                    homeDataResponse = result
+                return RequestState.Sucess(homeDataResponse)
             }
         }
+
         return RequestState.Error(response.message())
     }
 
+    //todo: delete later
    fun getFakeUsers(number: Int):ArrayList<User>{
        return repository.getFakeUsers(number)
    }

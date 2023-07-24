@@ -8,8 +8,8 @@ import com.team.cat_hackathon.databinding.TeamDataModelBinding
 
 
 class TeamAdapter(
-    private val teams: List<Team>? = null,
-    val onTeamClicked : (team: Team) -> Unit
+    val teams: ArrayList<Team>? = null,
+    val onTeamClicked: (team: Team) -> Unit
 ):RecyclerView.Adapter<TeamAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: TeamDataModelBinding) :
@@ -32,8 +32,8 @@ class TeamAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val team = teams?.get(position)
         holder.binding.teamNameTextView.text= team?.name ?: ""
-        holder.binding.teamNumTextView.text= "${team?.numOfMembers}/10"
-        holder.binding.teamDescriptionTextView.text= team?.bio ?: ""
+        holder.binding.teamNumTextView.text= "5/10"
+        holder.binding.teamDescriptionTextView.text= team?.description ?: ""
         holder.binding.btnView.setOnClickListener{
             onTeamClicked(team!!)
         }
