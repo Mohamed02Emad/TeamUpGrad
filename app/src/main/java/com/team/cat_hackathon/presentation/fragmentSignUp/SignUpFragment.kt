@@ -5,20 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.androiddevs.mvvmnewsapp.data.api.RequestState
-import com.bumptech.glide.Glide.init
-import com.team.cat_hackathon.R
-import com.team.cat_hackathon.databinding.FragmentLoginBinding
+import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.databinding.FragmentSignUpBinding
 import com.team.cat_hackathon.utils.showSnackbar
-import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

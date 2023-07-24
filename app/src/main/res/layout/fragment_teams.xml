@@ -32,13 +32,15 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/my_toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="55dp"
                     android:background="@android:color/transparent"
                     app:layout_collapseMode="none" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="55dp"
+                    android:gravity="center_vertical">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/btn_back"
@@ -48,9 +50,7 @@
                         app:cardCornerRadius="35dp"
                         android:visibility="visible"
                         app:cardElevation="0dp"
-                        android:elevation="0dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:elevation="0dp">
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -66,15 +66,18 @@
                         android:id="@+id/teamName_inTeam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/team_margin_start"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="8dp"
                         android:fontFamily="@font/crimson_text_regular"
                         android:text="@string/team_name"
                         android:textColor="@color/color_text"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btn_back" />
+                        android:textSize="22sp"
+                        android:textStyle="bold"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/joinText_inTeam"
@@ -86,15 +89,12 @@
                         android:text="@string/join"
                         android:textColor="@color/join_color"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        android:textStyle="bold"/>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
-
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedLayout"
@@ -131,7 +131,7 @@
                     android:fontFamily="@font/crimson_text_semi_bold"
                     android:text="@string/team_members_names"
                     android:textColor="@color/color_text"
-                    android:textSize="18sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/teamBio_inTeam" />
@@ -142,6 +142,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/team_margin_start"
                     android:layout_marginEnd="@dimen/team_margin_start"
+                    android:layout_marginTop="8dp"
+                    android:paddingVertical="16dp"
+                    android:clipToPadding="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/teamMembers_inTeam"
@@ -154,27 +158,33 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/img_notInTeam"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/lineat_no_Team"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
-        android:src="@drawable/explore_teams"
+        android:gravity="center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:orientation="vertical"
+        android:paddingVertical="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/text_notInTeam"
-        android:layout_width="246dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:fontFamily="@font/crimson_text_bold"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/explore_txt"
+        <ImageView
+            android:id="@+id/img_notInTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/explore_teams" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_notInTeam"
+            android:layout_width="246dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/crimson_text_bold"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/explore_txt"
         android:textColor="@color/join_color"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -187,7 +197,7 @@
         android:id="@+id/button_notInTeam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/button_explore_background"
         android:fontFamily="@font/crimson_text_regular"
         android:paddingStart="45dp"
@@ -201,12 +211,14 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_notInTeam" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupInTeam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:constraint_referenced_ids="coordinatorLayout"/>
 
     <androidx.constraintlayout.widget.Group
@@ -214,7 +226,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="img_notInTeam,text_notInTeam,button_notInTeam"/>
+        app:constraint_referenced_ids="lineat_no_Team" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

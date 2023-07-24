@@ -18,5 +18,5 @@
 
     <dimen name="layout_have_account_auth_margin_top">10dp</dimen>
 
-    <dimen name="team_margin_start">24dp</dimen>
+    <dimen name="team_margin_start">16dp</dimen>
 </resources>

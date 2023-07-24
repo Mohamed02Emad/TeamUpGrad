@@ -3,7 +3,7 @@ package com.team.cat_hackathon.presentation.fragmentLogin
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.androiddevs.mvvmnewsapp.data.api.RequestState
+import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.AuthRepository

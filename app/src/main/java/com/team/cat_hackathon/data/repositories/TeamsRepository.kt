@@ -1,40 +1,24 @@
 package com.team.cat_hackathon.data.repositories
 
 import RetrofitInstance
-import android.content.Context
-import android.util.Log
 import com.mo_chatting.chatapp.data.dataStore.DataStoreImpl
-import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.User
-import com.team.cat_hackathon.data.source.MyDao
 import retrofit2.Response
 import kotlin.random.Random
 
-class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStoreImpl: DataStoreImpl) {
-
-
-    suspend fun getCachedUser(): User {
-        return dataStoreImpl.getUser()
-    }
-
-    suspend fun updateUser(user: User) {
-
-    }
-    suspend fun getHomeData(): Response<AllDataResponse> {
+class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
+    suspend fun getTeamById(
+        teamId: Int
+    ): Response<AllDataResponse> {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
-      return RetrofitInstance.api.getAllData(token)
+        return RetrofitInstance.api.getTeamById(token , teamId)
     }
+    suspend fun updateCacheUser(user: User) {
+        dataStoreImpl.insertUser(user)
+    }
+    suspend fun getCachedUser() = dataStoreImpl.getUser()
 
-    fun getFakeTeams(numUser: Int):ArrayList<Team> {
-        val teams = ArrayList<Team>()
-        for (i in 1..numUser) {
-             val bio = generateRandomString(90)
-             val name = "name "+generateRandomString(6)
-            teams.add(Team(0,name, bio ,"numberOfMEmbers", "listOfUsers"))
-        }
-        return teams
-    }
     fun getFakeUsers(numUsers: Int): ArrayList<User> {
         val userList = ArrayList<User>()
         for (i in 1..numUsers) {
@@ -73,7 +57,9 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStore
             .joinToString("")
     }
 
-
-
+    suspend fun sendJoinRequest(teamId: Int): Boolean {
+        val cachedUserId = getCachedUser().id
+        return true
+    }
 
 }

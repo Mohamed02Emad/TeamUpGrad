@@ -1,6 +1,7 @@
 
 
 import com.team.cat_hackathon.data.api.GET_ALL_DATA_ENDPOINT
+import com.team.cat_hackathon.data.api.GET_TEAM_BY_ID
 import com.team.cat_hackathon.data.api.LOGIN_ENDPOINT
 import com.team.cat_hackathon.data.api.LOG_OUT_ENDPOINT
 import com.team.cat_hackathon.data.api.REGISTER_ENDPOINT
@@ -46,6 +47,14 @@ interface MyAPI {
     suspend fun getAllData(
         @Header("Authorization")
         token: String
+    ): Response<AllDataResponse>
+
+    @GET(GET_TEAM_BY_ID)
+    suspend fun getTeamById(
+        @Header("Authorization")
+        token: String,
+        @Query("team_id")
+        teamId: Int
     ): Response<AllDataResponse>
 
 
