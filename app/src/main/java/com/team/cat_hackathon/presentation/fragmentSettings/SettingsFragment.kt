@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
-    private lateinit var context: Context
     private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(
@@ -33,35 +32,29 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context=requireContext()
         setOnClicks()
         setObservers()
     }
 
     private fun setObservers() {
-        if(isInternetAvailable(context)){
-            viewModel.logoutRequestState.observe(viewLifecycleOwner){state ->
-                state?.let {
-                    when (state){
-                        is RequestState.Error -> {
-                        }
-                        is RequestState.Loading -> {
-                        }
-                        is RequestState.Sucess -> {
-                            if (state.data!!.code == 1){
-                                lifecycleScope.launch{
-                                    viewModel.cleanDataStore()
-                                    navigateToLoginScreen()
-                                }
+        viewModel.logoutRequestState.observe(viewLifecycleOwner){state ->
+            state?.let {
+                when (state){
+                    is RequestState.Error -> {
+                    }
+                    is RequestState.Loading -> {
+                    }
+                    is RequestState.Sucess -> {
+                        if (state.data!!.code == 1){
+                            lifecycleScope.launch{
+                                viewModel.cleanDataStore()
+                                navigateToLoginScreen()
                             }
                         }
                     }
                 }
             }
-        }else{
-            showToast("no network connection",context)
         }
-
     }
 
     private fun setOnClicks() {
@@ -69,6 +62,7 @@ class SettingsFragment : Fragment() {
             cardEditProfile.setOnClickListener {
                 navigateToEditProfile()
             }
+            val context = requireContext()
             cardLogOut.setOnClickListener {
                 if (isInternetAvailable(context)){
                     lifecycleScope.launch {

@@ -24,7 +24,6 @@ class LoginFragment : Fragment() {
 
 
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var context: Context
     private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
@@ -37,36 +36,31 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context=requireContext()
         setOnClicks()
         setObservers()
     }
 
     private fun setObservers() {
-        if(isInternetAvailable(context)){
-            viewModel.loginRequestState.observe(viewLifecycleOwner){state->
-                state?.let {
-                    when (state){
-                        is RequestState.Error -> {
-                            showSnackbar( "error" , requireContext() , binding.root)
-                        }
-                        is RequestState.Loading -> {
-                            //todo : show progress bar
-                        }
-                        is RequestState.Sucess -> {
-                            lifecycleScope.launch {
-                                state.data?.let { response ->
-                                    viewModel.cacheUserData(response.user, response.access_token)
-                                    viewModel.setIsLoggedIn(true)
-                                    navigateToHomeScreen()
-                                }
+        viewModel.loginRequestState.observe(viewLifecycleOwner){state->
+            state?.let {
+                when (state){
+                    is RequestState.Error -> {
+                        showSnackbar( "error" , requireContext() , binding.root)
+                    }
+                    is RequestState.Loading -> {
+                        //todo : show progress bar
+                    }
+                    is RequestState.Sucess -> {
+                        lifecycleScope.launch {
+                            state.data?.let { response ->
+                                viewModel.cacheUserData(response.user, response.access_token)
+                                viewModel.setIsLoggedIn(true)
+                                navigateToHomeScreen()
                             }
                         }
                     }
                 }
             }
-        }else{
-            showToast("no network connection",context)
         }
     }
 
@@ -85,6 +79,7 @@ class LoginFragment : Fragment() {
 
             buttonLogin.setOnClickListener {
 
+                val context = requireContext()
                 if(isInternetAvailable(context)){
                     val canSendRequestState =
                         viewModel.validateData(viewModel.email.value, viewModel.password.value)

@@ -54,42 +54,36 @@ class HomeFragment : Fragment() {
     }
 
     private fun setObservers() {
+        viewModel.homeDataRequestState.observe(viewLifecycleOwner) { requestState ->
+            requestState?.let {
+                when (requestState) {
+                    is RequestState.Error -> {
+                        showSnackbar(
+                            requestState.message ?: "Error",
+                            requireContext(),
+                            binding.root
+                        )
+                    }
 
-        val context = requireContext()
-        if (isInternetAvailable(context)){
-            viewModel.homeDataRequestState.observe(viewLifecycleOwner) { requestState ->
-                requestState?.let {
-                    when (requestState) {
-                        is RequestState.Error -> {
-                            showSnackbar(
-                                requestState.message ?: "Error",
-                                requireContext(),
-                                binding.root
-                            )
+                    is RequestState.Loading -> {
+
+                    }
+
+                    is RequestState.Sucess -> {
+                        //todo : test this later
+                        viewModel.homeDataResponse?.teams?.let{
+                            myAdapter.teamsAdapter.teams?.clear()
+                            myAdapter.teamsAdapter.teams?.addAll(it)
+                            myAdapter.teamsAdapter.notifyDataSetChanged()
                         }
-
-                        is RequestState.Loading -> {
-
-                        }
-
-                        is RequestState.Sucess -> {
-                            //todo : test this later
-                            viewModel.homeDataResponse?.teams?.let{
-                                myAdapter.teamsAdapter.teams?.clear()
-                                myAdapter.teamsAdapter.teams?.addAll(it)
-                                myAdapter.teamsAdapter.notifyDataSetChanged()
-                            }
-                            viewModel.homeDataResponse?.users?.let{
-                                myAdapter.usersAdapter.members?.clear()
-                                myAdapter.usersAdapter.members?.addAll(it)
-                                myAdapter.usersAdapter.notifyDataSetChanged()
-                            }
+                        viewModel.homeDataResponse?.users?.let{
+                            myAdapter.usersAdapter.members?.clear()
+                            myAdapter.usersAdapter.members?.addAll(it)
+                            myAdapter.usersAdapter.notifyDataSetChanged()
                         }
                     }
                 }
             }
-        }else{
-            showToast("no network connection",context)
         }
     }
 

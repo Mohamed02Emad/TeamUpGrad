@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
-    private lateinit var context: Context
     private val viewModel : SignUpViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,36 +34,31 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context=requireContext()
         setOnClicks()
         setObservers()
     }
 
     private fun setObservers() {
-        if(isInternetAvailable(context)){
-            viewModel.registerRequestState.observe(viewLifecycleOwner){state ->
-                state?.let {
-                    when (state) {
-                        is RequestState.Error -> {
-                            showSnackbar(state.message ?: "error",requireContext(),binding.root)
-                        }
-                        is RequestState.Loading -> {
-                            //todo : show snack bar
-                        }
-                        is RequestState.Sucess -> {
-                            state.data.let {response ->
-                                lifecycleScope.launch {
-                                    viewModel.cacheUserData(response!!.user, response.access_token)
-                                    viewModel.setIsLoggedIn(true)
-                                    navigateToHome()
-                                }
+        viewModel.registerRequestState.observe(viewLifecycleOwner){state ->
+            state?.let {
+                when (state) {
+                    is RequestState.Error -> {
+                        showSnackbar(state.message ?: "error",requireContext(),binding.root)
+                    }
+                    is RequestState.Loading -> {
+                        //todo : show snack bar
+                    }
+                    is RequestState.Sucess -> {
+                        state.data.let {response ->
+                            lifecycleScope.launch {
+                                viewModel.cacheUserData(response!!.user, response.access_token)
+                                viewModel.setIsLoggedIn(true)
+                                navigateToHome()
                             }
                         }
                     }
                 }
             }
-        }else{
-            showToast("no network connection",context)
         }
     }
 
@@ -90,6 +84,7 @@ class SignUpFragment : Fragment() {
                 viewModel.setPassword(password)
             }
 
+            val context=requireContext()
             if(isInternetAvailable(context)){
                 signupButton.setOnClickListener {
                     lifecycleScope.launch {
