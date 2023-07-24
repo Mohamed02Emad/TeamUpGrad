@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.databinding.FragmentTeamsBinding
 import com.team.cat_hackathon.presentation.MainActivity
@@ -30,10 +32,11 @@ class TeamsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val team = navArgs.team
 
+        val team = navArgs.team
         setViewsVisibility(team)
         setOnClicks()
+        initCollapsing()
     }
 
     private fun setOnClicks() {
@@ -89,6 +92,13 @@ class TeamsFragment : Fragment() {
 
     private fun haveTeamUiVisibility(value: Boolean) {
         binding.groupInTeam.isGone = !value
+    }
+
+    private fun initCollapsing(){
+        (requireActivity() as MainActivity).setSupportActionBar(binding.myToolbar)
+        (requireActivity() as MainActivity).getSupportActionBar()?.setDisplayShowTitleEnabled(false)
+
+        binding.toolbar.findViewById<CardView>(R.id.btn_back)
     }
 
 }
