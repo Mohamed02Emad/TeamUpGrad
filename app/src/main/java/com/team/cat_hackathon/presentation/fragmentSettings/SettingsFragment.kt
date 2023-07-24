@@ -1,5 +1,6 @@
 package com.team.cat_hackathon.presentation.fragmentSettings
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.databinding.FragmentSettingsBinding
+import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -17,6 +20,7 @@ import kotlinx.coroutines.launch
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
+    private lateinit var context: Context
     private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(
@@ -29,29 +33,35 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        context=requireContext()
         setOnClicks()
         setObservers()
     }
 
     private fun setObservers() {
-        viewModel.logoutRequestState.observe(viewLifecycleOwner){state ->
-            state?.let {
-                when (state){
-                    is RequestState.Error -> {
-                    }
-                    is RequestState.Loading -> {
-                    }
-                    is RequestState.Sucess -> {
-                        if (state.data!!.code == 1){
-                            lifecycleScope.launch{
-                                viewModel.cleanDataStore()
-                                navigateToLoginScreen()
+        if(isInternetAvailable(context)){
+            viewModel.logoutRequestState.observe(viewLifecycleOwner){state ->
+                state?.let {
+                    when (state){
+                        is RequestState.Error -> {
+                        }
+                        is RequestState.Loading -> {
+                        }
+                        is RequestState.Sucess -> {
+                            if (state.data!!.code == 1){
+                                lifecycleScope.launch{
+                                    viewModel.cleanDataStore()
+                                    navigateToLoginScreen()
+                                }
                             }
                         }
                     }
                 }
             }
+        }else{
+            showToast("no network connection",context)
         }
+
     }
 
     private fun setOnClicks() {
@@ -60,8 +70,12 @@ class SettingsFragment : Fragment() {
                 navigateToEditProfile()
             }
             cardLogOut.setOnClickListener {
-                lifecycleScope.launch {
-                    viewModel.logOut()
+                if (isInternetAvailable(context)){
+                    lifecycleScope.launch {
+                        viewModel.logOut()
+                    }
+                }else{
+                    showToast("no network connection",context)
                 }
             }
         }

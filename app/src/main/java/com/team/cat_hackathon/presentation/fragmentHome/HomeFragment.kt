@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.data.models.Team
@@ -53,36 +54,42 @@ class HomeFragment : Fragment() {
     }
 
     private fun setObservers() {
-        viewModel.homeDataRequestState.observe(viewLifecycleOwner) { requestState ->
-            requestState?.let {
-                when (requestState) {
-                    is RequestState.Error -> {
-                        showSnackbar(
-                            requestState.message ?: "Error",
-                            requireContext(),
-                            binding.root
-                        )
-                    }
 
-                    is RequestState.Loading -> {
-
-                    }
-
-                    is RequestState.Sucess -> {
-                        //todo : test this later
-                        viewModel.homeDataResponse?.teams?.let{
-                            myAdapter.teamsAdapter.teams?.clear()
-                            myAdapter.teamsAdapter.teams?.addAll(it)
-                            myAdapter.teamsAdapter.notifyDataSetChanged()
+        val context = requireContext()
+        if (isInternetAvailable(context)){
+            viewModel.homeDataRequestState.observe(viewLifecycleOwner) { requestState ->
+                requestState?.let {
+                    when (requestState) {
+                        is RequestState.Error -> {
+                            showSnackbar(
+                                requestState.message ?: "Error",
+                                requireContext(),
+                                binding.root
+                            )
                         }
-                        viewModel.homeDataResponse?.users?.let{
-                            myAdapter.usersAdapter.members?.clear()
-                            myAdapter.usersAdapter.members?.addAll(it)
-                            myAdapter.usersAdapter.notifyDataSetChanged()
+
+                        is RequestState.Loading -> {
+
+                        }
+
+                        is RequestState.Sucess -> {
+                            //todo : test this later
+                            viewModel.homeDataResponse?.teams?.let{
+                                myAdapter.teamsAdapter.teams?.clear()
+                                myAdapter.teamsAdapter.teams?.addAll(it)
+                                myAdapter.teamsAdapter.notifyDataSetChanged()
+                            }
+                            viewModel.homeDataResponse?.users?.let{
+                                myAdapter.usersAdapter.members?.clear()
+                                myAdapter.usersAdapter.members?.addAll(it)
+                                myAdapter.usersAdapter.notifyDataSetChanged()
+                            }
                         }
                     }
                 }
             }
+        }else{
+            showToast("no network connection",context)
         }
     }
 
