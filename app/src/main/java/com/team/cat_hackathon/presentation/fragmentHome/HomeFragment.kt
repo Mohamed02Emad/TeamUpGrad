@@ -5,18 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.androiddevs.mvvmnewsapp.data.api.RequestState
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentHomeBinding
-import com.team.cat_hackathon.utils.showSnackbar
+import com.team.cat_hackathon.presentation.MainActivity
+import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -33,6 +35,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        (requireActivity() as MainActivity).setSupportActionBar(binding.myToolbar)
+        (requireActivity() as MainActivity).getSupportActionBar()?.setDisplayShowTitleEnabled(false)
         return binding.root
     }
 
@@ -102,6 +106,26 @@ class HomeFragment : Fragment() {
         )
 
         viewPager.adapter = myAdapter
+        //viewPager.offscreenPageLimit = 1
+        setOnPageChangeListener(viewPager)
+    }
+
+    private fun setOnPageChangeListener(viewPager: ViewPager2) {
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                try {
+                    if (position == 0) {
+                        myAdapter.teamsRecyclerView.scrollToPosition(0)
+                    } else {
+                        myAdapter.usersRecyclerView.scrollToPosition(0)
+                    }
+                }catch (e:Exception){}
+            }
+        })
     }
 
     val onTeamClicked: (Team) -> Unit = { team ->
@@ -109,8 +133,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun attachTabLayoutToViewPager() {
+        val tabLayout = binding.toolbar.findViewById<TabLayout>(R.id.tebLayout)
         TabLayoutMediator(
-            binding.tebLayout,
+           tabLayout,
             viewPager
         ) { tab, position ->
             if (position == 0)
@@ -118,6 +143,7 @@ class HomeFragment : Fragment() {
             else
                 tab.setText(R.string.Individuals)
         }.attach()
+
     }
 
 }
