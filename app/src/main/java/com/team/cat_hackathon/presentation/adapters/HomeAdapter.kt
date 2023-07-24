@@ -14,8 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeAdapter(
-    private val users: List<User>? = null,
-    private val teams: List<Team>? = null,
+    private val users: ArrayList<User>? = null,
+    private val teams: ArrayList<Team>? = null,
     val onTeamClicked: (team: Team) -> Unit
 ) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {

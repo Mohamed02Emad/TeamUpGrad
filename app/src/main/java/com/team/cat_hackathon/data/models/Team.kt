@@ -9,9 +9,9 @@ import java.io.Serializable
 
 @Keep
 data class Team(
-    @PrimaryKey val id : Int,
+    @PrimaryKey val  id: Int,
     var name: String,
-    var bio: String?,
-    var numOfMembers: Int?,
-    var listOfMembers : List<User>
+    var description: String,
+    var created_at: String?,
+    var updated_at: String?
 ):Serializable

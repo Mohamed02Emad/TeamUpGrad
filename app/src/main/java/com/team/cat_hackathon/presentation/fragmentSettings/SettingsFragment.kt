@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.androiddevs.mvvmnewsapp.data.api.RequestState
 import com.team.cat_hackathon.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
@@ -27,6 +30,28 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setOnClicks()
+        setObservers()
+    }
+
+    private fun setObservers() {
+        viewModel.logoutRequestState.observe(viewLifecycleOwner){state ->
+            state?.let {
+                when (state){
+                    is RequestState.Error -> {
+                    }
+                    is RequestState.Loading -> {
+                    }
+                    is RequestState.Sucess -> {
+                        if (state.data!!.code == 1){
+                            lifecycleScope.launch{
+                                viewModel.cleanDataStore()
+                                navigateToLoginScreen()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setOnClicks() {
@@ -34,15 +59,19 @@ class SettingsFragment : Fragment() {
             cardEditProfile.setOnClickListener {
                 navigateToEditProfile()
             }
-
             cardLogOut.setOnClickListener {
-
+                lifecycleScope.launch {
+                    viewModel.logOut()
+                }
             }
         }
     }
 
     fun navigateToEditProfile(){
         findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToEditProfileFragment())
+    }
+    fun navigateToLoginScreen(){
+        findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToLoginFragment())
     }
 
 }
