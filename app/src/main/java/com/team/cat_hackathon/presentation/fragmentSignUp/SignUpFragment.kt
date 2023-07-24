@@ -107,4 +107,13 @@ class SignUpFragment : Fragment() {
         findNavController().navigate(SignUpFragmentDirections.actionSignUpFragment2ToHomeFragment())
     }
 
+    private fun removeHint(){
+        binding.editTextPasswordSignup.setOnFocusChangeListener{v, hasFocus->
+            if (hasFocus){
+                binding.editTextPasswordSignup.hint=""
+            }else{
+                binding.editTextPasswordSignup.hint = getString(R.string.passwordEV)
+            }
+        }
+    }
 }
