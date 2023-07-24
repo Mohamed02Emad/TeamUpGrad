@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".presentation.fragmentSignUp.SignUpFragment">
 
     <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center_horizontal"
         android:id="@+id/imageView_signup"
         android:src="@drawable/signup_img"
-        style="@style/imageView_Auth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        />
 
     <TextView
         android:id="@+id/textView_signup"
         android:text="@string/signup_text"
-        style="@style/textView_account_Auth"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_signup" />
+        android:layout_marginTop="-8dp"
+        style="@style/textView_account_Auth"/>
 
     <TextView
         android:id="@+id/textView_username_signup"
         android:text="@string/nameTV"
         style="@style/textView_Auth"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_signup" />
+        />
 
     <EditText
         android:id="@+id/editText_username_signup"
@@ -34,33 +34,24 @@
         android:hint="@string/nameEV"
         android:inputType="text"
         android:background="@drawable/edit_text_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_username_signup" />
+       />
 
     <TextView
         android:id="@+id/textView_email_signup"
         android:text="@string/emailTV"
-        style="@style/textView_Auth"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_username_signup" />
+        style="@style/textView_Auth"/>
 
     <EditText
         android:id="@+id/editText_email_signup"
         android:hint="@string/emailEV"
         android:inputType="textEmailAddress"
         style="@style/editView_Auth"
-        android:background="@drawable/edit_text_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_email_signup" />
+        android:background="@drawable/edit_text_background" />
 
     <TextView
         android:id="@+id/textView_password_signup"
         android:text="@string/passwordTV"
-        style="@style/textView_Auth"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_email_signup" />
+        style="@style/textView_Auth" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout_signup"
@@ -69,8 +60,7 @@
         app:endIconMode="password_toggle"
         app:endIconTint="@color/editText_hint_auth"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_password_signup">
+        android:layout_marginTop="0dp">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editText_password_signup"
@@ -81,26 +71,25 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signupButton"
         style="@style/button_Auth"
         android:layout_marginBottom="11dp"
         android:background="@drawable/button_auth_background"
         android:text="@string/register"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textAllCaps="false"/>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         style="@style/layout_account_Auth"
-        android:layout_marginBottom="93dp"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_gravity="center_horizontal">
 
         <TextView
             android:id="@+id/textView_account_signup"
@@ -126,4 +115,4 @@
     </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
