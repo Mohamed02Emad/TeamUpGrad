@@ -43,9 +43,10 @@
         android:id="@+id/rv_notifications"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:padding="16dp"
+        android:padding="18dp"
+        tools:listitem="@layout/notification_card"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,8 +59,20 @@
         android:text="No Notifications"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="32sp"
-        android:visibility="gone"
-        />
+        android:textSize="32sp" />
 
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_notifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="btn_back,tv_title,rv_notifications"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_noNotifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tv_no_notifications"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
