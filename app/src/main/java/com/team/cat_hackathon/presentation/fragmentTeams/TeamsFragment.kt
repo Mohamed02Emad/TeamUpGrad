@@ -111,10 +111,12 @@ class TeamsFragment : Fragment() {
     }
 
     private fun initCollapsing(){
+        this.activity?.let {
             (requireActivity() as MainActivity).setSupportActionBar(binding.myToolbar)
             (requireActivity() as MainActivity).getSupportActionBar()
                 ?.setDisplayShowTitleEnabled(false)
             binding.toolbar.findViewById<CardView>(R.id.btn_back)
+        }
     }
 
 }
