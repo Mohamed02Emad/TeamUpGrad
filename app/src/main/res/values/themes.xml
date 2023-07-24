@@ -37,12 +37,7 @@
         <item name="android:layout_marginEnd">@dimen/margin_auth_start</item>
         <item name="android:paddingHorizontal">@dimen/editView_auth_padding</item>
     </style>
-    <style name="imageView_Auth">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">200dp</item>
-        <item name="android:layout_marginTop">12dp</item>
-        <item name="android:layout_marginBottom">15dp</item>
-    </style>
+
     <style name="textView_account_Auth">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -51,7 +46,6 @@
         <item name="android:textColor">@color/text_auth</item>
         <item name="android:layout_marginStart">@dimen/margin_auth_start</item>
         <item name="android:layout_marginTop">@dimen/textView_auth_margin_top</item>
-        <item name="android:layout_marginBottom">@dimen/text_account_auth_margin_bottom</item>
     </style>
     <style name="button_Auth">
         <item name="android:layout_width">match_parent</item>
@@ -59,7 +53,6 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_marginStart">@dimen/button_auth_margin_start_end</item>
-        <item name="android:layout_marginTop">@dimen/button_auth_margin_top</item>
         <item name="android:layout_marginEnd">@dimen/button_auth_margin_start_end</item>
         <item name="android:paddingTop">@dimen/button_auth_padding_top</item>
         <item name="android:paddingBottom">@dimen/button_auth_padding_bottom</item>
