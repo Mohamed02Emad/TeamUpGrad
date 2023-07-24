@@ -59,6 +59,7 @@ dependencies {
 
     // Architectural Components
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.7.0")
 
     //room
     val room_version = "2.5.2"

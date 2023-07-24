@@ -1,4 +1,4 @@
-package com.androiddevs.mvvmnewsapp.data.api
+package com.team.cat_hackathon.data.api
 
 sealed class RequestState<T>(
     val data: T? = null,
