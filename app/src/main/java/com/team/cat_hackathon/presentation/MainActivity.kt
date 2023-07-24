@@ -46,13 +46,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigationVisibility() {
+
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.homeFragment, R.id.notificationFragment, R.id.settingsFragment-> {
-                    bottomNavigationView.visibility = View.VISIBLE
-                }
-                else -> {
-                    bottomNavigationView.visibility = View.GONE
+
+            if (destination.id == R.id.homeFragment) {
+                navHostFragment.navController.graph.setStartDestination(R.id.homeFragment)
+            }
+
+            navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
+                when (destination.id) {
+                    R.id.homeFragment, R.id.teamsFragment2, R.id.notificationFragment, R.id.settingsFragment -> {
+                        bottomNavigationView.visibility = View.VISIBLE
+                    }
+
+                    else -> {
+                        bottomNavigationView.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -82,12 +91,16 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.primary_blue)
     }
 
-    suspend fun isOnBoardingFinished(): Boolean {
-        return isOnBoardingFinished ?: dataStore.getIsOnBoardingFinished()
-    }
+        suspend fun isOnBoardingFinished(): Boolean {
+            return isOnBoardingFinished ?: dataStore.getIsOnBoardingFinished()
+        }
 
-    suspend fun isUserLoggedIn(): Boolean {
-        return isUserLoggedIn ?: dataStore.getIsLoggedIn()
-    }
+        suspend fun isUserLoggedIn(): Boolean {
+            return isUserLoggedIn ?: dataStore.getIsLoggedIn()
+        }
 
-}
+        fun navigateToHome() {
+            navHostFragment.navController.navigate(R.id.homeFragment)
+        }
+
+    }

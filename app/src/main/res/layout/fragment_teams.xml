@@ -4,85 +4,156 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/color_background"
-    tools:context=".presentation.fragmentTeams.TeamsFragment">
+    android:background="@color/color_background">
 
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/team_margin_start"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/arr_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/teamName_inTeam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/team_margin_start"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/crimson_text_regular"
-        android:textStyle="bold"
-        android:text="@string/team_name"
-        android:textSize="19sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/joinText_inTeam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/team_margin_start"
-        android:layout_marginBottom="12dp"
-        android:fontFamily="@font/crimson_text_regular"
-        android:text="@string/join"
-        android:textSize="19sp"
-        android:textColor="@color/join_color"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/teamBio_inTeam"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/teamBio_inTeam"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/team_margin_start"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="@dimen/team_margin_start"
-        android:fontFamily="@font/crimson_text_bold"
-        android:text="@string/team_description"
-        android:textColor="@color/team_bio_color"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teamName_inTeam" />
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/teamMembers_inTeam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/team_margin_start"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/crimson_text_semi_bold"
-        android:text="@string/team_members_names"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teamBio_inTeam" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_inTeam"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/team_margin_start"
-        android:layout_marginEnd="@dimen/team_margin_start"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teamMembers_inTeam"
-        tools:listitem="@layout/member_data_model" />
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbarFadeDuration="500"
+                app:contentScrim="@android:color/transparent"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:scrimAnimationDuration="500"
+                app:titleCollapseMode="scale">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/my_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    app:layout_collapseMode="none" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/btn_back"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_margin="16dp"
+                        app:cardCornerRadius="35dp"
+                        android:visibility="visible"
+                        app:cardElevation="0dp"
+                        android:elevation="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/color_background"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_back_arrow"
+                            app:tint="@color/black" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/teamName_inTeam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/team_margin_start"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/crimson_text_regular"
+                        android:text="@string/team_name"
+                        android:textColor="@color/color_text"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_back" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/joinText_inTeam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/team_margin_start"
+                        android:fontFamily="@font/crimson_text_regular"
+                        android:paddingVertical="4dp"
+                        android:text="@string/join"
+                        android:textColor="@color/join_color"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/teamBio_inTeam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/team_margin_start"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="@dimen/team_margin_start"
+                    android:fontFamily="@font/crimson_text_bold"
+                    android:text="@string/team_description"
+                    android:textColor="@color/team_bio_color"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/teamMembers_inTeam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/team_margin_start"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/crimson_text_semi_bold"
+                    android:text="@string/team_members_names"
+                    android:textColor="@color/color_text"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/teamBio_inTeam" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_inTeam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/team_margin_start"
+                    android:layout_marginEnd="@dimen/team_margin_start"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/teamMembers_inTeam"
+                    tools:listitem="@layout/member_data_model" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_notInTeam"
@@ -136,7 +207,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="backButton,teamName_inTeam,joinText_inTeam,teamBio_inTeam,teamMembers_inTeam,recyclerView_inTeam"/>
+        app:constraint_referenced_ids="coordinatorLayout"/>
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupNotInTeam"
