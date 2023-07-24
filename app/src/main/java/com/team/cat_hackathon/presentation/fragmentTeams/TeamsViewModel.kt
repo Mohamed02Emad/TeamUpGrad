@@ -3,6 +3,7 @@ package com.team.cat_hackathon.presentation.fragmentTeams
 import androidx.lifecycle.ViewModel
 import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.Team
+import com.team.cat_hackathon.data.models.TeamResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.TeamsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,10 +33,10 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
       return getTeamFromResponse(response)
     }
 
-    private fun getTeamFromResponse(response: Response<AllDataResponse>): Team? {
+    private fun getTeamFromResponse(response: Response<TeamResponse>): Team? {
         if (response.isSuccessful) {
             response.body()?.let { result ->
-                return result.teams[0]
+                return result.team
             }
         }
         return null

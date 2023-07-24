@@ -82,9 +82,9 @@ class LoginFragment : Fragment() {
                 if (canSendRequestState == CAN_LOGIN) {
                     //todo : uncomment this when needed
                     lifecycleScope.launch {
-                       // viewModel.loginUser(viewModel.email.value, viewModel.password.value)
+                        viewModel.loginUser(viewModel.email.value, viewModel.password.value)
                         viewModel.setIsLoggedIn(true)
-                        navigateToHomeScreen()
+                       // navigateToHomeScreen()
                     }
                 } else {
                     showSnackbar(canSendRequestState, requireContext(), binding.root)

@@ -40,11 +40,13 @@ class HomeAdapter(
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
+        teamsAdapter = TeamAdapter(teams, onTeamClicked)
+        usersAdapter = MembersAdapter(users)
+
         if (position == 0) {
             val layoutManager = LinearLayoutManager(holder.binding.root.context)
             teamsRecyclerView = holder.binding.rv
             teamsRecyclerView.layoutManager = layoutManager
-                teamsAdapter = TeamAdapter(teams, onTeamClicked)
                 teamsRecyclerView.adapter = teamsAdapter
 
         } else {
@@ -56,7 +58,6 @@ class HomeAdapter(
             )
             usersRecyclerView = holder.binding.rv
                 usersRecyclerView.layoutManager = gridLayoutManager
-                usersAdapter = MembersAdapter(users)
                 usersRecyclerView.adapter = usersAdapter
 
         }

@@ -66,8 +66,8 @@ class TeamsFragment : Fragment() {
         if (team != null) {
             haveTeamUiVisibility(true)
             haveNoTeamUiVisibility(false)
-
             //todo : get list from team object
+            setViews(team)
             initRecyclerView(viewModel.getFakeUsers(7))
             initCollapsing(false)
         } else {
@@ -84,6 +84,12 @@ class TeamsFragment : Fragment() {
 
             // TODO: remember to handle backbutton visibility alone
         }
+    }
+
+    private fun setViews(team: Team) {
+        val teamNameTv = binding.toolbar.findViewById<TextView>(R.id.teamName_inTeam)
+        binding.teamBioInTeam.text=team.description
+        teamNameTv.text = team.name
     }
 
     private fun initRecyclerView(usersList: ArrayList<User>?) {

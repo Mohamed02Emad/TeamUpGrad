@@ -1,10 +1,13 @@
 
 
 import com.team.cat_hackathon.data.api.ACCEPT_MEMBER
+import com.team.cat_hackathon.data.api.CREATE_TEAM
+import com.team.cat_hackathon.data.api.DELETE_TEAM
 import com.team.cat_hackathon.data.api.GET_ALL_DATA_ENDPOINT
 import com.team.cat_hackathon.data.api.GET_JOIN_TEAM_REQUESTS
 import com.team.cat_hackathon.data.api.GET_TEAM_BY_ID
 import com.team.cat_hackathon.data.api.GET_TEAM_DETAILS
+import com.team.cat_hackathon.data.api.JOIN_TEAM
 import com.team.cat_hackathon.data.api.LOGIN_ENDPOINT
 import com.team.cat_hackathon.data.api.LOG_OUT_ENDPOINT
 import com.team.cat_hackathon.data.api.REGISTER_ENDPOINT
@@ -48,11 +51,7 @@ interface MyAPI {
         token: String
     ): Response<AuthResponse>
 
-
-
-
-
-    @POST(LOG_OUT_ENDPOINT)
+    @POST(JOIN_TEAM)
     suspend fun requestToJoinTeam(
         @Header("Authorization")
         token: String,
@@ -60,7 +59,7 @@ interface MyAPI {
         teamId: Int
     ): Response<MessageResponse>
 
-    @POST(LOG_OUT_ENDPOINT)
+    @POST(DELETE_TEAM)
     suspend fun deleteTeam(
         @Header("Authorization")
         token: String,
@@ -68,7 +67,7 @@ interface MyAPI {
         teamId: Int
     ): Response<MessageResponse>
 
-    @POST(LOG_OUT_ENDPOINT)
+    @POST(CREATE_TEAM)
     suspend fun createTeam(
         @Header("Authorization")
         token: String,
@@ -84,14 +83,6 @@ interface MyAPI {
     suspend fun getAllData(
         @Header("Authorization")
         token: String
-    ): Response<AllDataResponse>
-
-    @GET(GET_TEAM_BY_ID)
-    suspend fun getTeamById(
-        @Header("Authorization")
-        token: String,
-        @Query("team_id")
-        teamId: Int
     ): Response<AllDataResponse>
 
     @GET(GET_TEAM_DETAILS)

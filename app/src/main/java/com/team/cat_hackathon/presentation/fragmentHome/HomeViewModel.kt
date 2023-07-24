@@ -9,6 +9,8 @@ import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -18,9 +20,9 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
     private val _homeDataRequestState: MutableLiveData<RequestState<AllDataResponse>> = MutableLiveData()
     val homeDataRequestState: LiveData<RequestState<AllDataResponse>> = _homeDataRequestState
 
-    var homeDataResponse: AllDataResponse? = null
+    var homeDataResponse: AllDataResponse? = AllDataResponse(emptyList<User>(), emptyList<Team>())
 
-   suspend fun requestHomeData() {
+   suspend fun requestHomeData() = withContext(Dispatchers.IO){
         _homeDataRequestState.postValue(RequestState.Loading())
         val response = repository.getHomeData()
        _homeDataRequestState.postValue(handleDataFromHomeRequest(response))
