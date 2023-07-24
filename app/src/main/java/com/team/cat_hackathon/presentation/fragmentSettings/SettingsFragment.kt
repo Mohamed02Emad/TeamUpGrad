@@ -1,5 +1,6 @@
 package com.team.cat_hackathon.presentation.fragmentSettings
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.databinding.FragmentSettingsBinding
+import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -59,9 +62,14 @@ class SettingsFragment : Fragment() {
             cardEditProfile.setOnClickListener {
                 navigateToEditProfile()
             }
+            val context = requireContext()
             cardLogOut.setOnClickListener {
-                lifecycleScope.launch {
-                    viewModel.logOut()
+                if (isInternetAvailable(context)){
+                    lifecycleScope.launch {
+                        viewModel.logOut()
+                    }
+                }else{
+                    showToast("no network connection",context)
                 }
             }
         }

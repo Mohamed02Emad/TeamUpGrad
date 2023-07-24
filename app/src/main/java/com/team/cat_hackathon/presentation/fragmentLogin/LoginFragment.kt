@@ -1,5 +1,6 @@
 package com.team.cat_hackathon.presentation.fragmentLogin
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.databinding.FragmentLoginBinding
 import com.team.cat_hackathon.utils.CAN_LOGIN
 import com.team.cat_hackathon.utils.showSnackbar
+import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -45,7 +48,7 @@ class LoginFragment : Fragment() {
                         showSnackbar( state.message?:"error" , requireContext() , binding.root)
                     }
                     is RequestState.Loading -> {
-                       //todo : show progress bar
+                        //todo : show progress bar
                     }
                     is RequestState.Sucess -> {
                         lifecycleScope.launch {
@@ -76,18 +79,23 @@ class LoginFragment : Fragment() {
 
             buttonLogin.setOnClickListener {
 
-                val canSendRequestState =
-                    viewModel.validateData(viewModel.email.value, viewModel.password.value)
+                val context = requireContext()
+                if(isInternetAvailable(context)){
+                    val canSendRequestState =
+                        viewModel.validateData(viewModel.email.value, viewModel.password.value)
 
-                if (canSendRequestState == CAN_LOGIN) {
-                    //todo : uncomment this when needed
-                    lifecycleScope.launch {
-                       // viewModel.loginUser(viewModel.email.value, viewModel.password.value)
-                        viewModel.setIsLoggedIn(true)
-                        navigateToHomeScreen()
+                    if (canSendRequestState == CAN_LOGIN) {
+                        //todo : uncomment this when needed
+                        lifecycleScope.launch {
+                            viewModel.loginUser(viewModel.email.value, viewModel.password.value)
+                            viewModel.setIsLoggedIn(true)
+                            //navigateToHomeScreen()
+                        }
+                    } else {
+                        showSnackbar(canSendRequestState, requireContext(), binding.root)
                     }
-                } else {
-                    showSnackbar(canSendRequestState, requireContext(), binding.root)
+                }else{
+                    showToast("no network connection",context)
                 }
             }
             textViewSignup.setOnClickListener {

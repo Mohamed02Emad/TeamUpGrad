@@ -1,5 +1,6 @@
 package com.team.cat_hackathon.presentation.fragmentSignUp
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,9 +10,11 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.databinding.FragmentSignUpBinding
 import com.team.cat_hackathon.utils.showSnackbar
+import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -81,15 +84,21 @@ class SignUpFragment : Fragment() {
                 viewModel.setPassword(password)
             }
 
-            signupButton.setOnClickListener {
-                lifecycleScope.launch {
-                    viewModel.registerUser(
-                        viewModel.name.value!!,
-                        viewModel.email.value!!,
-                        viewModel.password.value!!
-                    )
+            val context=requireContext()
+            if(isInternetAvailable(context)){
+                signupButton.setOnClickListener {
+                    lifecycleScope.launch {
+                        viewModel.registerUser(
+                            viewModel.name.value!!,
+                            viewModel.email.value!!,
+                            viewModel.password.value!!
+                        )
+                    }
                 }
+            }else{
+                showToast("no network connection",context)
             }
+
         }
     }
 
