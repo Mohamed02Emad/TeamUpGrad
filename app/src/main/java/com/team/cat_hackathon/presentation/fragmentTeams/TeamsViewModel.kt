@@ -1,7 +1,6 @@
 package com.team.cat_hackathon.presentation.fragmentTeams
 
 import androidx.lifecycle.ViewModel
-import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.TeamResponse
 import com.team.cat_hackathon.data.models.User
@@ -28,20 +27,19 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
     }
 
     suspend fun getCurrentUserTeam(): Team? {
-      val teamId = getCachedUser().id
-      val response = getTeamById(teamId)
-      return getTeamFromResponse(response)
+        val teamId = getCachedUser().id
+        val response = getTeamById(teamId)
+        return getTeamFromResponse(response)
     }
 
-    private fun getTeamFromResponse(response: Response<TeamResponse>): Team? {
-        if (response.isSuccessful) {
+    private fun getTeamFromResponse(response: Response<TeamResponse>?): Team? {
+        if (response?.isSuccessful == true) {
             response.body()?.let { result ->
                 return result.team
             }
         }
         return null
     }
-
     fun getFakeUsers(number: Int): ArrayList<User>? = repository.getFakeUsers(number)
     suspend fun sendJoinRequest(teamId: Int) {
         val response = repository.sendJoinRequest(teamId)

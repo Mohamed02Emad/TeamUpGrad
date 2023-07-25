@@ -11,9 +11,11 @@ import kotlin.random.Random
 class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
     suspend fun getTeamById(
         teamId: Int
-    ): Response<TeamResponse> {
+    ): Response<TeamResponse>? {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
-        return RetrofitInstance.api.getTeamDetails(token , teamId)
+        return try {
+            RetrofitInstance.api.getTeamDetails(token , teamId)
+        }catch(e: Exception) { null }
     }
     suspend fun updateCacheUser(user: User) {
         dataStoreImpl.insertUser(user)

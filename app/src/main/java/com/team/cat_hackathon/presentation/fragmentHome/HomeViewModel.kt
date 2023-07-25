@@ -28,15 +28,14 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
        _homeDataRequestState.postValue(handleDataFromHomeRequest(response))
     }
     
-    private fun handleDataFromHomeRequest(response: Response<AllDataResponse>): RequestState<AllDataResponse> {
-        if (response.isSuccessful) {
+    private fun handleDataFromHomeRequest(response: Response<AllDataResponse>?): RequestState<AllDataResponse> {
+        if (response?.isSuccessful == true) {
             response.body()?.let { result ->
                     homeDataResponse = result
                 return RequestState.Sucess(homeDataResponse)
             }
         }
-
-        return RequestState.Error(response.message())
+        return RequestState.Error(response?.message() ?: "error")
     }
 
     //todo: delete later

@@ -21,9 +21,13 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStore
     suspend fun updateUser(user: User) {
 
     }
-    suspend fun getHomeData(): Response<AllDataResponse> {
+    suspend fun getHomeData(): Response<AllDataResponse>? {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
-      return RetrofitInstance.api.getAllData(token)
+      return try {
+          RetrofitInstance.api.getAllData(token)
+      }catch (e: Exception) {
+          null
+      }
     }
 
     fun getFakeTeams(numUser: Int):ArrayList<Team> {

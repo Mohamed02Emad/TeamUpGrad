@@ -20,8 +20,13 @@ class HomeAdapter(
 ) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-    lateinit var usersAdapter: MembersAdapter
-    lateinit var teamsAdapter: TeamAdapter
+     var usersAdapter: MembersAdapter
+     var teamsAdapter: TeamAdapter
+
+    init {
+        teamsAdapter = TeamAdapter(teams, onTeamClicked)
+        usersAdapter = MembersAdapter(users)
+    }
 
      lateinit var usersRecyclerView: RecyclerView
      lateinit var teamsRecyclerView: RecyclerView
@@ -39,9 +44,6 @@ class HomeAdapter(
         )
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        teamsAdapter = TeamAdapter(teams, onTeamClicked)
-        usersAdapter = MembersAdapter(users)
 
         if (position == 0) {
             val layoutManager = LinearLayoutManager(holder.binding.root.context)

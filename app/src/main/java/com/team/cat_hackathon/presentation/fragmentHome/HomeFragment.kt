@@ -91,6 +91,7 @@ class HomeFragment : Fragment() {
         viewPager = binding.viewPager
         val users = ArrayList<User>()
         val teams = ArrayList<Team>()
+
         viewModel.homeDataResponse?.users?.let {
             users.addAll(it)
         }
@@ -102,14 +103,8 @@ class HomeFragment : Fragment() {
                 teams = teams,
             onTeamClicked
         )
-//        myAdapter = HomeAdapter(
-//                users = viewModel.getFakeUsers(20),
-//                teams = viewModel.getFakeTeams(10),
-//            onTeamClicked
-//        )
 
         viewPager.adapter = myAdapter
-        //viewPager.offscreenPageLimit = 1
         setOnPageChangeListener(viewPager)
     }
 

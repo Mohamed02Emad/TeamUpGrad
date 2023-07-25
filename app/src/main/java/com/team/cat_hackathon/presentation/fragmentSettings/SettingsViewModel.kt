@@ -22,14 +22,14 @@ class SettingsViewModel @Inject constructor(val repository: AuthRepository): Vie
         _logoutRequestState.postValue(handleLogoutRequest(response))
     }
 
-    private fun handleLogoutRequest(response: Response<AuthResponse>): RequestState<AuthResponse> {
-        if (response.isSuccessful) {
+    private fun handleLogoutRequest(response: Response<AuthResponse>?): RequestState<AuthResponse> {
+        if (response?.isSuccessful == true) {
             response.body()?.let { result ->
                 return RequestState.Sucess(result)
             }
         }
 
-        return RequestState.Error(response.message())
+        return RequestState.Error(response?.message() ?: "error")
     }
 
     suspend fun cleanDataStore() {
