@@ -159,6 +159,7 @@ class EditProfileFragment : Fragment() {
                     .error(R.drawable.ellipse)
                     .into(ivUserImage)
             }
+            btnSave.visibility=View.GONE
         }
     }
 
