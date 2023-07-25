@@ -11,21 +11,29 @@ class AuthRepository(val dataStoreImpl: DataStoreImpl) {
         username: String?,
         password: String?,
         deviceName: String?
-    ): Response<AuthResponse> {
-        return RetrofitInstance.api.loginUser(username, password, deviceName)
+    ): Response<AuthResponse>? {
+        return try {
+            RetrofitInstance.api.loginUser(username, password, deviceName)
+        }catch (e:Exception) {null}
     }
 
     suspend fun registerUser(
         username: String?,
         email: String?,
         password: String?
-    ): Response<AuthResponse> {
-        return RetrofitInstance.api.registerUser(username, email, password)
+    ): Response<AuthResponse>? {
+        return try {
+            RetrofitInstance.api.registerUser(username, email, password)
+        }catch (e: Exception) { null}
     }
 
-    suspend fun logOutUser() : Response<AuthResponse> {
+    suspend fun logOutUser() : Response<AuthResponse>? {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
-        return RetrofitInstance.api.logOut(token)
+        return try {
+            RetrofitInstance.api.logOut(token)
+        }catch (e:Exception){
+            null
+        }
     }
 
     suspend fun cacheUser(user: User, accessToken: String) {

@@ -4,8 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 
-data class AuthResponse(
-    var access_token: String,
+data class MessageResponse(
     var code: Int,
-    var user: User
+    var message: String
 )

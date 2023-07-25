@@ -46,11 +46,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViewPager()
-        setObservers()
-        lifecycleScope.launch {
-        //    viewModel.requestHomeData()
-        }
         attachTabLayoutToViewPager()
+        lifecycleScope.launch {
+            setObservers()
+            viewModel.requestHomeData()
+        }
     }
 
     private fun setObservers() {
@@ -91,25 +91,20 @@ class HomeFragment : Fragment() {
         viewPager = binding.viewPager
         val users = ArrayList<User>()
         val teams = ArrayList<Team>()
+
         viewModel.homeDataResponse?.users?.let {
             users.addAll(it)
         }
         viewModel.homeDataResponse?.teams?.let {
             teams.addAll(it)
         }
-//        myAdapter = HomeAdapter(
-//                users = users,
-//                teams = teams,
-//            onTeamClicked
-//        )
         myAdapter = HomeAdapter(
-                users = viewModel.getFakeUsers(20),
-                teams = viewModel.getFakeTeams(10),
+                users = users,
+                teams = teams,
             onTeamClicked
         )
 
         viewPager.adapter = myAdapter
-        //viewPager.offscreenPageLimit = 1
         setOnPageChangeListener(viewPager)
     }
 

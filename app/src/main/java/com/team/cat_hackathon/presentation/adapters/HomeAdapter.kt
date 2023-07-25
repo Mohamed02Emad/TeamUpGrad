@@ -20,8 +20,13 @@ class HomeAdapter(
 ) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-    lateinit var usersAdapter: MembersAdapter
-    lateinit var teamsAdapter: TeamAdapter
+     var usersAdapter: MembersAdapter
+     var teamsAdapter: TeamAdapter
+
+    init {
+        teamsAdapter = TeamAdapter(teams, onTeamClicked)
+        usersAdapter = MembersAdapter(users)
+    }
 
      lateinit var usersRecyclerView: RecyclerView
      lateinit var teamsRecyclerView: RecyclerView
@@ -44,7 +49,6 @@ class HomeAdapter(
             val layoutManager = LinearLayoutManager(holder.binding.root.context)
             teamsRecyclerView = holder.binding.rv
             teamsRecyclerView.layoutManager = layoutManager
-                teamsAdapter = TeamAdapter(teams, onTeamClicked)
                 teamsRecyclerView.adapter = teamsAdapter
 
         } else {
@@ -56,7 +60,6 @@ class HomeAdapter(
             )
             usersRecyclerView = holder.binding.rv
                 usersRecyclerView.layoutManager = gridLayoutManager
-                usersAdapter = MembersAdapter(users)
                 usersRecyclerView.adapter = usersAdapter
 
         }

@@ -46,13 +46,13 @@ class SignUpViewModel @Inject constructor(val repository: AuthRepository) : View
         _registerRequestState.postValue(handleUserResponse(response))
     }
 
-    private fun handleUserResponse(response: Response<AuthResponse>): RequestState<AuthResponse> {
-        if (response.isSuccessful) {
+    private fun handleUserResponse(response: Response<AuthResponse>?): RequestState<AuthResponse> {
+        if (response?.isSuccessful == true) {
             response.body()?.let { result ->
                 return RequestState.Sucess(result)
             }
         }
-        return RequestState.Error(response.message())
+        return RequestState.Error(response?.message() ?: "error")
     }
 
     suspend fun cacheUserData(user: User, token: String) {

@@ -3,12 +3,15 @@ package com.team.cat_hackathon.presentation.fragmentLogin
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.AuthRepository
 import com.team.cat_hackathon.utils.CAN_LOGIN
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -18,6 +21,7 @@ class LoginViewModel @Inject constructor(val repository: AuthRepository) : ViewM
     private val _email: MutableLiveData<String?> = MutableLiveData("")
     val email: LiveData<String?> = _email
 
+    var request: Job? = null
     fun setEmail(email: String?) {
         _email.value = email
     }
@@ -33,19 +37,28 @@ class LoginViewModel @Inject constructor(val repository: AuthRepository) : ViewM
     val loginRequestState: LiveData<RequestState<AuthResponse>?> = _loginRequestState
 
     suspend fun loginUser(username: String?, password: String?) {
-        val deviceName = com.team.cat_hackathon.utils.getDeviceName()
-        _loginRequestState.postValue(RequestState.Loading())
-        val response = repository.loginUser(username, password, deviceName)
-        _loginRequestState.postValue(handleUserResponse(response))
+        cancelCurrentRequest()
+        request = viewModelScope.launch {
+            val deviceName = com.team.cat_hackathon.utils.getDeviceName()
+            _loginRequestState.postValue(RequestState.Loading())
+            val response = repository.loginUser(username, password, deviceName)
+            _loginRequestState.postValue(handleUserResponse(response))
+        }
     }
 
-    private fun handleUserResponse(response: Response<AuthResponse>): RequestState<AuthResponse> {
-        if (response.isSuccessful) {
+    private fun cancelCurrentRequest() {
+        if (request?.isActive == true) {
+            request?.cancel()
+        }
+    }
+
+    private fun handleUserResponse(response: Response<AuthResponse>?): RequestState<AuthResponse> {
+        if (response?.isSuccessful == true) {
             response.body()?.let { result ->
                 return RequestState.Sucess(result)
             }
         }
-        return RequestState.Error(response.message())
+        return RequestState.Error(response?.message() ?: "error")
     }
 
     fun validateData(email: String?, password: String?): String {

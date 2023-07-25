@@ -3,9 +3,7 @@ package com.team.cat_hackathon.data.models
 import androidx.annotation.Keep
 
 @Keep
-
-data class AuthResponse(
-    var access_token: String,
+data class JoinRequestsResponse(
     var code: Int,
-    var user: User
+    var members: List<User>
 )
