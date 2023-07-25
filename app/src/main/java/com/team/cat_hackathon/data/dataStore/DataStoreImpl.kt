@@ -58,7 +58,7 @@ class DataStoreImpl(
         val githubUrl: String = user.githubUrl ?: ""
         val id: Int = user.id
         val imageUrl: String = user.imageUrl ?: ""
-        val isInTeam: Int = user.team_id
+        val isInTeam: Int = user.team_id ?: -1
         val isLeader: Int = user.isLeader
         val linkedinUrl: String = user.linkedinUrl ?: ""
         val name: String = user.name
@@ -108,7 +108,7 @@ class DataStoreImpl(
             githubUrl = settings[stringPreferencesKey(GITHUB)] ?: ""
             id = settings[intPreferencesKey(ID)] ?: -1
             imageUrl = settings[stringPreferencesKey(IMAGE_URL)] ?: ""
-            isInTeam = settings[intPreferencesKey(IS_IN_TEAM)] ?: 0
+            isInTeam = settings[intPreferencesKey(IS_IN_TEAM)] ?: -1
             isLeader = settings[intPreferencesKey(IS_LEADER)] ?: 0
             linkedinUrl = settings[stringPreferencesKey(LINKED_IN_URL)] ?: ""
             name = settings[stringPreferencesKey(NAME)] ?: ""

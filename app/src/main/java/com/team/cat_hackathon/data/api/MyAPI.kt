@@ -17,6 +17,8 @@ import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.MessageResponse
 import com.team.cat_hackathon.data.models.JoinRequestsResponse
 import com.team.cat_hackathon.data.models.TeamResponse
+import com.team.cat_hackathon.data.models.TeamWithUsers
+import com.team.cat_hackathon.data.models.TeamWithUsersResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -91,14 +93,16 @@ interface MyAPI {
         token: String,
         @Query("team_id")
         teamId: Int
-    ): Response<TeamResponse>
+    ): Response<TeamWithUsersResponse>
 
     @GET(GET_JOIN_TEAM_REQUESTS)
     suspend fun getJoinTeamRequests(
         @Header("Authorization")
         token: String,
         @Query("team_id")
-        teamId: Int
+        teamId: Int,
+        @Query("user_id")
+        userId: Int
     ): Response<JoinRequestsResponse>
 
     @GET(ACCEPT_MEMBER)
