@@ -89,7 +89,6 @@ class LoginFragment : Fragment() {
                         lifecycleScope.launch {
                             viewModel.loginUser(viewModel.email.value, viewModel.password.value)
                             viewModel.setIsLoggedIn(true)
-                            //navigateToHomeScreen()
                         }
                     } else {
                         showSnackbar(canSendRequestState, requireContext(), binding.root)
