@@ -116,7 +116,7 @@ class EditProfileFragment : Fragment() {
             }
             ivUserImage.setOnClickListener{
                 openGallery()
-                img=getResult()
+                img=viewModel.getImg()
                 if(viewModel.isInputEqualToCachedUser(
                         img!!,name,track,github,linkedin,facebook
                     )){
@@ -132,10 +132,6 @@ class EditProfileFragment : Fragment() {
     private fun openGallery() {
 
     }
-    private fun getResult():String{
-        return ""
-    }
-
     private fun getData(){
         binding.apply {
             val cachedUser = viewModel.getUser()

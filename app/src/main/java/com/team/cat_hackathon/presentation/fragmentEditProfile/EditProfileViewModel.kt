@@ -65,4 +65,8 @@ class EditProfileViewModel @Inject constructor(val repository: HomeRepositoryImp
         return cachedUser?.name == name && cachedUser.track == track && cachedUser.imageUrl==img
                 && cachedUser.githubUrl == github && cachedUser.linkedinUrl == linkedin && cachedUser.facebookUrl == facebook
     }
+
+    fun getImg():String{
+        return ""
+    }
 }
