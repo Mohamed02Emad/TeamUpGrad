@@ -54,10 +54,15 @@ class EditProfileViewModel @Inject constructor(val repository: HomeRepositoryImp
         currentUser.linkedinUrl = facebook
         _cachedUserLiveData.postValue(currentUser)
     }
+    fun setImgUrl(imgUrl: String) {
+        val currentUser = _cachedUserLiveData.value ?: User()
+        currentUser.imageUrl = imgUrl
+        _cachedUserLiveData.postValue(currentUser)
+    }
 
-    fun isInputEqualToCachedUser(name: String, track: String,github:String,linkedin:String,facebook:String): Boolean {
+    fun isInputEqualToCachedUser(img:String,name: String, track: String,github:String,linkedin:String,facebook:String): Boolean {
         val cachedUser = cachedUserLiveData.value
-        return cachedUser?.name == name && cachedUser.track == track
+        return cachedUser?.name == name && cachedUser.track == track && cachedUser.imageUrl==img
                 && cachedUser.githubUrl == github && cachedUser.linkedinUrl == linkedin && cachedUser.facebookUrl == facebook
     }
 }

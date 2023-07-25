@@ -8,6 +8,9 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.team.cat_hackathon.R
 import com.team.cat_hackathon.databinding.FragmentEditProfileBinding
 
 class EditProfileFragment : Fragment() {
@@ -25,6 +28,8 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setOnClicks()
+        getData()
+        setChanges()
     }
 
     private fun setOnClicks() {
@@ -34,7 +39,13 @@ class EditProfileFragment : Fragment() {
             }
 
             btnSave.setOnClickListener {
+                viewModel.setName(etName.text.toString())
+                viewModel.setTrack(etTrack.text.toString())
+                viewModel.setGithubUrl(etGithubLink.text.toString())
+                viewModel.setLinkedinUrl(etLinkedInLink.text.toString())
+                viewModel.setFacebookUrl(etFacebookLink.text.toString())
 
+                btnSave.visibility=View.GONE
             }
         }
     }
@@ -47,10 +58,11 @@ class EditProfileFragment : Fragment() {
             var github = etGithubLink.text.toString()
             var linkedin = etLinkedInLink.text.toString()
             var facebook = etFacebookLink.text.toString()
+            var img = viewModel.getUser()?.imageUrl
             etName.doAfterTextChanged {text ->
                 name= text.toString()
                 if(viewModel.isInputEqualToCachedUser(
-                    name,track,github,linkedin,facebook
+                    img!!,name,track,github,linkedin,facebook
                 )){
                     btnSave.visibility = View.GONE
                 }else{
@@ -61,7 +73,7 @@ class EditProfileFragment : Fragment() {
             etTrack.doAfterTextChanged {text ->
                 track = text.toString()
                 if(viewModel.isInputEqualToCachedUser(
-                        name,track,github,linkedin,facebook
+                        img!!, name,track,github,linkedin,facebook
                 )){
                     btnSave.visibility = View.GONE
                 }else{
@@ -72,7 +84,7 @@ class EditProfileFragment : Fragment() {
             etGithubLink.doAfterTextChanged {text ->
                 github=text.toString()
                 if(viewModel.isInputEqualToCachedUser(
-                        name,track,github,linkedin,facebook
+                        img!!,name,track,github,linkedin,facebook
                     )){
                     btnSave.visibility = View.GONE
                 }else{
@@ -82,7 +94,9 @@ class EditProfileFragment : Fragment() {
             }
             etLinkedInLink.doAfterTextChanged {text ->
                 linkedin=text.toString()
-                if(viewModel.getUser()?.linkedinUrl == text.toString()){
+                if(viewModel.isInputEqualToCachedUser(
+                        img!!,name,track,github,linkedin,facebook
+                    )){
                     btnSave.visibility = View.GONE
                 }else{
                     btnSave.visibility = View.VISIBLE
@@ -91,12 +105,52 @@ class EditProfileFragment : Fragment() {
             }
             etFacebookLink.doAfterTextChanged {text ->
                 facebook=text.toString()
-                if(viewModel.getUser()?.facebookUrl == text.toString()){
+                if(viewModel.isInputEqualToCachedUser(
+                        img!!,name,track,github,linkedin,facebook
+                    )){
                     btnSave.visibility = View.GONE
                 }else{
                     btnSave.visibility = View.VISIBLE
                     viewModel.setFacebookUrl(facebook)
                 }
+            }
+            ivUserImage.setOnClickListener{
+                openGallery()
+                img=getResult()
+                if(viewModel.isInputEqualToCachedUser(
+                        img!!,name,track,github,linkedin,facebook
+                    )){
+                    btnSave.visibility = View.GONE
+                }else{
+                    btnSave.visibility = View.VISIBLE
+                    viewModel.setImgUrl(img!!)
+                }
+            }
+        }
+    }
+
+    private fun openGallery() {
+
+    }
+    private fun getResult():String{
+        return ""
+    }
+
+    private fun getData(){
+        binding.apply {
+            val cachedUser = viewModel.getUser()
+            etName.setText(cachedUser?.name ?: "")
+            etTrack.setText(cachedUser?.track ?: "")
+            etGithubLink.setText(cachedUser?.githubUrl ?: "")
+            etLinkedInLink.setText(cachedUser?.linkedinUrl ?: "")
+            etFacebookLink.setText(cachedUser?.facebookUrl ?: "")
+            cachedUser?.imageUrl?.let{url->
+                Glide.with(ivUserImage)
+                    .load(cachedUser.imageUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerInside()
+                    .error(R.drawable.ellipse)
+                    .into(ivUserImage)
             }
         }
     }
