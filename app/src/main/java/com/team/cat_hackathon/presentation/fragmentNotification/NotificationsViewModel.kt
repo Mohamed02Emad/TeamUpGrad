@@ -20,13 +20,13 @@ class NotificationsViewModel @Inject constructor(val repository: TeamsRepository
         MutableLiveData(null)
     val responseState: LiveData<RequestState<JoinRequestsResponse>?> = _responseState
 
-    private val _acceptState: MutableLiveData<RequestState<MessageResponse>> =
-        MutableLiveData()
-    val acceptState: LiveData<RequestState<MessageResponse>> = _acceptState
+    private val _acceptState: MutableLiveData<RequestState<MessageResponse>?> =
+        MutableLiveData(null)
+    val acceptState: LiveData<RequestState<MessageResponse>?> = _acceptState
 
-    private val _rejectState: MutableLiveData<RequestState<MessageResponse>> =
-        MutableLiveData()
-    val rejectState: LiveData<RequestState<MessageResponse>> = _rejectState
+    private val _rejectState: MutableLiveData<RequestState<MessageResponse>?> =
+        MutableLiveData(null)
+    val rejectState: LiveData<RequestState<MessageResponse>?> = _rejectState
 
     suspend fun getRequestList() {
         _responseState.postValue(RequestState.Loading())
@@ -50,6 +50,14 @@ class NotificationsViewModel @Inject constructor(val repository: TeamsRepository
             }
         }
         return RequestState.Error(response?.message() ?: "error")
+    }
+
+    fun setAcceptState(nothing: Nothing?) {
+       _acceptState.postValue(null)
+    }
+
+    fun setRejectState(nothing: Nothing?) {
+       _rejectState.postValue(null)
     }
 
 

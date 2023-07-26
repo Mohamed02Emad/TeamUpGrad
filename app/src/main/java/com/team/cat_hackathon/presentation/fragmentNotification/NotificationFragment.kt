@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.data.models.Member
-import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentNotificationBinding
 import com.team.cat_hackathon.presentation.adapters.NotificationsAdapter
 import com.team.cat_hackathon.utils.showToast
@@ -59,6 +58,7 @@ class NotificationFragment : Fragment() {
                     is RequestState.Loading -> {}
                     is RequestState.Sucess -> {
                         showToast(state.data!!.message, requireContext())
+                        viewModel.setAcceptState(null)
                     }
                 }
             }
@@ -69,6 +69,7 @@ class NotificationFragment : Fragment() {
                     is RequestState.Error, is RequestState.Loading -> {}
                     is RequestState.Sucess -> {
                         showToast(state.data!!.message, requireContext())
+                        viewModel.setRejectState(null)
                     }
                 }
             }
