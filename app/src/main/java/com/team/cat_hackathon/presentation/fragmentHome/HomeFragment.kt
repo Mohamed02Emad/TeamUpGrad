@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.data.models.Team
@@ -20,6 +21,7 @@ import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentHomeBinding
 import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.utils.showSnackbar
+import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -47,9 +49,21 @@ class HomeFragment : Fragment() {
         attachTabLayoutToViewPager()
         lifecycleScope.launch {
             setObservers()
-            if (viewModel.homeDataRequestState.value == null)
-                viewModel.requestHomeData()
+            if (isInternetAvailable(requireContext())) {
+                if (viewModel.homeDataRequestState.value == null)
+                    viewModel.requestHomeData()
+            }else{
+                showNoInterNetAnim()
+            }
         }
+    }
+
+    private fun showNoInterNetAnim() {
+        binding.lottieNoConnection.isVisible = true
+        binding.lottieNoConnection.playAnimation()
+        binding.searchLayout.isVisible = false
+        binding.collapsingBar.isVisible = false
+
     }
 
     private fun setObservers() {
@@ -58,11 +72,6 @@ class HomeFragment : Fragment() {
                 when (requestState) {
                     is RequestState.Error -> {
                         binding.progressBar.isVisible = false
-                        showSnackbar(
-                            requestState.message ?: "Error",
-                            requireContext(),
-                            binding.root
-                        )
                     }
                     is RequestState.Loading -> {
                         binding.progressBar.isVisible = true

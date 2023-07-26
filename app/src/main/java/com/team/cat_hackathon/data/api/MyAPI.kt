@@ -79,8 +79,6 @@ interface MyAPI {
         teamId: String
     ): Response<MessageResponse>
 
-
-    //todo : not working
     @GET(GET_ALL_DATA_ENDPOINT)
     suspend fun getAllData(
         @Header("Authorization")

@@ -13,12 +13,25 @@
         android:layout_gravity="center"
         android:elevation="20dp"
         android:indeterminateTint="@color/primary_blue"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_no_connection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_rawRes="@raw/anim_no_connection"
+        app:lottie_autoPlay="false"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:lottie_loop="true"/>
 
     <View
         android:id="@+id/dark_background"
