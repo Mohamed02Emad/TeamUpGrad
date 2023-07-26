@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
         val response = repository.getHomeData()
        _homeDataRequestState.postValue(handleDataFromHomeRequest(response))
     }
-    
+
     private fun handleDataFromHomeRequest(response: Response<AllDataResponse>?): RequestState<AllDataResponse> {
         if (response?.isSuccessful == true) {
             response.body()?.let { result ->
@@ -38,12 +38,4 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
         return RequestState.Error(response?.message() ?: "error")
     }
 
-    //todo: delete later
-   fun getFakeUsers(number: Int):ArrayList<User>{
-       return repository.getFakeUsers(number)
-   }
-
-    fun getFakeTeams(number: Int):ArrayList<Team>{
-        return repository.getFakeTeams(number)
-    }
 }

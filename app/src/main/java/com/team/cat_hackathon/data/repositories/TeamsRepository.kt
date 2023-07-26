@@ -2,11 +2,11 @@ package com.team.cat_hackathon.data.repositories
 
 import RetrofitInstance
 import com.mo_chatting.chatapp.data.dataStore.DataStoreImpl
+import com.team.cat_hackathon.data.models.JoinRequestsResponse
 import com.team.cat_hackathon.data.models.MessageResponse
 import com.team.cat_hackathon.data.models.TeamWithUsersResponse
 import com.team.cat_hackathon.data.models.User
 import retrofit2.Response
-import kotlin.random.Random
 
 class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
     suspend fun getTeamById(
@@ -26,7 +26,7 @@ class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
 
     suspend fun getCachedUser() = dataStoreImpl.getUser()
 
-    suspend fun getUsers(teamId: Int): List<User> = try {
+    suspend fun getTeamUsers(teamId: Int): List<User> = try {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
         val response = RetrofitInstance.api.getTeamDetails(token, teamId)
         if (response.isSuccessful) {
@@ -38,15 +38,6 @@ class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
         emptyList<User>()
     }
 
-
-    private fun generateRandomString(length: Int): String {
-        val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
-        return (1..length)
-            .map { Random.nextInt(0, charPool.size) }
-            .map(charPool::get)
-            .joinToString("")
-    }
-
     suspend fun sendJoinRequest(teamId: Int): Response<MessageResponse>? {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
         return try {
@@ -56,4 +47,23 @@ class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
         }
     }
 
+    suspend fun getRequesteToJoinList(): Response<JoinRequestsResponse>? = try {
+        val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
+        val userTeamId = getCachedUser().team_id!!
+        RetrofitInstance.api.getJoinTeamRequests(token, userTeamId)
+    } catch (e: Exception) {
+        null
+    }
+
+    suspend fun acceptUser(userId: Int): Response<MessageResponse> {
+        val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
+        val userTeamId = getCachedUser().team_id!!
+        return RetrofitInstance.api.acceptUser(token, userTeamId, userId)
+    }
+
+    suspend fun rejectUser(userId: Int): Response<MessageResponse> {
+        val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
+        val userTeamId = getCachedUser().team_id!!
+        return RetrofitInstance.api.rejectUser(token, userTeamId, userId)
+    }
 }

@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.team.cat_hackathon.data.api.RequestState
-import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.MessageResponse
 import com.team.cat_hackathon.data.models.Team
-import com.team.cat_hackathon.data.models.TeamResponse
 import com.team.cat_hackathon.data.models.TeamWithUsersResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.TeamsRepository
@@ -54,7 +52,7 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
         return null
     }
 
-    suspend fun getUsers(teamId: Int): List<User> = repository.getUsers(teamId)
+    suspend fun getUsers(teamId: Int): List<User> = repository.getTeamUsers(teamId)
     suspend fun sendJoinRequest(teamId: Int) = viewModelScope.launch {
         _joinRequestState.postValue(RequestState.Loading())
         val response = repository.sendJoinRequest(teamId)

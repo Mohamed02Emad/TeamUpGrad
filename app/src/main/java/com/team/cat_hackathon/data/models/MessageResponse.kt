@@ -5,6 +5,6 @@ import androidx.annotation.Keep
 @Keep
 
 data class MessageResponse(
-    var code: Int,
+    var code: Int = -1,
     var message: String
 )

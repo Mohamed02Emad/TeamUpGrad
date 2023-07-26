@@ -21,6 +21,7 @@ import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentTeamsBinding
 import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.presentation.adapters.MembersAdapter
+import com.team.cat_hackathon.utils.NO_TEAM
 import com.team.cat_hackathon.utils.showSnackbar
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,15 +51,15 @@ class TeamsFragment : Fragment() {
             showToast("NoInternet" , requireContext())
         } else {
             CoroutineScope(Dispatchers.Main).launch {
+                val team = navArgs.team ?: viewModel.getCurrentUserTeam()
                 val currentUserTeam = viewModel.getCurrentUser().team_id
-                if (currentUserTeam == -1) {
+                if (currentUserTeam == NO_TEAM && team == null) {
                     setViewsVisibility(null)
                 } else {
-                    val team = navArgs.team ?: viewModel.getCurrentUserTeam()
                     setViewsVisibility(team)
-                    setOnClicks()
                     setObservers()
                 }
+                setOnClicks()
             }
         }
     }

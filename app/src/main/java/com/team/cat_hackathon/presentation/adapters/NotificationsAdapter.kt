@@ -11,7 +11,9 @@ import com.team.cat_hackathon.databinding.NotificationCardBinding
 
 
 class NotificationsAdapter(
-    private val users: List<User>? ,
+    private val users: List<User> ,
+    private val acceptUser : (Int ) -> Unit,
+    private val rejectUser : (Int ) -> Unit
 ):RecyclerView.Adapter<NotificationsAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NotificationCardBinding) :
@@ -28,16 +30,16 @@ class NotificationsAdapter(
     }
 
     override fun getItemCount(): Int {
-        return users?.size ?: 0
+        return users.size ?: 0
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = users?.get(position)
-        holder.binding.tvUserName.text= user?.name ?: ""
-        holder.binding.tvUserTrack.text= user?.track ?: ""
+        val user = users.get(position)
+        holder.binding.tvUserName.text= user.name ?: ""
+        holder.binding.tvUserTrack.text= user.track ?: ""
         val img = holder.binding.ivUserImage
 
-        user?.imageUrl?.let{url->
+        user.imageUrl?.let{url->
             Glide.with(img)
                 .load(user.imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -47,8 +49,10 @@ class NotificationsAdapter(
         }
 
         holder.binding.btnAccept.setOnClickListener{
+            acceptUser(user!!.id)
         }
         holder.binding.btnReject.setOnClickListener{
+            rejectUser(user!!.id)
         }
 
     }
