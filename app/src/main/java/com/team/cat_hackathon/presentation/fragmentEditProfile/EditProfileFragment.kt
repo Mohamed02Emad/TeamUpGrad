@@ -150,7 +150,7 @@ class EditProfileFragment : Fragment() {
                     .load(cachedUser.imageUrl)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerInside()
-                    .error(R.drawable.ellipse)
+                    .error(R.drawable.ic_profile)
                     .into(ivUserImage)
             }
             btnSave.visibility=View.GONE

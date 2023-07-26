@@ -2,9 +2,11 @@ package com.team.cat_hackathon.presentation.fragmentSettings
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -41,17 +43,18 @@ class SettingsFragment : Fragment() {
             state?.let {
                 when (state){
                     is RequestState.Error -> {
+                        showToast(state.message ?: "error" , requireContext())
                     }
                     is RequestState.Loading -> {
                     }
                     is RequestState.Sucess -> {
-                        if (state.data!!.code == 1){
+                   //     if (state.data!!.code == 1){
                             lifecycleScope.launch{
                                 viewModel.cleanDataStore()
                                 navigateToLoginScreen()
                             }
                         }
-                    }
+                   // }
                 }
             }
         }
