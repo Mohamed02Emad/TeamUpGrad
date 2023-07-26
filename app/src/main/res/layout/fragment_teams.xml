@@ -87,7 +87,7 @@
                         android:id="@+id/teamName_inTeam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/crimson_text_regular"
                         android:text="@string/team_name"
                         android:textColor="@color/color_text"

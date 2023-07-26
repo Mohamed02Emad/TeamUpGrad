@@ -12,6 +12,10 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_teamsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left"
             app:destination="@id/teamsFragment" />
     </fragment>
     <fragment
@@ -21,12 +25,18 @@
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_settingsFragment_to_editProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left"
             app:destination="@id/editProfileFragment" />
         <action
             android:id="@+id/action_settingsFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/home_nav_graph"
             app:popUpToInclusive="true"/>
     </fragment>
@@ -38,15 +48,10 @@
         <action
             android:id="@+id/action_splashFragment_to_onBoardingFragment"
             app:destination="@id/onBoardingFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popUpTo="@id/home_nav_graph"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/home_nav_graph"
             app:popUpToInclusive="true"/>
         <action
@@ -63,10 +68,10 @@
         <action
             android:id="@+id/action_onBoardingFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:enterAnim="@android:anim/slide_in_left"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/home_nav_graph"
             app:popUpToInclusive="true"/>
     </fragment>
@@ -78,19 +83,20 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:enterAnim="@android:anim/slide_in_left"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/home_nav_graph"
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment2"
             app:destination="@id/signUpFragment"
-            app:enterAnim="@android:anim/slide_in_left"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"/>
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left"
+            />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -100,10 +106,10 @@
         <action
             android:id="@+id/action_signUpFragment2_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:enterAnim="@android:anim/slide_in_left"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/home_nav_graph"
             app:popUpToInclusive="true"/>
     </fragment>
