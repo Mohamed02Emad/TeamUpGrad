@@ -6,6 +6,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/color_background">
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="20dp"
+        android:indeterminateTint="@color/primary_blue"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/dark_background"
+        android:background="#66000000"
+        android:layout_width="match_parent"
+        android:elevation="1dp"
+        android:visibility="gone"
+        android:layout_height="match_parent" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"

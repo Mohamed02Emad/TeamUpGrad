@@ -25,8 +25,9 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
     private val _joinRequestState: MutableLiveData<RequestState<MessageResponse>> =
         MutableLiveData()
     val joinRequestState: LiveData<RequestState<MessageResponse>> = _joinRequestState
-    private suspend fun getTeamById(teamId: Int) = withContext(Dispatchers.IO) {
-        repository.getTeamById(teamId)
+
+    private suspend fun getTeamById(teamId: Int): Response<TeamWithUsersResponse>? {
+       return repository.getTeamById(teamId)
     }
 
     suspend fun updateCachedUser(user: User) {
@@ -37,8 +38,7 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
         repository.getCachedUser()
     }
 
-    suspend fun getCurrentUserTeam(): Team? {
-        val teamId = getCachedUser().id
+    suspend fun getCurrentUserTeam(teamId: Int): Team? {
         val response = getTeamById(teamId)
         return getTeamFromResponse(response)
     }

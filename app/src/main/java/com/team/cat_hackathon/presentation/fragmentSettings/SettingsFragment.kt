@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.databinding.FragmentSettingsBinding
+import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,12 +45,17 @@ class SettingsFragment : Fragment() {
             state?.let {
                 when (state){
                     is RequestState.Error -> {
+                        binding.groupLoadig.isGone=true
+                        (activity as MainActivity).showBottomNavigation()
                         showToast(state.message ?: "error" , requireContext())
                     }
                     is RequestState.Loading -> {
+                        binding.groupLoadig.isGone=false
+                        (activity as MainActivity).hideBottomNavigation()
                     }
                     is RequestState.Sucess -> {
-                   //     if (state.data!!.code == 1){
+                        binding.groupLoadig.isGone=true
+                        //     if (state.data!!.code == 1){
                             lifecycleScope.launch{
                                 viewModel.cleanDataStore()
                                 navigateToLoginScreen()
@@ -66,6 +73,7 @@ class SettingsFragment : Fragment() {
                 navigateToEditProfile()
             }
             val context = requireContext()
+
             cardLogOut.setOnClickListener {
                 if (isInternetAvailable(context)){
                     lifecycleScope.launch {

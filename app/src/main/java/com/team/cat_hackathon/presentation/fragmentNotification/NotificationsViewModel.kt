@@ -28,6 +28,10 @@ class NotificationsViewModel @Inject constructor(val repository: TeamsRepository
         MutableLiveData(null)
     val rejectState: LiveData<RequestState<MessageResponse>?> = _rejectState
 
+    private val _currentActionUser: MutableLiveData<Int?> =
+        MutableLiveData(null)
+    val currentActionUser: LiveData<Int?> = _currentActionUser
+
     suspend fun getRequestList() {
         _responseState.postValue(RequestState.Loading())
         val response = repository.getRequesteToJoinList()
@@ -60,8 +64,12 @@ class NotificationsViewModel @Inject constructor(val repository: TeamsRepository
        _rejectState.postValue(null)
     }
 
+    fun setCurrentActionUser(nothing : Nothing?) {
+        _currentActionUser.postValue(null)
+    }
 
     val acceptUser: (Int) -> Unit = { userId ->
+        _currentActionUser.value = userId
         viewModelScope.launch {
             _acceptState.postValue(RequestState.Loading())
             val response = repository.acceptUser(userId)
@@ -69,6 +77,7 @@ class NotificationsViewModel @Inject constructor(val repository: TeamsRepository
         }
     }
     val rejectUser: (Int) -> Unit = { userId ->
+        _currentActionUser.value = userId
         viewModelScope.launch {
             _rejectState.postValue(RequestState.Loading())
             val response = repository.rejectUser(userId)

@@ -106,4 +106,7 @@ dependencies {
 
     //onBoarding dots
     implementation("com.tbuonomo:dotsindicator:5.0")
+
+    //loadingButton
+    implementation("br.com.simplepass:loading-button-android:2.2.0")
 }
