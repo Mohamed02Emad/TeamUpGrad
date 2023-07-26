@@ -4,6 +4,6 @@ import androidx.annotation.Keep
 
 @Keep
 data class TeamResponse(
-    var code: Int,
-    var team: Team?
+    var code: Int =-1,
+    var team: Team? = null
 )

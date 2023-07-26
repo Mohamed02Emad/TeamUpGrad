@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity
 @Keep
 data class User(
-    @PrimaryKey var id: Int = 0,
+    @PrimaryKey var id: Int,
     var name: String = " ",
     var email: String =" ",
     var email_verified_at: String?= null,

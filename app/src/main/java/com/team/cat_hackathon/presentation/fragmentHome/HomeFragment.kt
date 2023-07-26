@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
         attachTabLayoutToViewPager()
         lifecycleScope.launch {
             setObservers()
-            viewModel.requestHomeData()
+                viewModel.requestHomeData()
         }
     }
 
@@ -64,13 +64,9 @@ class HomeFragment : Fragment() {
                             binding.root
                         )
                     }
-
                     is RequestState.Loading -> {
-
                     }
-
                     is RequestState.Sucess -> {
-                        //todo : test this later
                         viewModel.homeDataResponse?.teams?.let{
                             myAdapter.teamsAdapter.teams?.clear()
                             myAdapter.teamsAdapter.teams?.addAll(it)

@@ -4,6 +4,6 @@ import androidx.annotation.Keep
 
 @Keep
 data class JoinRequestsResponse(
-    var code: Int,
-    var members: List<User>
+    var code: Int = -1,
+    var members: List<Member>
 )

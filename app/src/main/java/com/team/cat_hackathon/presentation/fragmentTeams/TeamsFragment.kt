@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.api.RequestState
@@ -22,6 +21,7 @@ import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentTeamsBinding
 import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.presentation.adapters.MembersAdapter
+import com.team.cat_hackathon.utils.NO_TEAM
 import com.team.cat_hackathon.utils.showSnackbar
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,35 +48,48 @@ class TeamsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!isInternetAvailable(requireContext())) {
-            //todo : show no internet state
             showToast("NoInternet" , requireContext())
         } else {
             CoroutineScope(Dispatchers.Main).launch {
                 val team = navArgs.team ?: viewModel.getCurrentUserTeam()
-                setViewsVisibility(team)
+                val currentUserTeam = viewModel.getCurrentUser().team_id
+                if (currentUserTeam == NO_TEAM && team == null) {
+                    setViewsVisibility(null)
+                } else {
+                    setViewsVisibility(team)
+                    setObservers()
+                }
                 setOnClicks()
-                setObservers()
             }
         }
     }
 
     private fun setObservers() {
-        viewModel.joinRequestState.observe(viewLifecycleOwner){state ->
-            when(state) {
-                is RequestState.Error -> {
-                    showSnackbar(state.message ?: "Error", requireContext() , binding.root)
-                }
-                is RequestState.Loading -> {
-
-                }
-                is RequestState.Sucess -> {
-                    state.data?.let { response ->
-                        showSnackbar(state.message ?: "requested", requireContext() , binding.root)
-                        binding.joinTextInTeam.isGone = true
+        try {
+            viewModel.joinRequestState.observe(viewLifecycleOwner) { state ->
+                when (state) {
+                    is RequestState.Error -> {
+                        showSnackbar(state.message ?: "Error", requireContext(), binding.root)
                     }
-                }
 
+                    is RequestState.Loading -> {
+
+                    }
+
+                    is RequestState.Sucess -> {
+                        state.data?.let { response ->
+                            showSnackbar(
+                                state.message ?: "requested",
+                                requireContext(),
+                                binding.root
+                            )
+                            binding.joinTextInTeam.isGone = true
+                        }
+                    }
+
+                }
             }
+        } catch (e: Exception) {
         }
     }
 
@@ -103,22 +116,21 @@ class TeamsFragment : Fragment() {
         }
     }
 
-    private fun hideBackArrow(teamId: Int, currentUserTeamId: Int?) {
+    private fun topBarViewsVisibility(teamId: Int, currentUserTeamId: Int?) {
         if (currentUserTeamId == teamId) {
             val btnBack = binding.toolbar.findViewById<CardView>(R.id.btn_back)
             btnBack.isGone = true
+            binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam).isGone = true
         }
     }
 
     private suspend fun setViews(team: Team) {
         val currentUserTeamId = viewModel.getCurrentUser().team_id
-        hideBackArrow(team.id, currentUserTeamId)
+        topBarViewsVisibility(team.id, currentUserTeamId)
         val teamNameTv = binding.toolbar.findViewById<TextView>(R.id.teamName_inTeam)
         binding.teamBioInTeam.text = team.description
         teamNameTv.text = team.name
-        currentUserTeamId?.let {
-            binding.joinTextInTeam.isGone = true
-        }
+
     }
 
     private fun initRecyclerView(usersList: List<User>) {

@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.room.PrimaryKey
 import com.team.cat_hackathon.data.models.User
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +39,7 @@ class DataStoreImpl(
         const val GITHUB = "github"
         const val ID = "id"
         const val IMAGE_URL = "imageUrl"
-        const val IS_IN_TEAM = "isInTeam"
+        const val TEAM_ID = "isInTeam"
         const val IS_LEADER = "isLeader"
         const val LINKED_IN_URL = "linkedInUrl"
         const val NAME = "name"
@@ -58,12 +57,13 @@ class DataStoreImpl(
         val githubUrl: String = user.githubUrl ?: ""
         val id: Int = user.id
         val imageUrl: String = user.imageUrl ?: ""
-        val isInTeam: Int = user.team_id ?: -1
+        val teamId: Int = user.team_id ?: -1
         val isLeader: Int = user.isLeader
         val linkedinUrl: String = user.linkedinUrl ?: ""
         val name: String = user.name
         val track: String = user.track ?: ""
         val updated_at: String = user.updated_at ?: ""
+
 
         mDataStore.edit { settings ->
             settings[stringPreferencesKey(BIO)] = bio
@@ -74,7 +74,7 @@ class DataStoreImpl(
             settings[stringPreferencesKey(GITHUB)] = githubUrl
             settings[intPreferencesKey(ID)] = id
             settings[stringPreferencesKey(IMAGE_URL)] = imageUrl
-            settings[intPreferencesKey(IS_IN_TEAM)] = isInTeam
+            settings[intPreferencesKey(TEAM_ID)] = teamId
             settings[intPreferencesKey(IS_LEADER)] = isLeader
             settings[stringPreferencesKey(LINKED_IN_URL)] = linkedinUrl
             settings[stringPreferencesKey(NAME)] = name
@@ -92,8 +92,8 @@ class DataStoreImpl(
         var githubUrl: String = " "
         var id: Int = 0
         var imageUrl: String =" "
-        var isInTeam: Int = 0
-        var isLeader: Int = 0
+        var isInTeam: Int =-1
+        var isLeader: Int =-1
         var linkedinUrl: String= " "
         var name: String = " "
         var track: String = " "
@@ -108,7 +108,7 @@ class DataStoreImpl(
             githubUrl = settings[stringPreferencesKey(GITHUB)] ?: ""
             id = settings[intPreferencesKey(ID)] ?: -1
             imageUrl = settings[stringPreferencesKey(IMAGE_URL)] ?: ""
-            isInTeam = settings[intPreferencesKey(IS_IN_TEAM)] ?: -1
+            isInTeam = settings[intPreferencesKey(TEAM_ID)] ?: -1
             isLeader = settings[intPreferencesKey(IS_LEADER)] ?: 0
             linkedinUrl = settings[stringPreferencesKey(LINKED_IN_URL)] ?: ""
             name = settings[stringPreferencesKey(NAME)] ?: ""
@@ -138,7 +138,7 @@ class DataStoreImpl(
 
     override suspend fun logOut() {
         setIsLoggedIn(false)
-        insertUser(User())
+        insertUser(User(-1))
     }
 
     override suspend fun getIsOnBoardingFinished(): Boolean = withContext(dispatcher) {

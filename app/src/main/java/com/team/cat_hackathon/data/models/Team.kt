@@ -10,8 +10,8 @@ import java.io.Serializable
 @Keep
 data class Team(
     @PrimaryKey val  id: Int,
-    var name: String,
-    var description: String,
-    var created_at: String?,
-    var updated_at: String?
+    var name: String = "",
+    var description: String ="",
+    var created_at: String? ="",
+    var updated_at: String? =""
 ):Serializable

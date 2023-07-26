@@ -1,5 +1,6 @@
 package com.team.cat_hackathon.presentation.fragmentEditProfile
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,53 +18,28 @@ class EditProfileViewModel @Inject constructor(val repository: HomeRepositoryImp
     val cachedUserLiveData: LiveData<User> get() = _cachedUserLiveData
 
 
-    suspend fun updateUser(user: User){
+    suspend fun updateUser(user: User) {
         repository.updateUser(user)
     }
-    suspend fun getCachedUser(){
+
+    suspend fun getCachedUser(): User {
         val cachedUser = repository.getCachedUser()
         _cachedUserLiveData.postValue(cachedUser)
+        return cachedUser
     }
+
     fun getUser(): User? {
         return cachedUserLiveData.value
     }
-    fun setName(name: String) {
-        val currentUser = _cachedUserLiveData.value ?: User()
-        currentUser.name = name
-        _cachedUserLiveData.postValue(currentUser)
-    }
-
-    fun setTrack(track: String) {
-        val currentUser = _cachedUserLiveData.value ?: User()
-        currentUser.track = track
-        _cachedUserLiveData.postValue(currentUser)
-    }
-
-    fun setGithubUrl(github: String) {
-        val currentUser = _cachedUserLiveData.value ?: User()
-        currentUser.githubUrl = github
-        _cachedUserLiveData.postValue(currentUser)
-    }
-    fun setLinkedinUrl(linkedin: String) {
-        val currentUser = _cachedUserLiveData.value ?: User()
-        currentUser.linkedinUrl = linkedin
-        _cachedUserLiveData.postValue(currentUser)
-    }
-    fun setFacebookUrl(facebook: String) {
-        val currentUser = _cachedUserLiveData.value ?: User()
-        currentUser.linkedinUrl = facebook
-        _cachedUserLiveData.postValue(currentUser)
-    }
-    fun setImgUrl(imgUrl: String) {
-        val currentUser = _cachedUserLiveData.value ?: User()
-        currentUser.imageUrl = imgUrl
-        _cachedUserLiveData.postValue(currentUser)
-    }
 
     fun isInputEqualToCachedUser(img:String,name: String, track: String,github:String,linkedin:String,facebook:String): Boolean {
-        val cachedUser = cachedUserLiveData.value
-        return cachedUser?.name == name && cachedUser.track == track && cachedUser.imageUrl==img
-                && cachedUser.githubUrl == github && cachedUser.linkedinUrl == linkedin && cachedUser.facebookUrl == facebook
+        val cachedUser = cachedUserLiveData.value!!
+        return cachedUser.name.trimEnd().trimStart() == name.trimEnd().trimStart() &&
+                cachedUser.track?.trim() == track.trim() &&
+                cachedUser.imageUrl?.trim() == img.trim() &&
+                cachedUser.githubUrl?.trim() == github.trim() &&
+                cachedUser.linkedinUrl?.trim() == linkedin.trim() &&
+                cachedUser.facebookUrl?.trim() == facebook.trim()
     }
 
     fun getImg():String{

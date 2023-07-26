@@ -100,9 +100,7 @@ interface MyAPI {
         @Header("Authorization")
         token: String,
         @Query("team_id")
-        teamId: Int,
-        @Query("user_id")
-        userId: Int
+        teamId: Int
     ): Response<JoinRequestsResponse>
 
     @GET(ACCEPT_MEMBER)
@@ -113,7 +111,7 @@ interface MyAPI {
         teamId: Int,
         @Query("user_id")
         user_id: Int
-    ): MessageResponse
+    ): Response <MessageResponse>
 
     @GET(REJECT_MEMBER)
     suspend fun rejectUser(
@@ -123,6 +121,6 @@ interface MyAPI {
         teamId: Int,
         @Query("user_id")
         user_id: Int
-    ): MessageResponse
+    ):  Response <MessageResponse>
 
 }
