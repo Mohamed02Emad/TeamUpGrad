@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.team.cat_hackathon.data.api.RequestState
+import com.team.cat_hackathon.data.models.Member
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentNotificationBinding
 import com.team.cat_hackathon.presentation.adapters.NotificationsAdapter
@@ -52,7 +53,10 @@ class NotificationFragment : Fragment() {
         viewModel.acceptState.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (state) {
-                    is RequestState.Error, is RequestState.Loading -> {}
+                    is RequestState.Error ->{
+                        showToast(state.message ?: "error", requireContext())
+                    }
+                    is RequestState.Loading -> {}
                     is RequestState.Sucess -> {
                         showToast(state.data!!.message, requireContext())
                     }
@@ -71,7 +75,7 @@ class NotificationFragment : Fragment() {
         }
     }
 
-    private fun setRecyclerView(members: List<User>) {
+    private fun setRecyclerView(members: List<Member>) {
         myAdapter = NotificationsAdapter(
             members,
             acceptUser = viewModel.acceptUser,

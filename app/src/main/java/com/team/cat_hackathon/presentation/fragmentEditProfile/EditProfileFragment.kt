@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.databinding.FragmentEditProfileBinding
+import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -31,9 +33,11 @@ class EditProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setOnClicks()
-        getData()
-        setChanges()
+        lifecycleScope.launch {
+            getData()
+            setOnClicks()
+            setChanges()
+        }
     }
 
     private fun setOnClicks() {
@@ -43,12 +47,6 @@ class EditProfileFragment : Fragment() {
             }
 
             btnSave.setOnClickListener {
-                viewModel.setName(etName.text.toString())
-                viewModel.setTrack(etTrack.text.toString())
-                viewModel.setGithubUrl(etGithubLink.text.toString())
-                viewModel.setLinkedinUrl(etLinkedInLink.text.toString())
-                viewModel.setFacebookUrl(etFacebookLink.text.toString())
-
                 val user = viewModel.getUser()
                 user?.let {
                     // Use viewModelScope to handle the coroutine
@@ -70,6 +68,7 @@ class EditProfileFragment : Fragment() {
             var linkedin = etLinkedInLink.text.toString()
             var facebook = etFacebookLink.text.toString()
             var img = viewModel.getUser()?.imageUrl ?: ""
+
             etName.doAfterTextChanged {text ->
                 name= text.toString()
                 if(viewModel.isInputEqualToCachedUser(
@@ -77,8 +76,8 @@ class EditProfileFragment : Fragment() {
                 )){
                     btnSave.visibility = View.GONE
                 }else{
+
                     btnSave.visibility = View.VISIBLE
-                    viewModel.setName(name)
                 }
             }
             etTrack.doAfterTextChanged {text ->
@@ -89,7 +88,6 @@ class EditProfileFragment : Fragment() {
                     btnSave.visibility = View.GONE
                 }else{
                     btnSave.visibility = View.VISIBLE
-                    viewModel.setTrack(track)
                 }
             }
             etGithubLink.doAfterTextChanged {text ->
@@ -100,7 +98,6 @@ class EditProfileFragment : Fragment() {
                     btnSave.visibility = View.GONE
                 }else{
                     btnSave.visibility = View.VISIBLE
-                    viewModel.setGithubUrl(github)
                 }
             }
             etLinkedInLink.doAfterTextChanged {text ->
@@ -111,7 +108,6 @@ class EditProfileFragment : Fragment() {
                     btnSave.visibility = View.GONE
                 }else{
                     btnSave.visibility = View.VISIBLE
-                    viewModel.setLinkedinUrl(linkedin)
                 }
             }
             etFacebookLink.doAfterTextChanged {text ->
@@ -122,7 +118,6 @@ class EditProfileFragment : Fragment() {
                     btnSave.visibility = View.GONE
                 }else{
                     btnSave.visibility = View.VISIBLE
-                    viewModel.setFacebookUrl(facebook)
                 }
             }
             ivUserImage.setOnClickListener{
@@ -134,7 +129,6 @@ class EditProfileFragment : Fragment() {
                     btnSave.visibility = View.GONE
                 }else{
                     btnSave.visibility = View.VISIBLE
-                    viewModel.setImgUrl(img)
                 }
             }
         }
@@ -143,9 +137,9 @@ class EditProfileFragment : Fragment() {
     private fun openGallery() {
 
     }
-    private fun getData(){
+    private suspend fun getData(){
         binding.apply {
-            val cachedUser = viewModel.getUser()
+            val cachedUser = viewModel.getCachedUser()
             etName.setText(cachedUser?.name ?: "")
             etTrack.setText(cachedUser?.track ?: "")
             etGithubLink.setText(cachedUser?.githubUrl ?: "")
