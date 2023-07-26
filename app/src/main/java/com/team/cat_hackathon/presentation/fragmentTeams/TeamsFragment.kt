@@ -77,13 +77,16 @@ class TeamsFragment : Fragment() {
             viewModel.joinRequestState.observe(viewLifecycleOwner) { state ->
                 when (state) {
                     is RequestState.Error -> {
+                        binding.darkBackground.isGone = true
                         binding.progressBar.isVisible = false
                         showSnackbar(state.message ?: "Error", requireContext(), binding.root)
                     }
                     is RequestState.Loading -> {
+                        binding.darkBackground.isVisible = true
                         binding.progressBar.isVisible = true
                     }
                     is RequestState.Sucess -> {
+                        binding.darkBackground.isGone = true
                         binding.progressBar.isVisible = false
                         state.data?.let { response ->
                             showSnackbar(
