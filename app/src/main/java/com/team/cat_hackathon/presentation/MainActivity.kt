@@ -56,11 +56,11 @@ class MainActivity : AppCompatActivity() {
             navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
                     R.id.homeFragment, R.id.teamsFragment2, R.id.notificationFragment, R.id.settingsFragment -> {
-                        bottomNavigationView.visibility = View.VISIBLE
+                        showBottomNavigation()
                     }
 
                     else -> {
-                        bottomNavigationView.visibility = View.GONE
+                        hideBottomNavigation()
                     }
                 }
             }
@@ -95,12 +95,20 @@ class MainActivity : AppCompatActivity() {
             return isOnBoardingFinished ?: dataStore.getIsOnBoardingFinished()
         }
 
-        suspend fun isUserLoggedIn(): Boolean {
-            return isUserLoggedIn ?: dataStore.getIsLoggedIn()
-        }
-
-        fun navigateToHome() {
-            navHostFragment.navController.navigate(R.id.homeFragment)
-        }
-
+    suspend fun isUserLoggedIn(): Boolean {
+        return isUserLoggedIn ?: dataStore.getIsLoggedIn()
     }
+
+    fun navigateToHome() {
+        navHostFragment.navController.navigate(R.id.homeFragment)
+    }
+
+    fun hideBottomNavigation() {
+        bottomNavigationView.visibility = View.GONE
+    }
+
+    fun showBottomNavigation() {
+        bottomNavigationView.visibility = View.VISIBLE
+    }
+
+}

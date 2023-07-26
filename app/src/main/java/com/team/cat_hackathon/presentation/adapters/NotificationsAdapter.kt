@@ -13,7 +13,7 @@ import com.team.cat_hackathon.databinding.NotificationCardBinding
 
 
 class NotificationsAdapter(
-    private val users: List<Member> ,
+    private val users: MutableList<Member> ,
     private val acceptUser : (Int ) -> Unit,
     private val rejectUser : (Int ) -> Unit
 ):RecyclerView.Adapter<NotificationsAdapter.ViewHolder>() {
@@ -56,7 +56,17 @@ class NotificationsAdapter(
         holder.binding.btnReject.setOnClickListener{
             rejectUser(user.user_id)
         }
+    }
 
+    fun removeUser(userId: Int) {
+       for (user in users){
+           if (user.user_id == userId){
+               users.remove(user)
+               Log.d("mohamed", "removeUser: ")
+               notifyDataSetChanged()
+               break
+           }
+       }
     }
 
 

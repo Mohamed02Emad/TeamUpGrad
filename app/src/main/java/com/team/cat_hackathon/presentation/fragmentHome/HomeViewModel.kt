@@ -17,10 +17,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : ViewModel() {
 
-    private val _homeDataRequestState: MutableLiveData<RequestState<AllDataResponse>> = MutableLiveData()
-    val homeDataRequestState: LiveData<RequestState<AllDataResponse>> = _homeDataRequestState
+    private val _homeDataRequestState: MutableLiveData<RequestState<AllDataResponse>?> = MutableLiveData(null)
+    val homeDataRequestState: LiveData<RequestState<AllDataResponse>?> = _homeDataRequestState
 
-    var homeDataResponse: AllDataResponse? = AllDataResponse(emptyList<User>(), emptyList<Team>())
 
    suspend fun requestHomeData() = withContext(Dispatchers.IO){
         _homeDataRequestState.postValue(RequestState.Loading())
@@ -31,8 +30,7 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
     private fun handleDataFromHomeRequest(response: Response<AllDataResponse>?): RequestState<AllDataResponse> {
         if (response?.isSuccessful == true) {
             response.body()?.let { result ->
-                    homeDataResponse = result
-                return RequestState.Sucess(homeDataResponse)
+                return RequestState.Sucess(result)
             }
         }
         return RequestState.Error(response?.message() ?: "error")

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.data.models.Team
@@ -21,9 +20,7 @@ import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentHomeBinding
 import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.utils.showSnackbar
-import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -50,7 +47,8 @@ class HomeFragment : Fragment() {
         attachTabLayoutToViewPager()
         lifecycleScope.launch {
             setObservers()
-            viewModel.requestHomeData()
+            if (viewModel.homeDataRequestState.value == null)
+                viewModel.requestHomeData()
         }
     }
 
@@ -59,6 +57,7 @@ class HomeFragment : Fragment() {
             requestState?.let {
                 when (requestState) {
                     is RequestState.Error -> {
+                        binding.progressBar.isVisible = false
                         showSnackbar(
                             requestState.message ?: "Error",
                             requireContext(),
@@ -66,38 +65,42 @@ class HomeFragment : Fragment() {
                         )
                     }
                     is RequestState.Loading -> {
+                        binding.progressBar.isVisible = true
                     }
                     is RequestState.Sucess -> {
-                        viewModel.homeDataResponse?.teams?.let{
-                            myAdapter.teamsAdapter.teams?.clear()
-                            myAdapter.teamsAdapter.teams?.addAll(it)
-                            myAdapter.teamsAdapter.notifyDataSetChanged()
-                        }
-                        viewModel.homeDataResponse?.users?.let{
-                            myAdapter.usersAdapter.members?.clear()
-                            myAdapter.usersAdapter.members?.addAll(it)
-                            myAdapter.usersAdapter.notifyDataSetChanged()
-                        }
+                        binding.progressBar.isVisible = false
+
+                        myAdapter.teamsAdapter.teams?.clear()
+                        myAdapter.teamsAdapter.teams?.addAll(
+                            requestState.data?.teams ?: emptyList()
+                        )
+                        myAdapter.teamsAdapter.notifyDataSetChanged()
+
+                        myAdapter.usersAdapter.members?.clear()
+                        myAdapter.usersAdapter.members?.addAll(
+                            requestState.data?.users ?: emptyList()
+                        )
+                        myAdapter.usersAdapter.notifyDataSetChanged()
+                    }
                     }
                 }
             }
         }
-    }
 
     private fun setViewPager() {
         viewPager = binding.viewPager
         val users = ArrayList<User>()
         val teams = ArrayList<Team>()
 
-        viewModel.homeDataResponse?.users?.let {
-            users.addAll(it)
+        viewModel.homeDataRequestState.value?.data?.users.let {
+            users.addAll(it ?: emptyList())
         }
-        viewModel.homeDataResponse?.teams?.let {
-            teams.addAll(it)
+        viewModel.homeDataRequestState.value?.data?.teams.let {
+            teams.addAll(it ?: emptyList())
         }
         myAdapter = HomeAdapter(
-                users = users,
-                teams = teams,
+            users = users,
+            teams = teams,
             onTeamClicked
         )
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -51,9 +52,16 @@ class TeamsFragment : Fragment() {
             showToast("NoInternet" , requireContext())
         } else {
             CoroutineScope(Dispatchers.Main).launch {
-                val team = navArgs.team ?: viewModel.getCurrentUserTeam()
-                val currentUserTeam = viewModel.getCurrentUser().team_id
-                if (currentUserTeam == NO_TEAM && team == null) {
+                binding.progressBar.isVisible = true
+                val cachedUser = viewModel.getCurrentUser()
+                val currentUserTeamId = cachedUser.team_id
+
+                val team =
+                    if (navArgs.team != null) navArgs.team
+                    else if (currentUserTeamId == -1) null
+                    else viewModel.getCurrentUserTeam(currentUserTeamId!!)
+
+                if (currentUserTeamId == NO_TEAM && team == null) {
                     setViewsVisibility(null)
                 } else {
                     setViewsVisibility(team)
@@ -69,14 +77,14 @@ class TeamsFragment : Fragment() {
             viewModel.joinRequestState.observe(viewLifecycleOwner) { state ->
                 when (state) {
                     is RequestState.Error -> {
+                        binding.progressBar.isVisible = false
                         showSnackbar(state.message ?: "Error", requireContext(), binding.root)
                     }
-
                     is RequestState.Loading -> {
-
+                        binding.progressBar.isVisible = true
                     }
-
                     is RequestState.Sucess -> {
+                        binding.progressBar.isVisible = false
                         state.data?.let { response ->
                             showSnackbar(
                                 state.message ?: "requested",
@@ -106,6 +114,7 @@ class TeamsFragment : Fragment() {
     }
 
     private suspend fun setViewsVisibility(team: Team?) {
+        binding.progressBar.isVisible = false
         if (team != null) {
             initCollapsing(team.id)
             showDataOnScreen(true)
