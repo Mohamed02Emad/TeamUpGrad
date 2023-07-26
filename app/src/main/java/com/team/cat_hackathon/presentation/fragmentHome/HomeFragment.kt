@@ -23,6 +23,7 @@ import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.utils.showSnackbar
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -49,7 +50,7 @@ class HomeFragment : Fragment() {
         attachTabLayoutToViewPager()
         lifecycleScope.launch {
             setObservers()
-                viewModel.requestHomeData()
+            viewModel.requestHomeData()
         }
     }
 

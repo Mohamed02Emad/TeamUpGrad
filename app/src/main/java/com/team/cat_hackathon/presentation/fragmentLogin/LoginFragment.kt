@@ -14,10 +14,12 @@ import androidx.navigation.fragment.findNavController
 import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.databinding.FragmentLoginBinding
+import com.team.cat_hackathon.utils.BUTTON_MIN_ANIMATION_DURATION
 import com.team.cat_hackathon.utils.CAN_LOGIN
 import com.team.cat_hackathon.utils.showSnackbar
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -44,13 +46,12 @@ class LoginFragment : Fragment() {
     private fun setObservers() {
         viewModel.loginRequestState.observe(viewLifecycleOwner){state->
             state?.let {
+               stopButtonAnimation()
                 when (state){
                     is RequestState.Error -> {
                         showSnackbar( state.message?:"error" , requireContext() , binding.root)
                     }
-                    is RequestState.Loading -> {
-                        //todo : show progress bar
-                    }
+                    is RequestState.Loading -> {}
                     is RequestState.Sucess -> {
                         lifecycleScope.launch {
                             state.data?.let { response ->
@@ -62,6 +63,14 @@ class LoginFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun stopButtonAnimation() {
+        lifecycleScope.launch {
+            delay(BUTTON_MIN_ANIMATION_DURATION)
+            binding.buttonLogin.revertAnimation()
+            binding.progressBar.visibility = View.INVISIBLE
         }
     }
 
@@ -78,30 +87,43 @@ class LoginFragment : Fragment() {
                 viewModel.setPassword(password.toString())
             }
 
-            buttonLogin.setOnClickListener {
-
-                val context = requireContext()
-                if(isInternetAvailable(context)){
-                    val canSendRequestState =
-                        viewModel.validateData(viewModel.email.value, viewModel.password.value)
-
-                    if (canSendRequestState == CAN_LOGIN) {
-                        //todo : uncomment this when needed
+            buttonLogin.apply {
+                setOnClickListener {
+                    startAnimation {
+                        binding.progressBar.visibility = View.VISIBLE
                         lifecycleScope.launch {
-                            viewModel.loginUser(viewModel.email.value, viewModel.password.value)
-                            viewModel.setIsLoggedIn(true)
+                            tryLogin()
                         }
-                    } else {
-                        showSnackbar(canSendRequestState, requireContext(), binding.root)
                     }
-                }else{
-                    showToast("no network connection",context)
                 }
             }
+
             textViewSignup.setOnClickListener {
                 navigateToSignUp()
             }
 
+        }
+    }
+
+    private fun tryLogin() {
+        val context = requireContext()
+        if(isInternetAvailable(context)){
+            val canSendRequestState = viewModel.validateData(
+                viewModel.email.value,
+                viewModel.password.value
+            )
+            if (canSendRequestState == CAN_LOGIN) {
+                lifecycleScope.launch {
+                    viewModel.loginUser(viewModel.email.value, viewModel.password.value)
+                    viewModel.setIsLoggedIn(true)
+                }
+            } else {
+                showSnackbar(canSendRequestState, requireContext(), binding.root)
+                stopButtonAnimation()
+            }
+        }else{
+            showToast("no network connection",context)
+            stopButtonAnimation()
         }
     }
 
