@@ -49,10 +49,13 @@ class TeamsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!isInternetAvailable(requireContext())) {
-            showToast("NoInternet" , requireContext())
+            binding.lottieNoConnection.isVisible = true
+            binding.lottieNoConnection.playAnimation()
         } else {
             CoroutineScope(Dispatchers.Main).launch {
+
                 binding.progressBar.isVisible = true
+
                 val cachedUser = viewModel.getCurrentUser()
                 val currentUserTeamId = cachedUser.team_id
 
@@ -67,6 +70,7 @@ class TeamsFragment : Fragment() {
                     setViewsVisibility(team)
                     setObservers()
                 }
+
                 setOnClicks()
             }
         }

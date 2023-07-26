@@ -8,6 +8,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.mo_chatting.chatapp.appClasses.isInternetAvailable
+import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.data.models.Member
 import com.team.cat_hackathon.databinding.FragmentNotificationBinding
@@ -33,7 +35,14 @@ class NotificationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            viewModel.getRequestList()
+            if (isInternetAvailable(requireContext())) {
+                viewModel.getRequestList()
+            }else{
+                binding.lottieNoConnection.isVisible = true
+                binding.lottieNoConnection.setAnimation(R.raw.anim_no_connection)
+                binding.lottieNoConnection.playAnimation()
+                binding.tvTitle.isVisible = false
+            }
         }
         setOnClicks()
         setObservers()
@@ -102,10 +111,19 @@ class NotificationFragment : Fragment() {
             rejectUser = viewModel.rejectUser
         )
         binding.rvNotifications.adapter = myAdapter
+        if (mutableMembersList.isEmpty()){
+            showNoNotifications()
+        }
     }
 
 
     private fun setOnClicks() {
+    }
+
+    fun showNoNotifications(){
+        binding.lottieNoConnection.setAnimation(R.raw.anim_no_notification)
+        binding.lottieNoConnection.isVisible = true
+        binding.lottieNoConnection.playAnimation()
     }
 
 }
