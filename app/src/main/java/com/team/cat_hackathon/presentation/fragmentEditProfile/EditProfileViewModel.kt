@@ -1,5 +1,8 @@
 package com.team.cat_hackathon.presentation.fragmentEditProfile
 
+import android.app.Application
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,11 +10,14 @@ import androidx.lifecycle.ViewModel
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 
 @HiltViewModel
-class EditProfileViewModel @Inject constructor(val repository: HomeRepositoryImpl) : ViewModel() {
+class EditProfileViewModel @Inject constructor(
+    val repository: HomeRepositoryImpl, val appContext: Application,
+) : ViewModel() {
 
 
     private val _cachedUserLiveData = MutableLiveData<User>()
@@ -61,15 +67,17 @@ class EditProfileViewModel @Inject constructor(val repository: HomeRepositoryImp
                 cachedUser.facebookUrl?.trim() == facebook.trim()
     }
 
-    fun getImg(): String {
-        return _cachedUserLiveData.value?.imageUrl ?: ""
-    }
-
-    private fun uploadImage(image: Uri?): String? {
+    private suspend fun uploadImage(image: Uri?): String? {
         return if (image == null)
             null
         else {
-            //repository.uploadImage(image)
+            val imageStream = appContext.contentResolver.openInputStream(image)
+            val selectedImage = BitmapFactory.decodeStream(imageStream)
+            val baos = ByteArrayOutputStream()
+            selectedImage.compress(Bitmap.CompressFormat.JPEG, 80, baos)
+            val data = baos.toByteArray()
+            //todo : do it later
+            val response = repository.uploadImage(data)
             null
         }
     }
