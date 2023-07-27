@@ -20,6 +20,9 @@ import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentHomeBinding
 import com.team.cat_hackathon.presentation.MainActivity
+import com.team.cat_hackathon.utils.openFacebookIntent
+import com.team.cat_hackathon.utils.openGithubIntent
+import com.team.cat_hackathon.utils.openLinkedInIntent
 import com.team.cat_hackathon.utils.showSnackbar
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -110,7 +113,11 @@ class HomeFragment : Fragment() {
         myAdapter = HomeAdapter(
             users = users,
             teams = teams,
-            onTeamClicked
+            onTeamClicked,
+            userClicekd,
+            linkedInClicked,
+            faceBookClicked,
+            githubClicked
         )
 
         viewPager.adapter = myAdapter
@@ -153,4 +160,16 @@ class HomeFragment : Fragment() {
 
     }
 
+    val userClicekd : (User) -> Unit = {user ->
+       findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment(user))
+    }
+    val linkedInClicked : (String) -> Unit = {url->
+        openLinkedInIntent(url , requireContext())
+    }
+    val faceBookClicked : (String) -> Unit = {url->
+        openFacebookIntent(url , requireContext())
+    }
+    val githubClicked : (String) -> Unit = {url->
+        openGithubIntent(url , requireContext())
+    }
 }

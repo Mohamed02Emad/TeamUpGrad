@@ -1,21 +1,22 @@
 package com.team.cat_hackathon.presentation.adapters
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.team.cat_hackathon.R
-import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.MemberDataModelBinding
-import com.team.cat_hackathon.databinding.TeamDataModelBinding
 
 
 class MembersAdapter(
-    val members: ArrayList<User>? = null
+    val members: ArrayList<User>? = null,
+    val userClicked: (User) -> Unit,
+    val linkedInClicked: (String) -> Unit,
+    val faceBookClicked: (String) -> Unit,
+    val gitHubClicked: (String) -> Unit
 ):RecyclerView.Adapter<MembersAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: MemberDataModelBinding) :
@@ -50,17 +51,53 @@ class MembersAdapter(
 
 
 
-        holder.binding.itemName.text=member?.name
-        holder.binding.itemPosition.text=member?.track
+        holder.binding.itemName.text = member?.name
+        holder.binding.itemPosition.text = member?.track
 
-        holder.binding.gitHub.setOnClickListener {
-
+        if (member?.facebookUrl == null || member.facebookUrl?.trim().isNullOrEmpty()) {
+            holder.binding.facebook.isVisible = false
+        } else {
+            holder.binding.facebook.apply {
+                isVisible = true
+                setOnClickListener {
+                    faceBookClicked(member.facebookUrl!!)
+                }
+            }
         }
-        holder.binding.facebook.setOnClickListener {
 
+        if (member?.githubUrl == null || member.githubUrl?.trim().isNullOrEmpty()) {
+            holder.binding.gitHub.isVisible = false
+        } else {
+            holder.binding.gitHub.apply {
+                isVisible = true
+                setOnClickListener {
+                    gitHubClicked(member.githubUrl!!)
+                }
+            }
         }
-        holder.binding.linkedIn.setOnClickListener {
 
+        if (member?.linkedinUrl == null || member.linkedinUrl?.trim().isNullOrEmpty()) {
+            holder.binding.linkedIn.isVisible = false
+        } else {
+            holder.binding.linkedIn.apply {
+                isVisible = true
+                setOnClickListener {
+                    linkedInClicked(member.linkedinUrl!!)
+                }
+            }
+        }
+
+
+        holder.binding.card.setOnClickListener {
+            val user = User(member?.id ?: 0)
+            user.facebookUrl = member?.facebookUrl
+            user.imageUrl = member?.imageUrl
+            user.linkedinUrl = member?.linkedinUrl
+            user.githubUrl = member?.githubUrl
+            user.name = member?.name.toString()
+            user.track = member?.track
+            user.email = member?.email.toString()
+            userClicked(user)
         }
 
     }

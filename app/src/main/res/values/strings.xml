@@ -45,4 +45,10 @@
     <string name="explore_txt">you are not on a team , you can join a team or create new team</string>
     <string name="team">team</string>
     <string name="bio">Bio</string>
+    <string name="invite">Invite To Team</string>
+    <string name="name">"Name:"</string>
+    <string name="profile_track">Track:</string>
+    <string name="profile_email">Email:</string>
+    <string name="profile_bio">Bio:</string>
+    <string name="social_links">Social Links</string>
 </resources>
