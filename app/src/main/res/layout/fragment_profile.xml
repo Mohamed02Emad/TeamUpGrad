@@ -186,6 +186,8 @@
         app:layout_constraintBottom_toBottomOf="@id/title_tv_social_licks"
         app:layout_constraintStart_toEndOf="@id/title_tv_social_licks"
         android:layout_marginStart="20dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
     <ImageView
         android:id="@+id/facebook"
@@ -197,6 +199,8 @@
         app:layout_constraintBottom_toBottomOf="@id/title_tv_social_licks"
         app:layout_constraintStart_toEndOf="@id/gitHub"
         android:layout_marginStart="20dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
 
     <ImageView
@@ -209,6 +213,8 @@
         app:layout_constraintBottom_toBottomOf="@id/title_tv_social_licks"
         app:layout_constraintStart_toEndOf="@id/facebook"
         android:layout_marginStart="20dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
 
     <androidx.appcompat.widget.AppCompatButton

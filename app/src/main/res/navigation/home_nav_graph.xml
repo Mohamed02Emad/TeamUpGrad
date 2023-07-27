@@ -17,6 +17,13 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_left"
             app:destination="@id/teamsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -123,6 +130,13 @@
             app:nullable="true"
             app:argType="com.team.cat_hackathon.data.models.Team"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_teamsFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
@@ -135,6 +149,13 @@
             app:nullable="true"
             app:argType="com.team.cat_hackathon.data.models.Team"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_teamsFragment2_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -147,6 +168,23 @@
         android:id="@+id/notificationFragment"
         android:name="com.team.cat_hackathon.presentation.fragmentNotification.NotificationFragment"
         android:label="fragment_notification"
-        tools:layout="@layout/fragment_notification" />
+        tools:layout="@layout/fragment_notification" >
+        <action
+            android:id="@+id/action_notificationFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.team.cat_hackathon.presentation.fragmentProfile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <argument
+            android:name="user"
+            app:argType="com.team.cat_hackathon.data.models.User" />
+    </fragment>
 
 </navigation>

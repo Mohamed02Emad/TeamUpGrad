@@ -8,15 +8,15 @@ import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.HomeAdapterCardBinding
 import com.team.cat_hackathon.presentation.adapters.MembersAdapter
 import com.team.cat_hackathon.presentation.adapters.TeamAdapter
-import com.team.cat_hackathon.utils.showToast
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class HomeAdapter(
     private val users: ArrayList<User>? = null,
     private val teams: ArrayList<Team>? = null,
-    val onTeamClicked: (team: Team) -> Unit
+    val onTeamClicked: (team: Team) -> Unit,
+    val userClicked: () -> Unit,
+    val linkedInClicked: (String) -> Unit,
+    val faceBookClicked: (String) -> Unit,
+    val gitHubClicked: (String) -> Unit
 ) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
@@ -25,7 +25,13 @@ class HomeAdapter(
 
     init {
         teamsAdapter = TeamAdapter(teams, onTeamClicked)
-        usersAdapter = MembersAdapter(users)
+        usersAdapter = MembersAdapter(
+            users,
+            userClicked,
+            linkedInClicked,
+            faceBookClicked,
+            gitHubClicked
+        )
     }
 
      lateinit var usersRecyclerView: RecyclerView

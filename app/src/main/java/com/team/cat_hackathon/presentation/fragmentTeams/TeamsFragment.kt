@@ -23,8 +23,10 @@ import com.team.cat_hackathon.databinding.FragmentTeamsBinding
 import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.presentation.adapters.MembersAdapter
 import com.team.cat_hackathon.utils.NO_TEAM
+import com.team.cat_hackathon.utils.openFacebookIntent
+import com.team.cat_hackathon.utils.openGithubIntent
+import com.team.cat_hackathon.utils.openLinkedInIntent
 import com.team.cat_hackathon.utils.showSnackbar
-import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -156,8 +158,13 @@ class TeamsFragment : Fragment() {
 
         val arr = ArrayList<User>()
         arr.addAll(usersList)
-        myAdapter = MembersAdapter(arr)
-
+        myAdapter = MembersAdapter(
+            arr,
+            userClicekd,
+            linkedInClicked,
+            faceBookClicked,
+            githubClicked
+            )
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = myAdapter
     }
@@ -206,6 +213,19 @@ class TeamsFragment : Fragment() {
             }
         }
 
+    }
+
+    val userClicekd : () -> Unit = {
+
+    }
+    val linkedInClicked : (String) -> Unit = {url->
+        openLinkedInIntent(url , requireContext())
+    }
+    val faceBookClicked : (String) -> Unit = {url->
+        openFacebookIntent(url , requireContext())
+    }
+    val githubClicked : (String) -> Unit = {url->
+        openGithubIntent(url , requireContext())
     }
 
 }

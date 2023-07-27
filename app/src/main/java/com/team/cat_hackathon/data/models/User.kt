@@ -3,6 +3,7 @@ package com.team.cat_hackathon.data.models
 import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 
 @Entity
@@ -22,4 +23,4 @@ data class User(
     var team_id: Int? = null,
     var created_at: String? = null,
     var updated_at: String? = null
-)
+): Serializable
