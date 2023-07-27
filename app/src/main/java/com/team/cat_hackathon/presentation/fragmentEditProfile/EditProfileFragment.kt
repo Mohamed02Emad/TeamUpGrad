@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,6 +18,8 @@ import com.team.cat_hackathon.R
 import com.team.cat_hackathon.databinding.FragmentEditProfileBinding
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -49,7 +53,6 @@ class EditProfileFragment : Fragment() {
             btnSave.setOnClickListener {
                 val user = viewModel.getUser()
                 user?.let {
-                    // Use viewModelScope to handle the coroutine
                     viewModel.viewModelScope.launch {
                         viewModel.updateUser(it)
                         btnSave.visibility = View.GONE
@@ -64,47 +67,74 @@ class EditProfileFragment : Fragment() {
 
             var name = etName.text.toString()
             var track = etTrack.text.toString()
+            var email = etEmail.text.toString()
+            var bio = etBio.text.toString()
             var github = etGithubLink.text.toString()
             var linkedin = etLinkedInLink.text.toString()
             var facebook = etFacebookLink.text.toString()
-            var img = viewModel.getUser()?.imageUrl ?: ""
 
-            etName.doAfterTextChanged {text ->
-                name= text.toString()
-                if(viewModel.isInputEqualToCachedUser(
-                    img,name,track,github,linkedin,facebook
-                )){
+            etName.doAfterTextChanged { text ->
+                name = text.toString()
+                if (viewModel.isInputEqualToCachedUser(
+                         name, track, email, bio, github, linkedin, facebook
+                    )
+                ) {
                     btnSave.visibility = View.GONE
-                }else{
+                } else {
 
                     btnSave.visibility = View.VISIBLE
                 }
             }
-            etTrack.doAfterTextChanged {text ->
+            etTrack.doAfterTextChanged { text ->
                 track = text.toString()
-                if(viewModel.isInputEqualToCachedUser(
-                        img, name,track,github,linkedin,facebook
-                )){
+                if (viewModel.isInputEqualToCachedUser(
+                       name, track, email, bio, github, linkedin, facebook
+                    )
+                ) {
                     btnSave.visibility = View.GONE
-                }else{
+                } else {
                     btnSave.visibility = View.VISIBLE
                 }
             }
-            etGithubLink.doAfterTextChanged {text ->
-                github=text.toString()
-                if(viewModel.isInputEqualToCachedUser(
-                        img,name,track,github,linkedin,facebook
-                    )){
+            etEmail.doAfterTextChanged { text ->
+                email = text.toString()
+                if (viewModel.isInputEqualToCachedUser(
+                      name, track, email, bio, github, linkedin, facebook
+                    )
+                ) {
                     btnSave.visibility = View.GONE
-                }else{
+                } else {
                     btnSave.visibility = View.VISIBLE
                 }
             }
-            etLinkedInLink.doAfterTextChanged {text ->
-                linkedin=text.toString()
-                if(viewModel.isInputEqualToCachedUser(
-                        img,name,track,github,linkedin,facebook
-                    )){
+            etBio.doAfterTextChanged { text ->
+                bio = text.toString()
+                if (viewModel.isInputEqualToCachedUser(
+                       name, track, email, bio, github, linkedin, facebook
+                    )
+                ) {
+                    btnSave.visibility = View.GONE
+                } else {
+                    btnSave.visibility = View.VISIBLE
+                }
+            }
+            etGithubLink.doAfterTextChanged { text ->
+                github = text.toString()
+                if (viewModel.isInputEqualToCachedUser(
+                      name, track, email, bio, github, linkedin, facebook
+                    )
+                ) {
+                    btnSave.visibility = View.GONE
+                } else {
+                    btnSave.visibility = View.VISIBLE
+                }
+            }
+            etLinkedInLink.doAfterTextChanged { text ->
+                linkedin = text.toString()
+                if (viewModel.isInputEqualToCachedUser(
+                         name, track, email, bio, github, linkedin, facebook
+                    )
+                ) {
                     btnSave.visibility = View.GONE
                 }else{
                     btnSave.visibility = View.VISIBLE
@@ -113,39 +143,33 @@ class EditProfileFragment : Fragment() {
             etFacebookLink.doAfterTextChanged {text ->
                 facebook=text.toString()
                 if(viewModel.isInputEqualToCachedUser(
-                        img,name,track,github,linkedin,facebook
+                         name, track, email, bio, github, linkedin, facebook
                     )){
                     btnSave.visibility = View.GONE
                 }else{
                     btnSave.visibility = View.VISIBLE
                 }
             }
+
             ivUserImage.setOnClickListener{
                 openGallery()
-                img=viewModel.getImg()
-                if(viewModel.isInputEqualToCachedUser(
-                        img,name,track,github,linkedin,facebook
-                    )){
-                    btnSave.visibility = View.GONE
-                }else{
-                    btnSave.visibility = View.VISIBLE
-                }
             }
         }
     }
 
-    private fun openGallery() {
 
-    }
     private suspend fun getData(){
         binding.apply {
             val cachedUser = viewModel.getCachedUser()
             etName.setText(cachedUser?.name ?: "")
             etTrack.setText(cachedUser?.track ?: "")
+            etEmail.setText(cachedUser?.email ?: "")
+            etBio.setText(cachedUser?.bio ?: "")
             etGithubLink.setText(cachedUser?.githubUrl ?: "")
             etLinkedInLink.setText(cachedUser?.linkedinUrl ?: "")
             etFacebookLink.setText(cachedUser?.facebookUrl ?: "")
-            cachedUser?.imageUrl?.let{url->
+
+            cachedUser?.imageUrl?.let { url ->
                 Glide.with(ivUserImage)
                     .load(cachedUser.imageUrl)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -153,8 +177,29 @@ class EditProfileFragment : Fragment() {
                     .error(R.drawable.ic_profile)
                     .into(ivUserImage)
             }
-            btnSave.visibility=View.GONE
+            btnSave.visibility = View.GONE
         }
     }
+
+    private fun openGallery() {
+        singlePhotoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    val singlePhotoPicker =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.setImage(uri)
+                        Glide.with(binding.ivUserImage)
+                            .load(uri)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .centerInside()
+                            .error(R.drawable.ic_profile)
+                            .into(binding.ivUserImage)
+                    viewModel.imageChanged.value = true
+                    binding.btnSave.visibility = View.VISIBLE
+                }
+            }
+        }
 
 }
