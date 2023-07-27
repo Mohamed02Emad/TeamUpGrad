@@ -13,7 +13,7 @@ class HomeAdapter(
     private val users: ArrayList<User>? = null,
     private val teams: ArrayList<Team>? = null,
     val onTeamClicked: (team: Team) -> Unit,
-    val userClicked: () -> Unit,
+    val userClicked: (User) -> Unit,
     val linkedInClicked: (String) -> Unit,
     val faceBookClicked: (String) -> Unit,
     val gitHubClicked: (String) -> Unit

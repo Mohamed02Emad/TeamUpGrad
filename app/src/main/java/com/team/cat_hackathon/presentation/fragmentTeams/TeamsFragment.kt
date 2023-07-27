@@ -22,6 +22,8 @@ import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentTeamsBinding
 import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.presentation.adapters.MembersAdapter
+import com.team.cat_hackathon.presentation.fragmentHome.HomeFragmentDirections
+import com.team.cat_hackathon.presentation.fragmentProfile.ProfileFragmentArgs
 import com.team.cat_hackathon.utils.NO_TEAM
 import com.team.cat_hackathon.utils.openFacebookIntent
 import com.team.cat_hackathon.utils.openGithubIntent
@@ -215,8 +217,13 @@ class TeamsFragment : Fragment() {
 
     }
 
-    val userClicekd : () -> Unit = {
-
+    val userClicekd : (User) -> Unit = {user ->
+        try {
+            findNavController().navigate(TeamsFragmentDirections.actionTeamsFragment2ToProfileFragment(user))
+        }catch (e:Exception) {
+            val args = ProfileFragmentArgs(user).toBundle()
+            findNavController().navigate(R.id.action_teamsFragment_to_profileFragment , args)
+        }
     }
     val linkedInClicked : (String) -> Unit = {url->
         openLinkedInIntent(url , requireContext())

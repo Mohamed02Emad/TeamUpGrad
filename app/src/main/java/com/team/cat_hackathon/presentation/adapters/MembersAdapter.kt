@@ -13,7 +13,7 @@ import com.team.cat_hackathon.databinding.MemberDataModelBinding
 
 class MembersAdapter(
     val members: ArrayList<User>? = null,
-    val userClicked: () -> Unit,
+    val userClicked: (User) -> Unit,
     val linkedInClicked: (String) -> Unit,
     val faceBookClicked: (String) -> Unit,
     val gitHubClicked: (String) -> Unit
@@ -89,7 +89,15 @@ class MembersAdapter(
 
 
         holder.binding.card.setOnClickListener {
-            //   userClicked()
+            val user = User(member?.id ?: 0)
+            user.facebookUrl = member?.facebookUrl
+            user.imageUrl = member?.imageUrl
+            user.linkedinUrl = member?.linkedinUrl
+            user.githubUrl = member?.githubUrl
+            user.name = member?.name.toString()
+            user.track = member?.track
+            user.email = member?.email.toString()
+            userClicked(user)
         }
 
     }
