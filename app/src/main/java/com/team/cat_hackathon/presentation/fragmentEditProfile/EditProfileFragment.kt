@@ -52,9 +52,15 @@ class EditProfileFragment : Fragment() {
 
             btnSave.setOnClickListener {
                 val user = viewModel.getUser()
-                user?.let {
+                user?.let {user->
+                    user.githubUrl = binding.etGithubLink.text.toString()
+                    user.facebookUrl = binding.etFacebookLink.text.toString()
+                    user.linkedinUrl = binding.etLinkedInLink.text.toString()
+                    user.name = binding.etName.text.toString()
+                    user.bio = binding.etBio.text.toString()
+                    user.track = binding.etTrack.text.toString()
                     viewModel.viewModelScope.launch {
-                        viewModel.updateUser(it)
+                        viewModel.updateUser(user)
                         btnSave.visibility = View.GONE
                     }
                 }
@@ -67,7 +73,8 @@ class EditProfileFragment : Fragment() {
 
             var name = etName.text.toString()
             var track = etTrack.text.toString()
-            var email = etEmail.text.toString()
+//            var email = etEmail.text.toString()
+            var email =""
             var bio = etBio.text.toString()
             var github = etGithubLink.text.toString()
             var linkedin = etLinkedInLink.text.toString()
@@ -96,17 +103,17 @@ class EditProfileFragment : Fragment() {
                     btnSave.visibility = View.VISIBLE
                 }
             }
-            etEmail.doAfterTextChanged { text ->
-                email = text.toString()
-                if (viewModel.isInputEqualToCachedUser(
-                      name, track, email, bio, github, linkedin, facebook
-                    )
-                ) {
-                    btnSave.visibility = View.GONE
-                } else {
-                    btnSave.visibility = View.VISIBLE
-                }
-            }
+//            etEmail.doAfterTextChanged { text ->
+//                email = text.toString()
+//                if (viewModel.isInputEqualToCachedUser(
+//                      name, track, email, bio, github, linkedin, facebook
+//                    )
+//                ) {
+//                    btnSave.visibility = View.GONE
+//                } else {
+//                    btnSave.visibility = View.VISIBLE
+//                }
+//            }
             etBio.doAfterTextChanged { text ->
                 bio = text.toString()
                 if (viewModel.isInputEqualToCachedUser(
@@ -163,7 +170,7 @@ class EditProfileFragment : Fragment() {
             val cachedUser = viewModel.getCachedUser()
             etName.setText(cachedUser?.name ?: "")
             etTrack.setText(cachedUser?.track ?: "")
-            etEmail.setText(cachedUser?.email ?: "")
+//            etEmail.setText(cachedUser?.email ?: "")
             etBio.setText(cachedUser?.bio ?: "")
             etGithubLink.setText(cachedUser?.githubUrl ?: "")
             etLinkedInLink.setText(cachedUser?.linkedinUrl ?: "")

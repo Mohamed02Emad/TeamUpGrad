@@ -19,12 +19,11 @@
             android:layout_width="95dp"
             android:layout_height="95dp"
             android:padding="8dp"
-            android:src="@drawable/ellipse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-            app:strokeColor="@color/white"
+            app:strokeColor="@color/grey"
             app:strokeWidth="0.5dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
