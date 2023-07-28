@@ -86,7 +86,7 @@ interface MyAPI {
         @Header("Authorization")
         token: String,
         @Body
-        imageUrl: File? = null,
+        imageUrl: File?,
         @Query("name")
         name: String? = null,
         @Query("track")

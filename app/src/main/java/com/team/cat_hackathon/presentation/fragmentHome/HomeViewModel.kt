@@ -20,6 +20,9 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
     private val _homeDataRequestState: MutableLiveData<RequestState<AllDataResponse>?> = MutableLiveData(null)
     val homeDataRequestState: LiveData<RequestState<AllDataResponse>?> = _homeDataRequestState
 
+    private val _isUserSearch: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isUserSearch: LiveData<Boolean> = _isUserSearch
+
 
    suspend fun requestHomeData() = withContext(Dispatchers.IO){
         _homeDataRequestState.postValue(RequestState.Loading())
@@ -34,6 +37,10 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
             }
         }
         return RequestState.Error(response?.message() ?: "error")
+    }
+
+    fun setSearchToUser(b: Boolean) {
+         _isUserSearch.value = b
     }
 
 }

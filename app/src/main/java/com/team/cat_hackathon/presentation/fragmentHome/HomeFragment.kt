@@ -2,10 +2,12 @@ package com.team.cat_hackathon.presentation.fragmentHome
 
 import HomeAdapter
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.api.RequestState
+import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentHomeBinding
@@ -23,8 +26,6 @@ import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.utils.openFacebookIntent
 import com.team.cat_hackathon.utils.openGithubIntent
 import com.team.cat_hackathon.utils.openLinkedInIntent
-import com.team.cat_hackathon.utils.showSnackbar
-import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -82,22 +83,65 @@ class HomeFragment : Fragment() {
                     is RequestState.Sucess -> {
                         binding.progressBar.isVisible = false
 
-                        myAdapter.teamsAdapter.teams?.clear()
-                        myAdapter.teamsAdapter.teams?.addAll(
-                            requestState.data?.teams ?: emptyList()
-                        )
-                        myAdapter.teamsAdapter.notifyDataSetChanged()
+                        setAdaptersData(requestState)
 
-                        myAdapter.usersAdapter.members?.clear()
-                        myAdapter.usersAdapter.members?.addAll(
-                            requestState.data?.users ?: emptyList()
-                        )
-                        myAdapter.usersAdapter.notifyDataSetChanged()
-                    }
+                        setSearchFeature()
                     }
                 }
             }
         }
+    }
+
+    private fun setSearchFeature() {
+        searchInAdapterLists(binding.searchET.text)
+        binding.searchET.doAfterTextChanged { text ->
+           searchInAdapterLists(text)
+        }
+
+    }
+
+    private fun searchInAdapterLists(text: Editable?) {
+        if (text.isNullOrEmpty()) {
+            setAdaptersData(viewModel.homeDataRequestState.value!!)
+            return
+        }
+        if (viewModel.isUserSearch.value!!) {
+            myAdapter.usersAdapter.members?.clear()
+            myAdapter.usersAdapter.members?.addAll(
+                viewModel.homeDataRequestState.value!!.data?.users
+                    ?.filter {
+                        it.name.lowercase().contains(text.toString().lowercase()) ||
+                                it.track?.lowercase()
+                                    ?.contains(text.toString().lowercase()) ?: false
+                    } ?: emptyList()
+            )
+            myAdapter.usersAdapter.notifyDataSetChanged()
+        } else {
+            myAdapter.teamsAdapter.teams?.clear()
+            myAdapter.teamsAdapter.teams?.addAll(
+                viewModel.homeDataRequestState.value!!.data?.teams
+                    ?.filter {
+                        it.name.lowercase().contains(text.toString().lowercase())
+                    }
+                    ?: emptyList()
+            )
+            myAdapter.teamsAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun setAdaptersData(requestState: RequestState<AllDataResponse>) {
+        myAdapter.teamsAdapter.teams?.clear()
+        myAdapter.teamsAdapter.teams?.addAll(
+            requestState.data?.teams ?: emptyList()
+        )
+        myAdapter.teamsAdapter.notifyDataSetChanged()
+
+        myAdapter.usersAdapter.members?.clear()
+        myAdapter.usersAdapter.members?.addAll(
+            requestState.data?.users ?: emptyList()
+        )
+        myAdapter.usersAdapter.notifyDataSetChanged()
+    }
 
     private fun setViewPager() {
         viewPager = binding.viewPager
@@ -134,8 +178,12 @@ class HomeFragment : Fragment() {
                 try {
                     if (position == 0) {
                         myAdapter.teamsRecyclerView.scrollToPosition(0)
+                        viewModel.setSearchToUser(false)
+                        setSearchFeature()
                     } else {
                         myAdapter.usersRecyclerView.scrollToPosition(0)
+                        viewModel.setSearchToUser(true)
+                        setSearchFeature()
                     }
                 }catch (e:Exception){}
             }
@@ -166,10 +214,10 @@ class HomeFragment : Fragment() {
     val linkedInClicked : (String) -> Unit = {url->
         openLinkedInIntent(url , requireContext())
     }
-    val faceBookClicked : (String) -> Unit = {url->
-        openFacebookIntent(url , requireContext())
+    val faceBookClicked: (String) -> Unit = { url ->
+        openFacebookIntent(url, requireContext())
     }
-    val githubClicked : (String) -> Unit = {url->
-        openGithubIntent(url , requireContext())
+    val githubClicked: (String) -> Unit = { url ->
+        openGithubIntent(url, requireContext())
     }
 }
