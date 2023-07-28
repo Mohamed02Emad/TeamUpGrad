@@ -27,8 +27,8 @@ fun mapFullTeamToTeam(fullTeam: TeamWithUsers): Team {
         fullTeam.id,
         fullTeam.name,
         fullTeam.description,
-        fullTeam.created_at,
-        fullTeam.updated_at
+        created_at = fullTeam.created_at,
+        updated_at = fullTeam.updated_at
     )
 }
 
