@@ -53,13 +53,14 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStore
                 val response: UpdateUserResponse? = response.body()
                 response?.let {
                     Log.d("mohamed", "uploadImage: success \n ${response.user?.imageUrl}")
+
                     dataStoreImpl.insertUser(response.user!!)
                 }
             } else {
-                Log.d("mohamed", "uploadImage: success \n ${response.body()!!.message}")
+                Log.d("mohamed", "uploadImage: failed \n ${response.body()!!.message}")
             }
         } catch (e: Exception) {
-            Log.d("mohamed", "uploadImage: success \n ${e.message}")
+            Log.d("mohamed", "network: error \n ${e.message}")
 
         }
     }

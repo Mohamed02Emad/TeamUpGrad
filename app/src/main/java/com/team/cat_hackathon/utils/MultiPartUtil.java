@@ -1,7 +1,5 @@
 package com.team.cat_hackathon.utils;
 
-import static com.team.cat_hackathon.utils.MyFileUtilsKt.getRealPathFromURI;
-
 import android.content.Context;
 import android.net.Uri;
 

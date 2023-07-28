@@ -1,17 +1,24 @@
 package com.team.cat_hackathon.presentation.fragmentEditProfile
 
 import android.app.Application
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
 import com.team.cat_hackathon.utils.MultiPartUtil
+import com.team.cat_hackathon.utils.cacheImageToFile
 import com.team.cat_hackathon.utils.createMultipartBodyPartFromFile
 import com.team.cat_hackathon.utils.getImageFileFromRealPath
 import com.team.cat_hackathon.utils.getRealPathFromURI
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okio.ByteString.Companion.encode
+import java.io.ByteArrayOutputStream
+import java.io.File
 import javax.inject.Inject
 
 
@@ -34,11 +41,11 @@ class EditProfileViewModel @Inject constructor(
     suspend fun updateUser(user: User) {
         val uri = image.value
         uri?.let {
-            val realPath = getRealPathFromURI(appContext, uri)
-            val file = getImageFileFromRealPath(realPath)
+           val path = cacheImageToFile(appContext,uri)
+            val file = getImageFileFromRealPath(path)
             val part = createMultipartBodyPartFromFile(file)
 
-//            val photoPart = MultiPartUtil.fileToMultiPart(appContext, uri , "profile_image")
+          //  val photoPart = MultiPartUtil.fileToMultiPart(appContext, uri , "imageUrl")
             repository.updateUser(user,part)
         } ?: run {
             repository.updateUser(user)

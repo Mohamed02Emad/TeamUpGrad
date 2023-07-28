@@ -16,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.team.cat_hackathon.R
+import com.team.cat_hackathon.data.api.BASE_URL_WITHOUT_API
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentProfileBinding
 import com.team.cat_hackathon.utils.openFacebookIntent
@@ -84,7 +85,7 @@ class ProfileFragment : Fragment() {
             }
 
             Glide.with(binding.ivUserImage)
-                .load(user.imageUrl)
+                .load(BASE_URL_WITHOUT_API +user.imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerInside()
                 .error(R.drawable.ic_profile)
