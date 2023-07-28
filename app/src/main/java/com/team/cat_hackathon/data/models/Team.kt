@@ -12,6 +12,8 @@ data class Team(
     @PrimaryKey val  id: Int,
     var name: String = "",
     var description: String ="",
+    var Num_of_Members: Int = 0,
     var created_at: String? ="",
-    var updated_at: String? =""
-):Serializable
+    var updated_at: String? ="",
+    var members: List<User> = emptyList()
+    ):Serializable

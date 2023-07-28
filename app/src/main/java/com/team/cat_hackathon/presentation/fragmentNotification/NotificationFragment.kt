@@ -8,10 +8,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.data.models.Member
+import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentNotificationBinding
 import com.team.cat_hackathon.presentation.adapters.NotificationsAdapter
 import com.team.cat_hackathon.utils.showToast
@@ -102,13 +105,15 @@ class NotificationFragment : Fragment() {
         }
     }
 
-    private fun setRecyclerView(members: List<Member>) {
-        val mutableMembersList = mutableListOf<Member>()
+    private fun setRecyclerView(members: List<User>) {
+        val mutableMembersList = mutableListOf<User>()
         mutableMembersList.addAll(members)
         myAdapter = NotificationsAdapter(
             mutableMembersList,
             acceptUser = viewModel.acceptUser,
-            rejectUser = viewModel.rejectUser
+            rejectUser = viewModel.rejectUser,
+            userCliceked
+
         )
         binding.rvNotifications.adapter = myAdapter
         if (mutableMembersList.isEmpty()){
@@ -126,4 +131,7 @@ class NotificationFragment : Fragment() {
         binding.lottieNoConnection.playAnimation()
     }
 
+    val userCliceked: (User) -> Unit = { user ->
+        findNavController().navigate(NotificationFragmentDirections.actionNotificationFragmentToProfileFragment(user))
+    }
 }

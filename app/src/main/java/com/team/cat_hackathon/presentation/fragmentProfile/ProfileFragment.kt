@@ -11,7 +11,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentProfileBinding
 import com.team.cat_hackathon.utils.openFacebookIntent
@@ -63,6 +67,9 @@ class ProfileFragment : Fragment() {
                     }
                 }
             }
+        backArrow.setOnClickListener {
+            findNavController().navigateUp()
+        }
         }
     }
 
@@ -75,6 +82,13 @@ class ProfileFragment : Fragment() {
                 tvEmail.text = user.email
                 tvBio.text = user.bio
             }
+
+            Glide.with(binding.ivUserImage)
+                .load(user.imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerInside()
+                .error(R.drawable.ic_profile)
+                .into(binding.ivUserImage)
 
             user.apply {
                 facebookUrl?.let {

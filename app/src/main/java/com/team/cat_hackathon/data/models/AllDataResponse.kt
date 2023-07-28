@@ -5,5 +5,6 @@ import androidx.annotation.Keep
 @Keep
 data class AllDataResponse(
     var users: List<User>,
-    var teams: List<Team>
-)
+    var teams: List<Team>,
+    var count: Map<String , Int>
+    )

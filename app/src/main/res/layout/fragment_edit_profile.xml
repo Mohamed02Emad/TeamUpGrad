@@ -82,9 +82,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/round_background_with_border"
                 android:paddingStart="8dp"
-                android:paddingTop="12dp"
                 android:paddingEnd="8dp"
-                android:paddingBottom="12dp"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -109,37 +107,35 @@
                 android:maxLines="1"
                 android:background="@drawable/round_background_with_border"
                 android:paddingStart="8dp"
-                android:paddingTop="12dp"
                 android:paddingEnd="8dp"
-                android:paddingBottom="12dp"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/emailTV"
-                android:textColor="@color/color_text"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="22dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:text="@string/emailTV"-->
+<!--                android:textColor="@color/color_text"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textStyle="bold" />-->
 
-            <EditText
-                android:id="@+id/et_email"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
-                android:maxLines="1"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/round_background_with_border"
-                android:paddingStart="8dp"
-                android:paddingTop="12dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="12dp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+<!--            <EditText-->
+<!--                android:id="@+id/et_email"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:maxLines="1"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:background="@drawable/round_background_with_border"-->
+<!--                android:paddingStart="8dp"-->
+<!--                android:paddingTop="12dp"-->
+<!--                android:paddingEnd="8dp"-->
+<!--                android:paddingBottom="12dp"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="16sp" />-->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -161,9 +157,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/round_background_with_border"
                 android:paddingStart="8dp"
-                android:paddingTop="12dp"
                 android:paddingEnd="8dp"
-                android:paddingBottom="12dp"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -186,10 +180,9 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/round_background_with_border"
                 android:paddingStart="8dp"
-                android:paddingTop="12dp"
+                android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingEnd="8dp"
-                android:paddingBottom="12dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -211,11 +204,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/round_background_with_border"
-                android:paddingStart="8dp"
+                android:paddingHorizontal="8dp"
+                android:ellipsize="end"
                 android:maxLines="1"
-                android:paddingTop="12dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="12dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -238,12 +229,10 @@
                 android:layout_marginEnd="20dp"
                 android:maxLines="1"
                 android:background="@drawable/round_background_with_border"
-                android:paddingStart="8dp"
-                android:paddingTop="12dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="12dp"
+                android:paddingHorizontal="8dp"
                 android:layout_marginBottom="40dp"
                 android:textColor="@color/black"
+                android:ellipsize="end"
                 android:textSize="14sp" />
 
         </LinearLayout>

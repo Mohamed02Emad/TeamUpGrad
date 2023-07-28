@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Build
 import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.TeamWithUsers
+import java.io.File
+import java.io.FileOutputStream
 
 
 fun getDeviceName(): String {
@@ -25,8 +27,8 @@ fun mapFullTeamToTeam(fullTeam: TeamWithUsers): Team {
         fullTeam.id,
         fullTeam.name,
         fullTeam.description,
-        fullTeam.created_at,
-        fullTeam.updated_at
+        created_at = fullTeam.created_at,
+        updated_at = fullTeam.updated_at
     )
 }
 
@@ -86,3 +88,13 @@ private fun PackageManager.getPackageInfoCompat(
     } else {
         @Suppress("DEPRECATION") getPackageInfo(packageName, flags)
     }
+
+fun byteArrayToFile(context: Context, byteArray: ByteArray, fileName: String): File {
+    val cacheDir = context.cacheDir
+    val file = File(cacheDir, fileName)
+    val fileOutputStream = FileOutputStream(file)
+    fileOutputStream.write(byteArray)
+    fileOutputStream.flush()
+    fileOutputStream.close()
+    return file
+}

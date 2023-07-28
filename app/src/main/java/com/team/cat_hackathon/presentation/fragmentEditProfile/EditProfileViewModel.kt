@@ -11,6 +11,8 @@ import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 
 
@@ -31,10 +33,7 @@ class EditProfileViewModel @Inject constructor(
 
     suspend fun updateUser(user: User) {
         val uploadedImage = uploadImage(image.value)
-        uploadedImage?.let {
-            user.imageUrl = it
-        }
-        repository.updateUser(user)
+        repository.updateUser(user , uploadedImage)
     }
 
     suspend fun getCachedUser(): User {
@@ -59,7 +58,7 @@ class EditProfileViewModel @Inject constructor(
         val cachedUser = cachedUserLiveData.value!!
         return cachedUser.name.trimEnd().trimStart() == name.trimEnd().trimStart() &&
                 cachedUser.track?.trim() == track.trim() &&
-                cachedUser.email?.trim() == email.trim() &&
+//                cachedUser.email?.trim() == email.trim() &&
                 cachedUser.bio?.trim() == bio.trim() &&
                 imageChanged.value!!&&
                 cachedUser.githubUrl?.trim() == github.trim() &&
@@ -67,7 +66,7 @@ class EditProfileViewModel @Inject constructor(
                 cachedUser.facebookUrl?.trim() == facebook.trim()
     }
 
-    private suspend fun uploadImage(image: Uri?): String? {
+     fun uploadImage(image: Uri?): ByteArray? {
         return if (image == null)
             null
         else {
@@ -75,14 +74,24 @@ class EditProfileViewModel @Inject constructor(
             val selectedImage = BitmapFactory.decodeStream(imageStream)
             val baos = ByteArrayOutputStream()
             selectedImage.compress(Bitmap.CompressFormat.JPEG, 80, baos)
-            val data = baos.toByteArray()
-            //todo : do it later
-            val response = repository.uploadImage(data)
-            null
+            baos.toByteArray()
         }
     }
 
     fun setImage(uri: Uri) {
         _image.value = uri
+    }
+
+    private fun uriToFile(uri: Uri): File? {
+        val context = appContext
+        val inputStream = context.contentResolver.openInputStream(uri)
+        inputStream?.use { input ->
+            val outputFile = File(context.cacheDir, "temp_image.jpg")
+            FileOutputStream(outputFile).use { output ->
+                input.copyTo(output)
+            }
+            return outputFile
+        }
+        return null
     }
 }
