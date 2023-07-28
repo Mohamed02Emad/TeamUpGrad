@@ -1,18 +1,17 @@
 package com.team.cat_hackathon.presentation.fragmentEditProfile
 
 import android.app.Application
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
+import com.team.cat_hackathon.utils.MultiPartUtil
+import com.team.cat_hackathon.utils.createMultipartBodyPartFromFile
+import com.team.cat_hackathon.utils.getImageFileFromRealPath
+import com.team.cat_hackathon.utils.getRealPathFromURI
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
 import javax.inject.Inject
 
 
@@ -31,10 +30,21 @@ class EditProfileViewModel @Inject constructor(
     val image: LiveData<Uri?> = _image
 
 
+
     suspend fun updateUser(user: User) {
-        val uploadedImage = uploadImage(image.value)
-        repository.updateUser(user , uploadedImage)
+        val uri = image.value
+        uri?.let {
+            val realPath = getRealPathFromURI(appContext, uri)
+            val file = getImageFileFromRealPath(realPath)
+            val part = createMultipartBodyPartFromFile(file)
+
+//            val photoPart = MultiPartUtil.fileToMultiPart(appContext, uri , "profile_image")
+            repository.updateUser(user,part)
+        } ?: run {
+            repository.updateUser(user)
+        }
     }
+
 
     suspend fun getCachedUser(): User {
         val cachedUser = repository.getCachedUser()
@@ -65,33 +75,7 @@ class EditProfileViewModel @Inject constructor(
                 cachedUser.linkedinUrl?.trim() == linkedin.trim() &&
                 cachedUser.facebookUrl?.trim() == facebook.trim()
     }
-
-     fun uploadImage(image: Uri?): ByteArray? {
-        return if (image == null)
-            null
-        else {
-            val imageStream = appContext.contentResolver.openInputStream(image)
-            val selectedImage = BitmapFactory.decodeStream(imageStream)
-            val baos = ByteArrayOutputStream()
-            selectedImage.compress(Bitmap.CompressFormat.JPEG, 80, baos)
-            baos.toByteArray()
-        }
-    }
-
     fun setImage(uri: Uri) {
         _image.value = uri
-    }
-
-    private fun uriToFile(uri: Uri): File? {
-        val context = appContext
-        val inputStream = context.contentResolver.openInputStream(uri)
-        inputStream?.use { input ->
-            val outputFile = File(context.cacheDir, "temp_image.jpg")
-            FileOutputStream(outputFile).use { output ->
-                input.copyTo(output)
-            }
-            return outputFile
-        }
-        return null
     }
 }

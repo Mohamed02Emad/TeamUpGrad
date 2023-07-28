@@ -19,13 +19,15 @@ import com.team.cat_hackathon.data.models.MessageResponse
 import com.team.cat_hackathon.data.models.TeamWithUsersResponse
 import com.team.cat_hackathon.data.models.UpdateUserResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Query
-import java.io.File
 
 interface MyAPI {
 
@@ -81,12 +83,30 @@ interface MyAPI {
         teamId: String
     ): Response<MessageResponse>
 
+    @Multipart
     @POST(UPDATE_PROFILE)
     suspend fun updateUser(
         @Header("Authorization")
         token: String,
-        @Body
-        imageUrl: File?,
+        @Part
+        imageUrl: MultipartBody.Part,
+        @Part("name")
+        name: RequestBody?,
+        @Part("track")
+        track: RequestBody?,
+        @Part("bio")
+        bio: RequestBody?,
+        @Part("githubUrl")
+        githubUrl: RequestBody?,
+        @Part("facebookUrl")
+        facebookUrl: RequestBody?,
+        @Part("linkedinUrl")
+        linkedinUrl: RequestBody?
+    ): Response<UpdateUserResponse>
+    @POST(UPDATE_PROFILE)
+    suspend fun updateUser(
+        @Header("Authorization")
+        token: String,
         @Query("name")
         name: String? = null,
         @Query("track")
@@ -142,5 +162,8 @@ interface MyAPI {
         @Query("user_id")
         user_id: Int
     ):  Response <MessageResponse>
+
+
+
 
 }
