@@ -97,7 +97,7 @@
                 android:background="@color/color_background"
                 android:theme="@style/Base.Widget.Design.TabLayout"
                 app:tabIndicator="@drawable/tab_indicator"
-                app:tabIndicatorAnimationMode="elastic"
+                app:tabIndicatorAnimationMode="linear"
                 app:tabIndicatorColor="@color/primary_blue"
                 app:tabIndicatorFullWidth="true"
                 app:tabIndicatorHeight="4dp"

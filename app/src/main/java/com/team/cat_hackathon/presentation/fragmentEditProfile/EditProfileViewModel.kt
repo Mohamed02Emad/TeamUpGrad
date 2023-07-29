@@ -1,24 +1,19 @@
 package com.team.cat_hackathon.presentation.fragmentEditProfile
 
 import android.app.Application
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.team.cat_hackathon.data.api.RequestState
+import com.team.cat_hackathon.data.models.UpdateUserResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
-import com.team.cat_hackathon.utils.MultiPartUtil
 import com.team.cat_hackathon.utils.cacheImageToFile
 import com.team.cat_hackathon.utils.createMultipartBodyPartFromFile
 import com.team.cat_hackathon.utils.getImageFileFromRealPath
-import com.team.cat_hackathon.utils.getRealPathFromURI
 import dagger.hilt.android.lifecycle.HiltViewModel
-import okio.ByteString.Companion.encode
-import java.io.ByteArrayOutputStream
-import java.io.File
+import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -31,25 +26,38 @@ class EditProfileViewModel @Inject constructor(
     private val _cachedUserLiveData = MutableLiveData<User>()
     val cachedUserLiveData: LiveData<User> get() = _cachedUserLiveData
 
+    private val _updateUserResponse: MutableLiveData<RequestState<UpdateUserResponse>?> =
+        MutableLiveData(null)
+    val updateUserResponse: LiveData<RequestState<UpdateUserResponse>?> = _updateUserResponse
+
     val imageChanged: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
 
     private val _image = MutableLiveData<Uri?>(null)
     val image: LiveData<Uri?> = _image
 
 
-
     suspend fun updateUser(user: User) {
         val uri = image.value
-        uri?.let {
-           val path = cacheImageToFile(appContext,uri)
+        var response: Response<UpdateUserResponse>?
+        response = if (uri == null) {
+            repository.updateUser(user)
+        } else {
+            val path = cacheImageToFile(appContext, uri)
             val file = getImageFileFromRealPath(path)
             val part = createMultipartBodyPartFromFile(file)
 
-          //  val photoPart = MultiPartUtil.fileToMultiPart(appContext, uri , "imageUrl")
-            repository.updateUser(user,part)
-        } ?: run {
-            repository.updateUser(user)
+            repository.updateUser(user, part)
         }
+        _updateUserResponse.postValue(handleUserResponse(response))
+    }
+
+    private fun handleUserResponse(response: Response<UpdateUserResponse>?): RequestState<UpdateUserResponse>? {
+        if (response?.isSuccessful == true) {
+            response.body()?.let { result ->
+                return RequestState.Sucess(result)
+            }
+        }
+        return RequestState.Error(response?.message() ?: "error")
     }
 
 
@@ -77,12 +85,17 @@ class EditProfileViewModel @Inject constructor(
                 cachedUser.track?.trim() == track.trim() &&
 //                cachedUser.email?.trim() == email.trim() &&
                 cachedUser.bio?.trim() == bio.trim() &&
-                imageChanged.value!!&&
+                imageChanged.value!! &&
                 cachedUser.githubUrl?.trim() == github.trim() &&
                 cachedUser.linkedinUrl?.trim() == linkedin.trim() &&
                 cachedUser.facebookUrl?.trim() == facebook.trim()
     }
+
     fun setImage(uri: Uri) {
         _image.value = uri
+    }
+
+    suspend fun updateCachedUser(newUser: User) {
+        repository.updateCachedUser(newUser)
     }
 }

@@ -21,7 +21,7 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStore
         return dataStoreImpl.getUser()
     }
 
-    suspend fun updateUser(user: User? = null, imagePart: MultipartBody.Part? = null) {
+    suspend fun updateUser(user: User? = null, imagePart: MultipartBody.Part? = null) :Response<UpdateUserResponse>?{
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
 
         try {
@@ -54,15 +54,9 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStore
                     token = token
                 )
             }
-            if (response.isSuccessful) {
-                val response: UpdateUserResponse? = response.body()
-                response?.let {
-                    dataStoreImpl.insertUser(response.user!!)
-                }
-            } else {
-            }
+          return response
         } catch (e: Exception) {
- // network error
+           return null
         }
     }
 
@@ -78,6 +72,10 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStore
     suspend fun createTeam(name: String, bio: String): Response<MessageResponse> {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
         return RetrofitInstance.api.createTeam(token, name, bio)
+    }
+
+    suspend fun updateCachedUser(newUser: User) {
+      dataStoreImpl.insertUser(newUser)
     }
 
 

@@ -131,7 +131,8 @@ class HomeFragment : Fragment() {
                         val btnDone = bottomSheetDialog?.findViewById<CircularProgressButton>(R.id.button_done)
                         btnDone?.let{
                             it.apply {
-                                val progressBar = bottomSheetDialog?.findViewById<ProgressBar>(R.id.bottom_sheet_progress_bar)
+                                val progressBar =
+                                    bottomSheetDialog?.findViewById<ProgressBar>(R.id.bottom_sheet_progress_bar)
                                 progressBar?.isVisible = false
                                 revertAnimation()
                             }
@@ -234,17 +235,20 @@ class HomeFragment : Fragment() {
                 try {
                     if (position == 0) {
                         myAdapter.teamsRecyclerView.scrollToPosition(0)
-                        viewModel.setSearchToUser(false)
                         lifecycleScope.launch {
-                            if (!viewModel.isUserInTeam())
+                            viewModel.setSearchToUser(false)
+                            if (!viewModel.isUserInTeam()) {
                                 binding.btnCreateTeam.isGone = false
+                            }
+                            setSearchFeature()
                         }
-                        setSearchFeature()
                     } else {
-                        myAdapter.usersRecyclerView.scrollToPosition(0)
-                        viewModel.setSearchToUser(true)
-                        binding.btnCreateTeam.isGone = true
-                        setSearchFeature()
+                             myAdapter.usersRecyclerView.scrollToPosition(0)
+                        lifecycleScope.launch {
+                            viewModel.setSearchToUser(true)
+                            binding.btnCreateTeam.isGone = true
+                            setSearchFeature()
+                        }
                     }
                 }catch (e:Exception){}
             }

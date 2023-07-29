@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,11 +17,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.api.BASE_URL_WITHOUT_API
+import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.databinding.FragmentEditProfileBinding
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -41,7 +44,43 @@ class EditProfileFragment : Fragment() {
         lifecycleScope.launch {
             getData()
             setOnClicks()
+            setObservers()
             setChanges()
+        }
+    }
+
+    private fun setObservers() {
+        viewModel.updateUserResponse.observe(viewLifecycleOwner) { requestState ->
+            requestState?.let {
+                when (requestState) {
+                    is RequestState.Error -> {
+                        showToast("failed to update" , requireContext())
+                        lifecycleScope.launch {
+                            binding.btnSave.revertAnimation()
+                            delay(200)
+                            binding.btnSave.isVisible = false
+                        }
+                        binding.progressBar.isVisible = false
+                    }
+
+                    is RequestState.Loading -> {
+                    }
+
+                    is RequestState.Sucess -> {
+                        showToast("profile was updated" , requireContext())
+                        lifecycleScope.launch {
+                            binding.btnSave.revertAnimation()
+                            delay(200)
+                            binding.btnSave.isVisible = false
+                            val newUser = requestState.data?.user
+                            viewModel.updateCachedUser(newUser!!)
+                        }
+                        binding.progressBar.isVisible = false
+
+                    }
+                }
+            }
+
         }
     }
 
@@ -51,18 +90,23 @@ class EditProfileFragment : Fragment() {
                 findNavController().navigateUp()
             }
 
-            btnSave.setOnClickListener {
-                val user = viewModel.getUser()
-                user?.let {user->
-                    user.githubUrl = binding.etGithubLink.text.toString()
-                    user.facebookUrl = binding.etFacebookLink.text.toString()
-                    user.linkedinUrl = binding.etLinkedInLink.text.toString()
-                    user.name = binding.etName.text.toString()
-                    user.bio = binding.etBio.text.toString()
-                    user.track = binding.etTrack.text.toString()
-                    viewModel.viewModelScope.launch {
-                        viewModel.updateUser(user)
-                        btnSave.visibility = View.GONE
+            btnSave.apply {
+                setOnClickListener {
+                    startAnimation {
+                        binding.progressBar.isVisible = true
+                        val user = viewModel.getUser()
+                        user?.let { user ->
+                            user.githubUrl = binding.etGithubLink.text.toString()
+                            user.facebookUrl = binding.etFacebookLink.text.toString()
+                            user.linkedinUrl = binding.etLinkedInLink.text.toString()
+                            user.name = binding.etName.text.toString()
+                            user.bio = binding.etBio.text.toString()
+                            user.track = binding.etTrack.text.toString()
+                            viewModel.viewModelScope.launch {
+                                viewModel.updateUser(user)
+                                btnSave.visibility = View.GONE
+                            }
+                        }
                     }
                 }
             }
