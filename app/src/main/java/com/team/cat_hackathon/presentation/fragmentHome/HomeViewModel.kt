@@ -30,6 +30,9 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
     private val _isUserSearch: MutableLiveData<Boolean> = MutableLiveData(false)
     val isUserSearch: LiveData<Boolean> = _isUserSearch
 
+    var userSearch = ""
+    var teamSearch = ""
+
     private val _isBottomSheetOpened = MutableLiveData<Boolean>(false)
     val isBottomSheetOpened: LiveData<Boolean> = _isBottomSheetOpened
 

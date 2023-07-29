@@ -97,9 +97,7 @@ class HomeFragment : Fragment() {
 
                     is RequestState.Sucess -> {
                         binding.progressBar.isVisible = false
-
                         setAdaptersData(requestState)
-
                         setSearchFeature()
                     }
                 }
@@ -158,31 +156,51 @@ class HomeFragment : Fragment() {
     }
 
     private fun searchInAdapterLists(text: Editable?) {
-        if (text.isNullOrEmpty()) {
-            setAdaptersData(viewModel.homeDataRequestState.value!!)
-            return
-        }
+
         if (viewModel.isUserSearch.value!!) {
-            myAdapter.usersAdapter.members?.clear()
-            myAdapter.usersAdapter.members?.addAll(
-                viewModel.homeDataRequestState.value!!.data?.users
-                    ?.filter {
-                        it.name.lowercase().contains(text.toString().lowercase()) ||
-                                it.track?.lowercase()
-                                    ?.contains(text.toString().lowercase()) ?: false
-                    } ?: emptyList()
-            )
+
+
+            if (text.toString() == viewModel.userSearch) return
+            viewModel.userSearch = text.toString()
+            if (text.isNullOrEmpty()) {
+                myAdapter.usersAdapter.members?.clear()
+                myAdapter.usersAdapter.members?.addAll(
+                    viewModel.homeDataRequestState.value!!.data?.users ?: emptyList()
+                )
+            } else {
+                myAdapter.usersAdapter.members?.clear()
+                myAdapter.usersAdapter.members?.addAll(
+                    viewModel.homeDataRequestState.value!!.data?.users
+                        ?.filter {
+                            it.name.lowercase().contains(text.toString().lowercase()) ||
+                                    it.track?.lowercase()
+                                        ?.contains(text.toString().lowercase()) ?: false
+                        } ?: emptyList()
+                )
+            }
             myAdapter.usersAdapter.notifyDataSetChanged()
+
+
         } else {
-            myAdapter.teamsAdapter.teams?.clear()
-            myAdapter.teamsAdapter.teams?.addAll(
-                viewModel.homeDataRequestState.value!!.data?.teams
-                    ?.filter {
-                        it.name.lowercase().contains(text.toString().lowercase())
-                    }
-                    ?: emptyList()
-            )
+            if (text.toString() == viewModel.teamSearch) return
+            viewModel.teamSearch = text.toString()
+            if (text.isNullOrEmpty()) {
+                myAdapter.teamsAdapter.teams?.clear()
+                myAdapter.teamsAdapter.teams?.addAll(
+                    viewModel.homeDataRequestState.value!!.data?.teams ?: emptyList()
+                )
+            } else {
+                myAdapter.teamsAdapter.teams?.clear()
+                myAdapter.teamsAdapter.teams?.addAll(
+                    viewModel.homeDataRequestState.value!!.data?.teams
+                        ?.filter {
+                            it.name.lowercase().contains(text.toString().lowercase())
+                        }
+                        ?: emptyList()
+                )
+            }
             myAdapter.teamsAdapter.notifyDataSetChanged()
+
         }
     }
 
