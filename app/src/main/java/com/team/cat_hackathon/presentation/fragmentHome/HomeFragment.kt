@@ -291,7 +291,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    val userClicekd : (User) -> Unit = {user ->
+    val userClicekd : (User , Int) -> Unit = {user ,_->
        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment(user))
     }
     val linkedInClicked: (String) -> Unit = { url ->

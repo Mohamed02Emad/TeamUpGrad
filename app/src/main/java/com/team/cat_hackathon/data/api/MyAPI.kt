@@ -2,6 +2,7 @@
 
 import com.team.cat_hackathon.data.api.ACCEPT_MEMBER
 import com.team.cat_hackathon.data.api.CREATE_TEAM
+import com.team.cat_hackathon.data.api.DELETE_MEMBER
 import com.team.cat_hackathon.data.api.DELETE_TEAM
 import com.team.cat_hackathon.data.api.GET_ALL_DATA_ENDPOINT
 import com.team.cat_hackathon.data.api.GET_JOIN_TEAM_REQUESTS
@@ -163,7 +164,15 @@ interface MyAPI {
         user_id: Int
     ):  Response <MessageResponse>
 
-
+    @GET(DELETE_MEMBER)
+    suspend fun deleteMember(
+        @Header("Authorization")
+        token: String,
+        @Query("team_id")
+        teamId: Int,
+        @Query("user_id")
+        user_id: Int
+    ): Response<MessageResponse>
 
 
 }

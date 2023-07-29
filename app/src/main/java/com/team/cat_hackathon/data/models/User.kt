@@ -22,5 +22,6 @@ data class User(
     var isLeader: Int = 0,
     var team_id: Int? = null,
     var created_at: String? = null,
-    var updated_at: String? = null
+    var updated_at: String? = null,
+    var isCheck: Boolean = false
 ): Serializable

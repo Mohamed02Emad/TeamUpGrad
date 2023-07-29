@@ -1,5 +1,6 @@
 package com.team.cat_hackathon.presentation.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -13,12 +14,14 @@ import com.team.cat_hackathon.databinding.MemberDataModelBinding
 
 
 class MembersAdapter(
-    val members: ArrayList<User>? = null,
-    val userClicked: (User) -> Unit,
+    var members: ArrayList<User>? = null,
+    val userClicked: (User , Int) -> Unit,
     val linkedInClicked: (String) -> Unit,
     val faceBookClicked: (String) -> Unit,
-    val gitHubClicked: (String) -> Unit
-):RecyclerView.Adapter<MembersAdapter.ViewHolder>() {
+    val gitHubClicked: (String) -> Unit,
+    val userLongClicked: (User, Int) -> Unit = { _, _ ->
+    }
+) : RecyclerView.Adapter<MembersAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: MemberDataModelBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -87,19 +90,23 @@ class MembersAdapter(
             }
         }
 
+        holder.binding.ivDelete.isVisible = member!!.isCheck
 
-        holder.binding.card.setOnClickListener {
-            val user = User(member?.id ?: 0)
-            user.facebookUrl = member?.facebookUrl
-            user.imageUrl = member?.imageUrl
-            user.linkedinUrl = member?.linkedinUrl
-            user.githubUrl = member?.githubUrl
-            user.name = member?.name.toString()
-            user.track = member?.track
-            user.email = member?.email.toString()
-            userClicked(user)
+
+        holder.binding.card.apply {
+            setOnClickListener {
+              userClicked(member!! , position)
+            }
+
+            setOnLongClickListener {
+                userLongClicked(member!!, position)
+                false
+            }
         }
 
+
     }
+
+
 
 }

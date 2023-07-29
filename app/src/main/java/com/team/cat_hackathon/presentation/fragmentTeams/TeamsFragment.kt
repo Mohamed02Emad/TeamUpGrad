@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isGone
@@ -22,13 +23,13 @@ import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentTeamsBinding
 import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.presentation.adapters.MembersAdapter
-import com.team.cat_hackathon.presentation.fragmentHome.HomeFragmentDirections
 import com.team.cat_hackathon.presentation.fragmentProfile.ProfileFragmentArgs
 import com.team.cat_hackathon.utils.NO_TEAM
 import com.team.cat_hackathon.utils.openFacebookIntent
 import com.team.cat_hackathon.utils.openGithubIntent
 import com.team.cat_hackathon.utils.openLinkedInIntent
 import com.team.cat_hackathon.utils.showSnackbar
+import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,20 +60,18 @@ class TeamsFragment : Fragment() {
             CoroutineScope(Dispatchers.Main).launch {
 
                 binding.progressBar.isVisible = true
-
                 val cachedUser = viewModel.getCurrentUser()
                 val currentUserTeamId = cachedUser.team_id
-
                 val team =
                     if (navArgs.team != null) navArgs.team
                     else if (currentUserTeamId == -1) null
                     else viewModel.getCurrentUserTeam(currentUserTeamId!!)
 
                 if (currentUserTeamId == NO_TEAM && team == null) {
-                    setViewsVisibility(null)
+                    setViewsVisibility(null, cachedUser)
                 } else {
-                    setViewsVisibility(team)
-                    setObservers()
+                    setViewsVisibility(team, cachedUser)
+                    setObservers(team , cachedUser)
                 }
 
                 setOnClicks()
@@ -80,7 +79,8 @@ class TeamsFragment : Fragment() {
         }
     }
 
-    private fun setObservers() {
+
+    private fun setObservers(team: Team?, cachedUser: User) {
         try {
             viewModel.joinRequestState.observe(viewLifecycleOwner) { state ->
                 when (state) {
@@ -110,6 +110,61 @@ class TeamsFragment : Fragment() {
             }
         } catch (e: Exception) {
         }
+        viewModel.isSelectMode.observe(viewLifecycleOwner) {isSelectMode->
+            val btnJoin = binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam)
+            val ivDelete = binding.toolbar.findViewById<ImageView>(R.id.iv_delete_selection)
+            lifecycleScope.launch {
+                val isThisTeamLeader = cachedUser.isLeader == 1 && team != null && team.id == cachedUser.team_id
+               if (!isThisTeamLeader) return@launch
+
+                if (isSelectMode) {
+                    btnJoin.text = "Cancel"
+                    ivDelete.isVisible = true
+                    setIvDeleteClicks(ivDelete)
+
+                } else {
+                    btnJoin.text = "Edit"
+                    ivDelete.isVisible = false
+                    uncheckAllMembers()
+                }
+            }
+        }
+        viewModel.selectedList.observe(viewLifecycleOwner) {
+                 myAdapter.notifyDataSetChanged()
+        }
+
+        viewModel.deleteState.observe(viewLifecycleOwner){state->
+            state?.let {
+                when(state) {
+                    is RequestState.Error -> {
+                        showToast("${state.message}" , requireContext())
+                        viewModel.resetDeletState()
+                    }
+                    is RequestState.Loading -> {}
+                    is RequestState.Sucess -> {
+                        viewModel.resetDeletState()
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun setIvDeleteClicks(ivDelete: ImageView) {
+     ivDelete.setOnClickListener {
+         lifecycleScope.launch {
+             viewModel.deleteSelection()
+             viewModel.triggerSelectMode()
+         }
+     }
+    }
+
+    fun uncheckAllMembers() {
+        viewModel.users.value!!.forEach { user ->
+            user.isCheck = false
+        }
+        myAdapter.notifyDataSetChanged()
+        viewModel.selectedList.value!!.clear()
     }
 
     private fun setOnClicks() {
@@ -124,13 +179,14 @@ class TeamsFragment : Fragment() {
         (activity as MainActivity).navigateToHome()
     }
 
-    private suspend fun setViewsVisibility(team: Team?) {
+    private suspend fun setViewsVisibility(team: Team?, cachedUser: User) {
         binding.progressBar.isVisible = false
         if (team != null) {
-            initCollapsing(team.id)
+            initCollapsing(team.id, cachedUser)
             showDataOnScreen(true)
             setViews(team)
-            initRecyclerView(viewModel.getUsers(team.id))
+            viewModel.getUsers(team.id)
+            initRecyclerView()
         } else {
             showDataOnScreen(false)
         }
@@ -140,7 +196,7 @@ class TeamsFragment : Fragment() {
         if (currentUserTeamId == teamId) {
             val btnBack = binding.toolbar.findViewById<CardView>(R.id.btn_back)
             btnBack.isGone = true
-            binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam).isGone = true
+            //  binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam).isGone = true
         }
     }
 
@@ -150,23 +206,21 @@ class TeamsFragment : Fragment() {
         val teamNameTv = binding.toolbar.findViewById<TextView>(R.id.teamName_inTeam)
         binding.teamBioInTeam.text = team.description
         teamNameTv.text = team.name
-
     }
 
-    private fun initRecyclerView(usersList: List<User>) {
+    private fun initRecyclerView() {
         val recyclerView = binding.recyclerViewInTeam
         val layoutManager =
             GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
 
-        val arr = ArrayList<User>()
-        arr.addAll(usersList)
         myAdapter = MembersAdapter(
-            arr,
+            viewModel.users.value,
             userClicekd,
             linkedInClicked,
             faceBookClicked,
-            githubClicked
-            )
+            githubClicked,
+            userLongClick
+        )
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = myAdapter
     }
@@ -184,55 +238,89 @@ class TeamsFragment : Fragment() {
         binding.groupInTeam.isGone = !value
     }
 
-    private fun initCollapsing(teamId: Int) {
+    private fun initCollapsing(teamId: Int, cachedUser: User) {
         this.activity?.let {
             (requireActivity() as MainActivity).setSupportActionBar(binding.myToolbar)
             (requireActivity() as MainActivity).getSupportActionBar()
                 ?.setDisplayShowTitleEnabled(false)
-            setBarViewsVisibility()
-            setBarClicks(teamId)
+            setJoinButtonLogicAndVisibility(teamId, cachedUser)
+            setBarClicks(teamId, cachedUser)
         }
     }
 
-    private fun setBarViewsVisibility() {
+    private fun setJoinButtonLogicAndVisibility(teamId: Int, cachedUser: User) {
         val btnJoin = binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam)
-        //todo : join button logic
-        //if user is in team remove join us
-        //if user is in team requests change text to requseted
+
+        if (cachedUser.isLeader == 1 && cachedUser.team_id == teamId) {
+            btnJoin?.text = "Edit"
+            btnJoin.isVisible = true
+            btnJoin.setOnClickListener {
+                lifecycleScope.launch {
+                    viewModel.triggerSelectMode()
+                }
+            }
+        } else if (cachedUser.id == teamId) {
+            btnJoin.isVisible = true
+            btnJoin?.text = "Leave"
+            //todo : leave team
+        } else if (cachedUser.team_id!! > 0) {
+            btnJoin.isVisible = false
+        } else {
+            btnJoin.setOnClickListener {
+                btnJoin.isVisible = true
+                lifecycleScope.launch {
+                    viewModel.sendJoinRequest(teamId)
+                }
+            }
+        }
     }
 
-    private fun setBarClicks(teamId: Int) {
+    private fun setBarClicks(teamId: Int, cachedUser: User) {
         val btnBack = binding.toolbar.findViewById<CardView>(R.id.btn_back)
-        val btnJoin = binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam)
 
         btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        btnJoin.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.sendJoinRequest(teamId)
+    }
+
+    val userClicekd: (User, Int) -> Unit = { user, position ->
+        if (viewModel.isSelectMode.value!!) {
+            viewModel.addOrRemoveFromSelectedList(user, position)
+            true
+        } else {
+            try {
+                findNavController().navigate(
+                    TeamsFragmentDirections.actionTeamsFragment2ToProfileFragment(
+                        user
+                    )
+                )
+            } catch (e: Exception) {
+                val args = ProfileFragmentArgs(user).toBundle()
+                findNavController().navigate(R.id.action_teamsFragment_to_profileFragment, args)
             }
-        }
-
-    }
-
-    val userClicekd : (User) -> Unit = {user ->
-        try {
-            findNavController().navigate(TeamsFragmentDirections.actionTeamsFragment2ToProfileFragment(user))
-        }catch (e:Exception) {
-            val args = ProfileFragmentArgs(user).toBundle()
-            findNavController().navigate(R.id.action_teamsFragment_to_profileFragment , args)
+            false
         }
     }
-    val linkedInClicked : (String) -> Unit = {url->
-        openLinkedInIntent(url , requireContext())
+
+    val userLongClick: (User, Int) -> Unit = { user, position ->
+        if (viewModel.isSelectMode.value!!) {
+
+        } else {
+            viewModel.triggerSelectMode()
+        }
     }
-    val faceBookClicked : (String) -> Unit = {url->
-        openFacebookIntent(url , requireContext())
+
+
+    val linkedInClicked: (String) -> Unit = { url ->
+        openLinkedInIntent(url, requireContext())
     }
-    val githubClicked : (String) -> Unit = {url->
-        openGithubIntent(url , requireContext())
+    val faceBookClicked: (String) -> Unit = { url ->
+        openFacebookIntent(url, requireContext())
     }
+    val githubClicked: (String) -> Unit = { url ->
+        openGithubIntent(url, requireContext())
+    }
+
 
 }

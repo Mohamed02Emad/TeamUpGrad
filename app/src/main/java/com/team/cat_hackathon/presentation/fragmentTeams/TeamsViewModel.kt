@@ -26,8 +26,24 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
         MutableLiveData()
     val joinRequestState: LiveData<RequestState<MessageResponse>> = _joinRequestState
 
+    private val _deleteState: MutableLiveData<RequestState<MessageResponse>> =
+        MutableLiveData()
+    val deleteState: LiveData<RequestState<MessageResponse>> = _deleteState
+
+    var isSelectMode: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    var users: MutableLiveData<ArrayList<User>> = MutableLiveData(ArrayList())
+
+    var selectedList: MutableLiveData<ArrayList<Pair<Int, Int?>>> =
+        MutableLiveData(ArrayList())
+
+    fun triggerSelectMode() {
+        isSelectMode.value = !isSelectMode.value!!
+    }
+
+
     private suspend fun getTeamById(teamId: Int): Response<TeamWithUsersResponse>? {
-       return repository.getTeamById(teamId)
+        return repository.getTeamById(teamId)
     }
 
     suspend fun updateCachedUser(user: User) {
@@ -39,6 +55,7 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
     }
 
     suspend fun getCurrentUserTeam(teamId: Int): Team? {
+
         val response = getTeamById(teamId)
         return getTeamFromResponse(response)
     }
@@ -52,7 +69,20 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
         return null
     }
 
-    suspend fun getUsers(teamId: Int): List<User> = repository.getTeamUsers(teamId)
+    suspend fun getUsers(teamId: Int): ArrayList<User> {
+        return if (users.value!!.isEmpty()) {
+            users.value!!.addAll(repository.getTeamUsers(teamId))
+            users.value!!
+        } else {
+            val list = repository.getTeamUsers(teamId)
+            if (list.size != users.value!!.size) {
+                users.value!!.clear()
+                users.value!!.addAll(list)
+            }
+            users.value!!
+        }
+    }
+
     suspend fun sendJoinRequest(teamId: Int) = viewModelScope.launch {
         _joinRequestState.postValue(RequestState.Loading())
         val response = repository.sendJoinRequest(teamId)
@@ -71,6 +101,44 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
 
     suspend fun getCurrentUser(): User = repository.getCachedUser()
 
+    fun addOrRemoveFromSelectedList(user: User, position: Int) {
+        viewModelScope.launch {
+            if (user.id == getCachedUser().id) return@launch
+            val userExist = selectedList.value!!.contains(user.id to position)
+            val index = users.value!!.indexOf(user)
+            val list = selectedList.value!!
+            if (userExist) {
+                list.remove(user.id to index)
+                user.isCheck = false
+                users.value!![index] = user
+                selectedList.value = list
+            } else {
+                user.isCheck = true
+                users.value!![index] = user
+                list.add(user.id to index)
+                selectedList.value = list
+            }
+        }
+    }
 
+    private suspend fun deleteMember(userId: Int, teamId: Int) {
+        _deleteState.postValue(RequestState.Loading())
+        val response = repository.deleteMember(userId, teamId)
+        _deleteState.postValue(handleResponse(response))
+    }
+
+    suspend fun deleteSelection() {
+            val teamId = getCachedUser().team_id
+            selectedList.value!!.sortedByDescending { it.second!! }
+            for (i in selectedList.value!!) {
+                deleteMember(i.first, teamId!!)
+                users.value!!.removeAt(i.second!!)
+            }
+            selectedList.value!!.clear()
+    }
+
+    fun resetDeletState() {
+        _deleteState.value = null
+    }
 
 }

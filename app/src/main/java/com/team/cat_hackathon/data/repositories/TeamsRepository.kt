@@ -66,4 +66,10 @@ class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
         val userTeamId = getCachedUser().team_id!!
         return RetrofitInstance.api.rejectUser(token, userTeamId, userId)
     }
+
+    suspend fun deleteMember(userId : Int ,teamId: Int) : Response<MessageResponse>{
+        val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
+
+        return RetrofitInstance.api.deleteMember(token , teamId , userId)
+    }
 }

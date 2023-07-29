@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.team.cat_hackathon.R
 import com.team.cat_hackathon.data.api.BASE_URL_WITHOUT_API
-import com.team.cat_hackathon.data.models.Member
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.NotificationCardBinding
 
@@ -66,7 +65,6 @@ class NotificationsAdapter(
        for (user in users){
            if (user.id == userId){
                users.remove(user)
-               Log.d("mohamed", "removeUser: ")
                notifyDataSetChanged()
                break
            }
