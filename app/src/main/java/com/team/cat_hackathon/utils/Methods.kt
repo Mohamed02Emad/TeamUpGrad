@@ -88,13 +88,3 @@ private fun PackageManager.getPackageInfoCompat(
     } else {
         @Suppress("DEPRECATION") getPackageInfo(packageName, flags)
     }
-
-fun byteArrayToFile(context: Context, byteArray: ByteArray, fileName: String): File {
-    val cacheDir = context.cacheDir
-    val file = File(cacheDir, fileName)
-    val fileOutputStream = FileOutputStream(file)
-    fileOutputStream.write(byteArray)
-    fileOutputStream.flush()
-    fileOutputStream.close()
-    return file
-}

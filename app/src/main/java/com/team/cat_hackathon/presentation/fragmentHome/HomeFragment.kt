@@ -6,6 +6,9 @@ import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ProgressBar
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -13,6 +16,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mo_chatting.chatapp.appClasses.isInternetAvailable
@@ -26,6 +31,7 @@ import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.utils.openFacebookIntent
 import com.team.cat_hackathon.utils.openGithubIntent
 import com.team.cat_hackathon.utils.openLinkedInIntent
+import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,6 +42,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var viewPager: ViewPager2
     private lateinit var myAdapter: HomeAdapter
+    private var bottomSheetDialog: BottomSheetDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,14 +58,21 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setViewPager()
         attachTabLayoutToViewPager()
+        setOnClicks()
         lifecycleScope.launch {
             setObservers()
             if (isInternetAvailable(requireContext())) {
                 if (viewModel.homeDataRequestState.value == null)
                     viewModel.requestHomeData()
-            }else{
+            } else {
                 showNoInterNetAnim()
             }
+        }
+    }
+
+    private fun setOnClicks() {
+        binding.btnCreateTeam.setOnClickListener {
+            openBottomSheet()
         }
     }
 
@@ -80,16 +94,57 @@ class HomeFragment : Fragment() {
                     is RequestState.Loading -> {
                         binding.progressBar.isVisible = true
                     }
+
                     is RequestState.Sucess -> {
                         binding.progressBar.isVisible = false
-
                         setAdaptersData(requestState)
-
                         setSearchFeature()
                     }
                 }
             }
         }
+
+        viewModel.createTeamRequestState.observe(viewLifecycleOwner) { requestState ->
+            requestState?.let {
+                when (requestState) {
+                    is RequestState.Error -> {
+
+                        showToast("team was not created ${requestState.message}", requireContext())
+                        val btnDone = bottomSheetDialog?.findViewById<CircularProgressButton>(R.id.button_done)
+                        btnDone?.let{
+                            it.apply {
+                               revertAnimation()
+                                val progressBar = bottomSheetDialog?.findViewById<ProgressBar>(R.id.bottom_sheet_progress_bar)
+                                progressBar?.isVisible = false
+                            }
+                        }
+                    }
+                    is RequestState.Loading -> {}
+                    is RequestState.Sucess -> {
+                        lifecycleScope.launch {
+                            viewModel.updateCachedUser()
+                        }
+                        showToast("team was created", requireContext())
+                        binding.btnCreateTeam.isGone = true
+                        val btnDone = bottomSheetDialog?.findViewById<CircularProgressButton>(R.id.button_done)
+                        btnDone?.let{
+                            it.apply {
+                                val progressBar =
+                                    bottomSheetDialog?.findViewById<ProgressBar>(R.id.bottom_sheet_progress_bar)
+                                progressBar?.isVisible = false
+                                revertAnimation()
+                            }
+                        }
+                        bottomSheetDialog?.dismissWithAnimation = true
+                        bottomSheetDialog?.dismiss()
+                        lifecycleScope.launch {
+                            viewModel.requestHomeData()
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     private fun setSearchFeature() {
@@ -101,31 +156,51 @@ class HomeFragment : Fragment() {
     }
 
     private fun searchInAdapterLists(text: Editable?) {
-        if (text.isNullOrEmpty()) {
-            setAdaptersData(viewModel.homeDataRequestState.value!!)
-            return
-        }
+
         if (viewModel.isUserSearch.value!!) {
-            myAdapter.usersAdapter.members?.clear()
-            myAdapter.usersAdapter.members?.addAll(
-                viewModel.homeDataRequestState.value!!.data?.users
-                    ?.filter {
-                        it.name.lowercase().contains(text.toString().lowercase()) ||
-                                it.track?.lowercase()
-                                    ?.contains(text.toString().lowercase()) ?: false
-                    } ?: emptyList()
-            )
+
+
+            if (text.toString() == viewModel.userSearch) return
+            viewModel.userSearch = text.toString()
+            if (text.isNullOrEmpty()) {
+                myAdapter.usersAdapter.members?.clear()
+                myAdapter.usersAdapter.members?.addAll(
+                    viewModel.homeDataRequestState.value!!.data?.users ?: emptyList()
+                )
+            } else {
+                myAdapter.usersAdapter.members?.clear()
+                myAdapter.usersAdapter.members?.addAll(
+                    viewModel.homeDataRequestState.value!!.data?.users
+                        ?.filter {
+                            it.name.lowercase().contains(text.toString().lowercase()) ||
+                                    it.track?.lowercase()
+                                        ?.contains(text.toString().lowercase()) ?: false
+                        } ?: emptyList()
+                )
+            }
             myAdapter.usersAdapter.notifyDataSetChanged()
+
+
         } else {
-            myAdapter.teamsAdapter.teams?.clear()
-            myAdapter.teamsAdapter.teams?.addAll(
-                viewModel.homeDataRequestState.value!!.data?.teams
-                    ?.filter {
-                        it.name.lowercase().contains(text.toString().lowercase())
-                    }
-                    ?: emptyList()
-            )
+            if (text.toString() == viewModel.teamSearch) return
+            viewModel.teamSearch = text.toString()
+            if (text.isNullOrEmpty()) {
+                myAdapter.teamsAdapter.teams?.clear()
+                myAdapter.teamsAdapter.teams?.addAll(
+                    viewModel.homeDataRequestState.value!!.data?.teams ?: emptyList()
+                )
+            } else {
+                myAdapter.teamsAdapter.teams?.clear()
+                myAdapter.teamsAdapter.teams?.addAll(
+                    viewModel.homeDataRequestState.value!!.data?.teams
+                        ?.filter {
+                            it.name.lowercase().contains(text.toString().lowercase())
+                        }
+                        ?: emptyList()
+                )
+            }
             myAdapter.teamsAdapter.notifyDataSetChanged()
+
         }
     }
 
@@ -178,12 +253,20 @@ class HomeFragment : Fragment() {
                 try {
                     if (position == 0) {
                         myAdapter.teamsRecyclerView.scrollToPosition(0)
-                        viewModel.setSearchToUser(false)
-                        setSearchFeature()
+                        lifecycleScope.launch {
+                            viewModel.setSearchToUser(false)
+                            if (!viewModel.isUserInTeam()) {
+                                binding.btnCreateTeam.isGone = false
+                            }
+                            setSearchFeature()
+                        }
                     } else {
-                        myAdapter.usersRecyclerView.scrollToPosition(0)
-                        viewModel.setSearchToUser(true)
-                        setSearchFeature()
+                             myAdapter.usersRecyclerView.scrollToPosition(0)
+                        lifecycleScope.launch {
+                            viewModel.setSearchToUser(true)
+                            binding.btnCreateTeam.isGone = true
+                            setSearchFeature()
+                        }
                     }
                 }catch (e:Exception){}
             }
@@ -211,8 +294,8 @@ class HomeFragment : Fragment() {
     val userClicekd : (User) -> Unit = {user ->
        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment(user))
     }
-    val linkedInClicked : (String) -> Unit = {url->
-        openLinkedInIntent(url , requireContext())
+    val linkedInClicked: (String) -> Unit = { url ->
+        openLinkedInIntent(url, requireContext())
     }
     val faceBookClicked: (String) -> Unit = { url ->
         openFacebookIntent(url, requireContext())
@@ -220,4 +303,36 @@ class HomeFragment : Fragment() {
     val githubClicked: (String) -> Unit = { url ->
         openGithubIntent(url, requireContext())
     }
+
+
+    private fun openBottomSheet() {
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(R.layout.bottom_sheet_create_team)
+        setBottomSheetOnClicks(dialog)
+        dialog.show()
+        bottomSheetDialog = dialog
+
+    }
+
+    private fun setBottomSheetOnClicks(dialog: BottomSheetDialog) {
+        val btnDone = dialog.findViewById<CircularProgressButton>(R.id.button_done)
+        val progressBar = dialog.findViewById<ProgressBar>(R.id.bottom_sheet_progress_bar)
+        btnDone?.apply {
+            setOnClickListener {
+                startAnimation {
+                    progressBar?.isVisible = true
+                    val teamName = dialog.findViewById<EditText>(R.id.et_team_name)
+                    val teamBio = dialog.findViewById<EditText>(R.id.et_team_bio)
+
+                    if (teamBio?.text.toString().isNotBlank() && teamName?.text.toString()
+                            .isNotBlank()
+                    ) {
+                        viewModel.createTeam(teamBio?.text, teamName?.text)
+                    }
+                }
+            }
+        }
+    }
+
+
 }

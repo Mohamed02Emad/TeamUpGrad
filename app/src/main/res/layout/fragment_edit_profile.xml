@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_save"
+        app:layout_constraintBottom_toTopOf="@id/frame_save"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -238,20 +238,40 @@
         </LinearLayout>
     </ScrollView>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_save"
-        style="@style/button_Auth"
+
+    <FrameLayout
+        android:id="@+id/frame_save"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/button_auth_background"
-        android:gravity="center"
-        android:text="@string/save"
-        android:textAllCaps="false"
-        android:textSize="24sp"
-        android:visibility="gone"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/btn_save"
+            style="@style/button_Auth"
+            android:background="@drawable/button_auth_background"
+            android:text="@string/save"
+            app:initialCornerAngle="20dp"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            app:spinning_bar_color="#054163"
+            app:spinning_bar_padding="2dp"
+            app:spinning_bar_width="40dp"
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:elevation="20dp"
+            android:indeterminateTint="@color/white"
+            android:visibility="invisible" />
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

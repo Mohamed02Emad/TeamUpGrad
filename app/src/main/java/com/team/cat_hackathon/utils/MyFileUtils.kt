@@ -16,49 +16,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-fun fileToMultipartBodyPart(file: File?): MultipartBody.Part? {
-    if (file == null) return null
-    try {
-        val requestFile: RequestBody =
-            RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-        return MultipartBody.Part.createFormData("file", file.name, requestFile)
-    } catch (e: Exception) {
-        e.printStackTrace()
-        return null
-    }
-}
-fun getFileFromUri(contentResolver: ContentResolver, uri: Uri?): File? {
-    if (uri == null) return null
-    try {
-        val inputStream = contentResolver.openInputStream(uri)
-        val file = File.createTempFile("temp", null)
-        val outputStream = FileOutputStream(file)
-        inputStream?.use { input ->
-            outputStream.use { output ->
-                input.copyTo(output)
-            }
-        }
-        return file
-    } catch (e: IOException) {
-        e.printStackTrace()
-        return null
-    }
-}
-fun getRealPathFromURI(context: Context, uri: Uri?): String? {
-    if (uri == null) return null
-
-    val contentResolver = context.contentResolver
-    val projection = arrayOf(MediaStore.Images.Media.DATA)
-    val cursor = contentResolver.query(uri, projection, null, null, null)
-
-    cursor?.use {
-        if (it.moveToFirst()) {
-            val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            return it.getString(columnIndex)
-        }
-    }
-    return null
-}
 
 fun getImageFileFromRealPath(realPath: String?): File? {
     if (realPath == null) return null
@@ -71,25 +28,6 @@ fun createMultipartBodyPartFromFile(file: File?): MultipartBody.Part? {
     val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
     return MultipartBody.Part.createFormData("imageUrl", file.name, requestFile)
 }
-
-
-private fun getDataColumn(
-    context: Context,
-    uri: Uri,
-    selection: String?,
-    selectionArgs: Array<String>?
-): String? {
-    val projection = arrayOf(MediaStore.Images.Media.DATA)
-    val cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
-    cursor?.use {
-        if (it.moveToFirst()) {
-            val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            return it.getString(columnIndex)
-        }
-    }
-    return null
-}
-
 
 fun cacheImageToFile(context: Context, uri: Uri): String? {
     try {
