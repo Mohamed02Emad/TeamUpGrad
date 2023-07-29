@@ -26,9 +26,9 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
         MutableLiveData()
     val joinRequestState: LiveData<RequestState<MessageResponse>> = _joinRequestState
 
-    private val _deleteState: MutableLiveData<RequestState<MessageResponse>> =
+    private val _deleteState: MutableLiveData<RequestState<MessageResponse>?> =
         MutableLiveData()
-    val deleteState: LiveData<RequestState<MessageResponse>> = _deleteState
+    val deleteState: LiveData<RequestState<MessageResponse>?> = _deleteState
 
     var isSelectMode: MutableLiveData<Boolean> = MutableLiveData(false)
 

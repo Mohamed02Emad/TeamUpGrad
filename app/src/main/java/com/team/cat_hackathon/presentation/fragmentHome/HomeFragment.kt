@@ -31,6 +31,7 @@ import com.team.cat_hackathon.presentation.MainActivity
 import com.team.cat_hackathon.utils.openFacebookIntent
 import com.team.cat_hackathon.utils.openGithubIntent
 import com.team.cat_hackathon.utils.openLinkedInIntent
+import com.team.cat_hackathon.utils.showSnackbar
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -57,6 +58,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViewPager()
+        setViews()
         attachTabLayoutToViewPager()
         setOnClicks()
         lifecycleScope.launch {
@@ -67,6 +69,12 @@ class HomeFragment : Fragment() {
             } else {
                 showNoInterNetAnim()
             }
+        }
+    }
+
+    private fun setViews() {
+        if (!isInternetAvailable(requireContext())){
+            binding.btnCreateTeam.isVisible = false
         }
     }
 
@@ -256,7 +264,7 @@ class HomeFragment : Fragment() {
                         myAdapter.teamsRecyclerView.scrollToPosition(0)
                         lifecycleScope.launch {
                             viewModel.setSearchToUser(false)
-                            if (!viewModel.isUserInTeam()) {
+                            if (!viewModel.isUserInTeam() && isInternetAvailable(requireContext())) {
                                 binding.btnCreateTeam.isGone = false
                             }
                             setSearchFeature()
@@ -321,6 +329,7 @@ class HomeFragment : Fragment() {
         btnDone?.apply {
             setOnClickListener {
                 startAnimation {
+                    if (isInternetAvailable(requireContext())){
                     progressBar?.isVisible = true
                     val teamName = dialog.findViewById<EditText>(R.id.et_team_name)
                     val teamBio = dialog.findViewById<EditText>(R.id.et_team_bio)
@@ -328,11 +337,14 @@ class HomeFragment : Fragment() {
                     if (teamBio?.text.toString().isNotBlank() && teamName?.text.toString()
                             .isNotBlank()
                     ) {
-                        viewModel.createTeam(teamBio?.text, teamName?.text)
+                        viewModel.createTeam(teamName?.text,teamBio?.text)
                     }else{
                         revertAnimation()
                         progressBar?.isVisible = false
                         showToast("enter all data",requireContext())
+                    }
+                    }else{
+                        showSnackbar("No Internet connection" , requireContext(),binding.root)
                     }
                 }
             }

@@ -52,7 +52,10 @@ class SignUpViewModel @Inject constructor(val repository: AuthRepository) : View
                 return RequestState.Sucess(result)
             }
         }
-        return RequestState.Error(response?.message() ?: "error")
+        if (response == null){
+            return RequestState.Error( "error")
+        }
+        return RequestState.Error(response.message() ?: "error")
     }
 
     suspend fun cacheUserData(user: User, token: String) {

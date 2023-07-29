@@ -47,7 +47,7 @@ class SignUpFragment : Fragment() {
                     is RequestState.Error -> {
                         showSnackbar(state.message ?: "error",requireContext(),binding.root)
                     }
-                    is RequestState.Loading -> {  }
+                    is RequestState.Loading -> {}
                     is RequestState.Sucess -> {
                         state.data.let {response ->
                             lifecycleScope.launch {

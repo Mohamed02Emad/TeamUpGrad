@@ -24,7 +24,9 @@ class AuthRepository(val dataStoreImpl: DataStoreImpl) {
     ): Response<AuthResponse>? {
         return try {
             RetrofitInstance.api.registerUser(username, email, password)
-        }catch (e: Exception) { null}
+        }catch (e: Exception) {
+            null
+        }
     }
 
     suspend fun logOutUser() : Response<AuthResponse>? {

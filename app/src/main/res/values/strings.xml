@@ -54,4 +54,6 @@
     <string name="create_team">Create Team\n</string>
     <string name="enter_team_name">Enter Team Name\n</string>
     <string name="done">Done</string>
+    <string name="enter_team_description">Enter Team Description</string>
+    <string name="description">Description</string>
 </resources>
