@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.mo_chatting.chatapp.data.dataStore.DataStoreImpl
 import com.team.cat_hackathon.data.models.AllDataResponse
+import com.team.cat_hackathon.data.models.MessageResponse
 import com.team.cat_hackathon.data.models.UpdateUserResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.source.MyDao
@@ -20,25 +21,25 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStore
         return dataStoreImpl.getUser()
     }
 
-    suspend fun updateUser(user: User, imagePart: MultipartBody.Part? = null) {
+    suspend fun updateUser(user: User? = null, imagePart: MultipartBody.Part? = null) {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
 
         try {
-            val response =  if (imagePart != null) {
+            val response = if (imagePart != null) {
 
                 val mediaType = "multipart/form-data".toMediaType()
 
                 RetrofitInstance.api.updateUser(
                     token = token,
                     imageUrl = imagePart,
-                    name = user.name.toRequestBody(mediaType),
-                    track = user.track?.toRequestBody(mediaType),
-                    bio = user.bio?.toRequestBody(mediaType),
-                    linkedinUrl = user.linkedinUrl?.toRequestBody(mediaType),
-                    facebookUrl = user.facebookUrl?.toRequestBody(mediaType),
-                    githubUrl = user.githubUrl?.toRequestBody(mediaType)
+                    name = user?.name?.toRequestBody(mediaType),
+                    track = user?.track?.toRequestBody(mediaType),
+                    bio = user?.bio?.toRequestBody(mediaType),
+                    linkedinUrl = user?.linkedinUrl?.toRequestBody(mediaType),
+                    facebookUrl = user?.facebookUrl?.toRequestBody(mediaType),
+                    githubUrl = user?.githubUrl?.toRequestBody(mediaType)
                 )
-            }else{
+            } else if (user != null) {
                 RetrofitInstance.api.updateUser(
                     token = token,
                     name = user.name,
@@ -48,29 +49,35 @@ class HomeRepositoryImpl (val dao : MyDao, val context : Context , val dataStore
                     facebookUrl = user.facebookUrl,
                     githubUrl = user.githubUrl
                 )
+            } else {
+                RetrofitInstance.api.updateUser(
+                    token = token
+                )
             }
             if (response.isSuccessful) {
                 val response: UpdateUserResponse? = response.body()
                 response?.let {
-                    Log.d("mohamed", "uploadImage: success \n ${response.user?.imageUrl}")
-
                     dataStoreImpl.insertUser(response.user!!)
                 }
             } else {
-                Log.d("mohamed", "uploadImage: failed \n ${response.body()!!.message}")
             }
         } catch (e: Exception) {
-            Log.d("mohamed", "network: error \n ${e.message}")
-
+ // network error
         }
     }
+
     suspend fun getHomeData(): Response<AllDataResponse>? {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
-      return try {
-          RetrofitInstance.api.getAllData(token)
-      }catch (e: Exception) {
-          null
-      }
+        return try {
+            RetrofitInstance.api.getAllData(token)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    suspend fun createTeam(name: String, bio: String): Response<MessageResponse> {
+        val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
+        return RetrofitInstance.api.createTeam(token, name, bio)
     }
 
 
