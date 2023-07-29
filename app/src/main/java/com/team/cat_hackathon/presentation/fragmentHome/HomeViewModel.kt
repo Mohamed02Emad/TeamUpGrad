@@ -9,6 +9,7 @@ import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.MessageResponse
+import com.team.cat_hackathon.data.models.UpdateUserResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -74,11 +75,24 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
     }
 
     suspend fun updateCachedUser() {
-        repository.updateUser()
+        val response = repository.updateUser()
+        cacheUserFromResponse(response)
+    }
+
+    private suspend fun cacheUserFromResponse(response: Response<UpdateUserResponse>?) {
+        if (response?.isSuccessful == true) {
+            response.body()?.let { result ->
+                 repository.updateCachedUser(response.body()!!.user!!)
+            }
+        }
     }
 
     suspend fun isUserInTeam(): Boolean {
       return (repository.getCachedUser().team_id ?: -1) > 0
+    }
+
+    fun resetCreateTeamState() {
+        _createTeamRequestState.postValue(null)
     }
 
 }

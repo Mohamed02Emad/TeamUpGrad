@@ -53,6 +53,7 @@ class SignUpFragment : Fragment() {
                             lifecycleScope.launch {
                                 viewModel.cacheUserData(response!!.user, response.access_token)
                                 viewModel.setIsLoggedIn(true)
+                                binding.signupButton.visibility=View.GONE
                                 navigateToHome()
                             }
                         }

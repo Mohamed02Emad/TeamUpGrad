@@ -139,6 +139,7 @@ class HomeFragment : Fragment() {
                         bottomSheetDialog?.dismiss()
                         lifecycleScope.launch {
                             viewModel.requestHomeData()
+                            viewModel.resetCreateTeamState()
                         }
                     }
                 }
@@ -328,6 +329,10 @@ class HomeFragment : Fragment() {
                             .isNotBlank()
                     ) {
                         viewModel.createTeam(teamBio?.text, teamName?.text)
+                    }else{
+                        revertAnimation()
+                        progressBar?.isVisible = false
+                        showToast("enter all data",requireContext())
                     }
                 }
             }
