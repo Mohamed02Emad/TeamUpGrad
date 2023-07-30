@@ -111,4 +111,5 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.visibility = View.VISIBLE
     }
 
+
 }

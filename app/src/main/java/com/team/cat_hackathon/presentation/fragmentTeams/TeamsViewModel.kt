@@ -28,17 +28,29 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
 
     private val _deleteState: MutableLiveData<RequestState<MessageResponse>?> =
         MutableLiveData()
+
     val deleteState: LiveData<RequestState<MessageResponse>?> = _deleteState
 
-    var isSelectMode: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val _leaveTeamState: MutableLiveData<RequestState<MessageResponse>?> =
+        MutableLiveData()
+
+    val leaveTeamState: LiveData<RequestState<MessageResponse>?> = _leaveTeamState
+
+    private val _deleteTeamState: MutableLiveData<RequestState<MessageResponse>?> =
+        MutableLiveData()
+
+    val deleteTeamState: LiveData<RequestState<MessageResponse>?> = _deleteTeamState
+
+
+    var isEditMode: MutableLiveData<Boolean> = MutableLiveData(false)
 
     var users: MutableLiveData<ArrayList<User>> = MutableLiveData(ArrayList())
 
-    var selectedList: MutableLiveData<ArrayList<Pair<Int, Int?>>> =
-        MutableLiveData(ArrayList())
+    var deletedUserPosition : Int? = null
 
-    fun triggerSelectMode() {
-        isSelectMode.value = !isSelectMode.value!!
+
+    fun triggerEditMode() {
+        isEditMode.value = !isEditMode.value!!
     }
 
 
@@ -55,7 +67,6 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
     }
 
     suspend fun getCurrentUserTeam(teamId: Int): Team? {
-
         val response = getTeamById(teamId)
         return getTeamFromResponse(response)
     }
@@ -90,9 +101,12 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
     }
 
 
-    private fun handleResponse(response: Response<MessageResponse>?): RequestState<MessageResponse>? {
+    private fun handleResponse(response: Response<MessageResponse>?, user: User? = null): RequestState<MessageResponse>? {
         if (response?.isSuccessful == true) {
             response.body()?.let { result ->
+                user?.let{
+                    users.value!!.remove(user)
+                }
                 return RequestState.Sucess(result)
             }
         }
@@ -101,44 +115,36 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
 
     suspend fun getCurrentUser(): User = repository.getCachedUser()
 
-    fun addOrRemoveFromSelectedList(user: User, position: Int) {
-        viewModelScope.launch {
-            if (user.id == getCachedUser().id) return@launch
-            val userExist = selectedList.value!!.contains(user.id to position)
-            val index = users.value!!.indexOf(user)
-            val list = selectedList.value!!
-            if (userExist) {
-                list.remove(user.id to index)
-                user.isCheck = false
-                users.value!![index] = user
-                selectedList.value = list
-            } else {
-                user.isCheck = true
-                users.value!![index] = user
-                list.add(user.id to index)
-                selectedList.value = list
-            }
+    private suspend fun deleteMember(user: User, teamId: Int) {
+        _deleteState.postValue(RequestState.Loading())
+        val response = repository.deleteMember(user.id, teamId)
+        _deleteState.postValue(handleResponse(response , user))
+    }
+
+    suspend fun deleteUser(user: User, position: Int) {
+        val teamId = getCachedUser().team_id
+        deletedUserPosition = position
+        deleteMember(user, teamId!!)
+    }
+
+    suspend fun deleteTeam(){
+        val teamId = getCachedUser().team_id
+        if (teamId != null) {
+            _deleteTeamState.postValue(RequestState.Loading())
+            val response = repository.deleteTeam(teamId)
+            _deleteTeamState.postValue(handleResponse(response))
         }
     }
 
-    private suspend fun deleteMember(userId: Int, teamId: Int) {
-        _deleteState.postValue(RequestState.Loading())
-        val response = repository.deleteMember(userId, teamId)
-        _deleteState.postValue(handleResponse(response))
+    suspend fun updateCachedUserWithoutTeam() {
+        repository.leaveCurrentTeamInCache()
     }
 
-    suspend fun deleteSelection() {
-            val teamId = getCachedUser().team_id
-            selectedList.value!!.sortedByDescending { it.second!! }
-            for (i in selectedList.value!!) {
-                deleteMember(i.first, teamId!!)
-                users.value!!.removeAt(i.second!!)
-            }
-            selectedList.value!!.clear()
-    }
-
-    fun resetDeletState() {
-        _deleteState.value = null
+    suspend fun leaveTeam() {
+        val teamId = getCachedUser().team_id
+        _leaveTeamState.postValue(RequestState.Loading())
+        val response = repository.leaveTeam(teamId!!)
+        _leaveTeamState.postValue(handleResponse(response))
     }
 
 }

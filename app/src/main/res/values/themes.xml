@@ -94,4 +94,18 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Customize the positive button's text color -->
+        <item name="colorAccent">@color/primary_blue</item>
+
+        <item name="android:textColor">@color/color_text</item>
+
+        <!-- Customize the negative button's text color -->
+        <item name="android:textColorSecondary">@color/color_text</item>
+
+        <!-- Customize the negative button's background color -->
+        <item name="android:colorBackground">@color/color_background</item>
+    </style>
+
 </resources>

@@ -56,4 +56,5 @@
     <string name="done">Done</string>
     <string name="enter_team_description">Enter Team Description</string>
     <string name="description">Description</string>
+    <string name="delete_team">Delete Team</string>
 </resources>

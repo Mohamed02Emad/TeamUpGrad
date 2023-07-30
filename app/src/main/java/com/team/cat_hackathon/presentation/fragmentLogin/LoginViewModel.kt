@@ -58,7 +58,7 @@ class LoginViewModel @Inject constructor(val repository: AuthRepository) : ViewM
                 return RequestState.Sucess(result)
             }
         }
-        return RequestState.Error(response?.message() ?: "error")
+        return RequestState.Error(response?.body()?.message ?: "error")
     }
 
     fun validateData(email: String?, password: String?): String {

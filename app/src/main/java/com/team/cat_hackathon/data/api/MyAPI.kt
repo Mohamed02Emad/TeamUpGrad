@@ -1,18 +1,20 @@
 
 
-import com.team.cat_hackathon.data.api.ACCEPT_MEMBER
-import com.team.cat_hackathon.data.api.CREATE_TEAM
-import com.team.cat_hackathon.data.api.DELETE_MEMBER
-import com.team.cat_hackathon.data.api.DELETE_TEAM
-import com.team.cat_hackathon.data.api.GET_ALL_DATA_ENDPOINT
-import com.team.cat_hackathon.data.api.GET_JOIN_TEAM_REQUESTS
-import com.team.cat_hackathon.data.api.GET_TEAM_DETAILS
-import com.team.cat_hackathon.data.api.JOIN_TEAM
-import com.team.cat_hackathon.data.api.LOGIN_ENDPOINT
-import com.team.cat_hackathon.data.api.LOG_OUT_ENDPOINT
-import com.team.cat_hackathon.data.api.REGISTER_ENDPOINT
-import com.team.cat_hackathon.data.api.REJECT_MEMBER
-import com.team.cat_hackathon.data.api.UPDATE_PROFILE
+
+import com.team.cat_hackathon.data.api.ApiVars.ACCEPT_MEMBER
+import com.team.cat_hackathon.data.api.ApiVars.CREATE_TEAM
+import com.team.cat_hackathon.data.api.ApiVars.DELETE_MEMBER
+import com.team.cat_hackathon.data.api.ApiVars.DELETE_TEAM
+import com.team.cat_hackathon.data.api.ApiVars.GET_ALL_DATA_ENDPOINT
+import com.team.cat_hackathon.data.api.ApiVars.GET_JOIN_TEAM_REQUESTS
+import com.team.cat_hackathon.data.api.ApiVars.GET_TEAM_DETAILS
+import com.team.cat_hackathon.data.api.ApiVars.JOIN_TEAM
+import com.team.cat_hackathon.data.api.ApiVars.LEAVE_TEAM
+import com.team.cat_hackathon.data.api.ApiVars.LOGIN_ENDPOINT
+import com.team.cat_hackathon.data.api.ApiVars.LOG_OUT_ENDPOINT
+import com.team.cat_hackathon.data.api.ApiVars.REGISTER_ENDPOINT
+import com.team.cat_hackathon.data.api.ApiVars.REJECT_MEMBER
+import com.team.cat_hackathon.data.api.ApiVars.UPDATE_PROFILE
 import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.JoinRequestsResponse
@@ -22,7 +24,6 @@ import com.team.cat_hackathon.data.models.UpdateUserResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -82,6 +83,14 @@ interface MyAPI {
         name: String,
         @Query("description")
         teamId: String
+    ): Response<MessageResponse>
+
+    @POST(LEAVE_TEAM)
+    suspend fun leaveTeam(
+        @Header("Authorization")
+        token: String,
+        @Query("team_id")
+        teamId: Int
     ): Response<MessageResponse>
 
     @Multipart

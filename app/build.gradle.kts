@@ -29,7 +29,14 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources =  true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+
+        debug{
+            //isMinifyEnabled = true
+           // isShrinkResources =  true
+          //  proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
@@ -43,9 +50,6 @@ android {
 
 dependencies {
 
-    implementation(fileTree("libs") {
-        include("*.jar")
-    })
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.core:core-ktx:1.10.1")
@@ -77,11 +81,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.6.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.6.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.5.0")
-
     // Navigation Components
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
@@ -109,4 +108,14 @@ dependencies {
 
     //lottie animations
     implementation("com.airbnb.android:lottie:4.1.0")
+
+    // Retrofit
+    implementation("com.squareup.okhttp3:logging-interceptor:4.5.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.android.volley:volley:1.2.1")
+    implementation("com.github.kittinunf.fuel:fuel:2.3.1")
+    implementation("com.github.kittinunf.fuel:fuel-android:2.3.1")
+
 }

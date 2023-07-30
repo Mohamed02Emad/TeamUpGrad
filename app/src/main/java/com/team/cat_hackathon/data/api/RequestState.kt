@@ -1,5 +1,7 @@
 package com.team.cat_hackathon.data.api
 
+import androidx.annotation.Keep
+
 sealed class RequestState<T>(
     val data: T? = null,
     val message: String? = null
