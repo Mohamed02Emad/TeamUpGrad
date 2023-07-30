@@ -63,12 +63,16 @@ class HomeFragment : Fragment() {
         setOnClicks()
         lifecycleScope.launch {
             setObservers()
-            if (isInternetAvailable(requireContext())) {
-                if (viewModel.homeDataRequestState.value == null)
-                    viewModel.requestHomeData()
-            } else {
-                showNoInterNetAnim()
-            }
+            sendDataRequest()
+        }
+    }
+
+    private suspend fun sendDataRequest() {
+        if (isInternetAvailable(requireContext())) {
+            if (viewModel.homeDataRequestState.value == null)
+                viewModel.requestHomeData()
+        } else {
+            showNoInterNetAnim()
         }
     }
 
@@ -102,7 +106,6 @@ class HomeFragment : Fragment() {
                     is RequestState.Loading -> {
                         binding.progressBar.isVisible = true
                     }
-
                     is RequestState.Sucess -> {
                         binding.progressBar.isVisible = false
                         setAdaptersData(requestState)
@@ -263,17 +266,18 @@ class HomeFragment : Fragment() {
                     if (position == 0) {
                         myAdapter.teamsRecyclerView.scrollToPosition(0)
                         lifecycleScope.launch {
-                            viewModel.setSearchToUser(false)
-                            if (!viewModel.isUserInTeam() && isInternetAvailable(requireContext())) {
+                            val isShowCreateTeamButton = !viewModel.isUserInTeam() && isInternetAvailable(requireContext())
+                            if (isShowCreateTeamButton) {
                                 binding.btnCreateTeam.isGone = false
                             }
+                            viewModel.setSearchToUser(false)
                             setSearchFeature()
                         }
                     } else {
-                             myAdapter.usersRecyclerView.scrollToPosition(0)
+                        myAdapter.usersRecyclerView.scrollToPosition(0)
                         lifecycleScope.launch {
-                            viewModel.setSearchToUser(true)
                             binding.btnCreateTeam.isGone = true
+                            viewModel.setSearchToUser(true)
                             setSearchFeature()
                         }
                     }

@@ -44,15 +44,15 @@ class MembersAdapter(
         val member = members?.get(position)
 
         val img = holder.binding.itemImage
-        
-        if ((member?.imageUrl?.length ?: 6) >= 7) {
+
             Glide.with(img)
                 .load(BASE_URL_WITHOUT_API + member?.imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerInside()
+                .placeholder(R.drawable.ic_profile)
                 .error(R.drawable.ic_profile)
                 .into(img)
-        }
+
 
         holder.binding.itemName.text = member?.name
         holder.binding.itemPosition.text = member?.track

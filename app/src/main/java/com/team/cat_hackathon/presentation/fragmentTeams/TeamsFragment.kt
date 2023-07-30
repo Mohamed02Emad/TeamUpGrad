@@ -184,9 +184,11 @@ class TeamsFragment : Fragment() {
     }
 
     private fun showDeleteUserIconOnUsers(isVisible: Boolean) {
-        for (i in 1 until viewModel.users.value!!.size) {
-            viewModel.users.value!![i].isCheck = isVisible
-            myAdapter.notifyItemChanged(i)
+        for (i in 0 until viewModel.users.value!!.size) {
+            if( viewModel.users.value!![i].isLeader != 1) {
+                viewModel.users.value!![i].isCheck = isVisible
+                myAdapter.notifyItemChanged(i)
+            }
         }
     }
     private fun setOnClicks() {
@@ -300,7 +302,7 @@ class TeamsFragment : Fragment() {
             btnJoin.setOnClickListener {
                 showDialog(
                     requireContext(),
-                    "Leave Team ?",
+                    "Leave Team ",
                     "are you sure you want to leave ?"
                 ) {
                     lifecycleScope.launch {
@@ -330,13 +332,15 @@ class TeamsFragment : Fragment() {
 
     val userClicekd: (User, Int) -> Unit = { user, position ->
         if (viewModel.isEditMode.value!!) {
-            showDialog(
-                requireContext(),
-                "Remove User",
-                "remove ${user.name} from team ?"
-            ) {
-                lifecycleScope.launch {
-                    viewModel.deleteUser(user, position)
+            if (user.isLeader != 1) {
+                showDialog(
+                    requireContext(),
+                    "Remove User",
+                    "remove ${user.name} from team ?"
+                ) {
+                    lifecycleScope.launch {
+                        viewModel.deleteUser(user, position)
+                    }
                 }
             }
             true
