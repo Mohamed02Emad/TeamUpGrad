@@ -28,6 +28,7 @@ import com.team.cat_hackathon.utils.NO_TEAM
 import com.team.cat_hackathon.utils.openFacebookIntent
 import com.team.cat_hackathon.utils.openGithubIntent
 import com.team.cat_hackathon.utils.openLinkedInIntent
+import com.team.cat_hackathon.utils.showDialog
 import com.team.cat_hackathon.utils.showSnackbar
 import com.team.cat_hackathon.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -110,27 +111,28 @@ class TeamsFragment : Fragment() {
             }
         } catch (e: Exception) {
         }
-        viewModel.isSelectMode.observe(viewLifecycleOwner) {isSelectMode->
+        viewModel.isEditMode.observe(viewLifecycleOwner) { isEditMode ->
             val btnJoin = binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam)
+            //todo : replace with button
             val ivDelete = binding.toolbar.findViewById<ImageView>(R.id.iv_delete_selection)
-            lifecycleScope.launch {
-                val isThisTeamLeader = cachedUser.isLeader == 1 && team != null && team.id == cachedUser.team_id
-               if (!isThisTeamLeader) return@launch
 
-                if (isSelectMode) {
+            lifecycleScope.launch {
+                val isThisTeamLeader =
+                    cachedUser.isLeader == 1 && team != null && team.id == cachedUser.team_id
+                if (!isThisTeamLeader) return@launch
+
+                if (isEditMode) {
                     btnJoin.text = "Cancel"
                     ivDelete.isVisible = true
                     setIvDeleteClicks(ivDelete)
+                    showDeleteUserIconOnUsers(true)
 
                 } else {
                     btnJoin.text = "Edit"
                     ivDelete.isVisible = false
-                    uncheckAllMembers()
+                    showDeleteUserIconOnUsers(false)
                 }
             }
-        }
-        viewModel.selectedList.observe(viewLifecycleOwner) {
-                 myAdapter.notifyDataSetChanged()
         }
 
         viewModel.deleteState.observe(viewLifecycleOwner){state->
@@ -138,33 +140,33 @@ class TeamsFragment : Fragment() {
                 when(state) {
                     is RequestState.Error -> {
                         showToast("${state.message}" , requireContext())
-                        viewModel.resetDeletState()
                     }
                     is RequestState.Loading -> {}
                     is RequestState.Sucess -> {
-                        viewModel.resetDeletState()
+                        viewModel.deletedUserPosition?.let {
+                            myAdapter.notifyItemRemoved(it)
+                        }
+                        viewModel.deletedUserPosition = null
                     }
                 }
             }
+        }
+    }
 
+    private fun showDeleteUserIconOnUsers(isVisible: Boolean) {
+        for (i in 1 until viewModel.users.value!!.size) {
+            viewModel.users.value!![i].isCheck = isVisible
+            myAdapter.notifyItemChanged(i)
         }
     }
 
     private fun setIvDeleteClicks(ivDelete: ImageView) {
-     ivDelete.setOnClickListener {
-         lifecycleScope.launch {
-             viewModel.deleteSelection()
-             viewModel.triggerSelectMode()
-         }
-     }
-    }
-
-    fun uncheckAllMembers() {
-        viewModel.users.value!!.forEach { user ->
-            user.isCheck = false
+        ivDelete.setOnClickListener {
+            lifecycleScope.launch {
+                // viewModel.deleteSelection()
+                viewModel.triggerEditMode()
+            }
         }
-        myAdapter.notifyDataSetChanged()
-        viewModel.selectedList.value!!.clear()
     }
 
     private fun setOnClicks() {
@@ -244,7 +246,7 @@ class TeamsFragment : Fragment() {
             (requireActivity() as MainActivity).getSupportActionBar()
                 ?.setDisplayShowTitleEnabled(false)
             setJoinButtonLogicAndVisibility(teamId, cachedUser)
-            setBarClicks(teamId, cachedUser)
+            setBarClicks()
         }
     }
 
@@ -256,10 +258,10 @@ class TeamsFragment : Fragment() {
             btnJoin.isVisible = true
             btnJoin.setOnClickListener {
                 lifecycleScope.launch {
-                    viewModel.triggerSelectMode()
+                    viewModel.triggerEditMode()
                 }
             }
-        } else if (cachedUser.id == teamId) {
+        } else if (cachedUser.team_id == teamId) {
             btnJoin.isVisible = true
             btnJoin?.text = "Leave"
             //todo : leave team
@@ -275,9 +277,8 @@ class TeamsFragment : Fragment() {
         }
     }
 
-    private fun setBarClicks(teamId: Int, cachedUser: User) {
+    private fun setBarClicks() {
         val btnBack = binding.toolbar.findViewById<CardView>(R.id.btn_back)
-
         btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -285,8 +286,16 @@ class TeamsFragment : Fragment() {
     }
 
     val userClicekd: (User, Int) -> Unit = { user, position ->
-        if (viewModel.isSelectMode.value!!) {
-            viewModel.addOrRemoveFromSelectedList(user, position)
+        if (viewModel.isEditMode.value!!) {
+            showDialog(
+                requireContext(),
+                "Remove User",
+                "remove ${user.name} from team ?"
+            ) {
+                lifecycleScope.launch {
+                    viewModel.deleteUser(user, position)
+                }
+            }
             true
         } else {
             try {
@@ -303,15 +312,12 @@ class TeamsFragment : Fragment() {
         }
     }
 
-    val userLongClick: (User, Int) -> Unit = { user, position ->
-        if (viewModel.isSelectMode.value!!) {
 
-        } else {
-            viewModel.triggerSelectMode()
+    val userLongClick: (User, Int) -> Unit = { user, position ->
+        if (!viewModel.isEditMode.value!!) {
+            viewModel.triggerEditMode()
         }
     }
-
-
     val linkedInClicked: (String) -> Unit = { url ->
         openLinkedInIntent(url, requireContext())
     }
