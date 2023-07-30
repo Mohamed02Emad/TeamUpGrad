@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.team.cat_hackathon.R
-import com.team.cat_hackathon.data.api.BASE_URL_WITHOUT_API
+import com.team.cat_hackathon.data.api.ApiVars.BASE_URL_WITHOUT_API
 import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.databinding.FragmentEditProfileBinding
 import com.team.cat_hackathon.utils.showToast
@@ -54,7 +54,7 @@ class EditProfileFragment : Fragment() {
             requestState?.let {
                 when (requestState) {
                     is RequestState.Error -> {
-                        showToast("failed to update" , requireContext())
+                        showToast(requestState.data?.message ?:"failed to update", requireContext())
                         lifecycleScope.launch {
                             binding.btnSave.revertAnimation()
                             delay(200)
@@ -67,7 +67,7 @@ class EditProfileFragment : Fragment() {
                     }
 
                     is RequestState.Sucess -> {
-                        showToast("profile was updated" , requireContext())
+                        showToast(requestState.data?.message ?:"profile was updated" , requireContext())
                         lifecycleScope.launch {
                             binding.btnSave.revertAnimation()
                             delay(200)

@@ -75,7 +75,7 @@ class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
 
     suspend fun deleteTeam(teamId:Int) : Response<MessageResponse>{
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
-        return RetrofitInstance.api.deleteTeam(token , teamId)
+        return RetrofitInstance.api.deleteTeam(token, teamId)
     }
 
     suspend fun leaveCurrentTeamInCache() {
@@ -85,5 +85,9 @@ class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
         updateCacheUser(currentUser)
     }
 
+    suspend fun leaveTeam(teamId: Int): Response<MessageResponse> {
+        val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
+        return RetrofitInstance.api.leaveTeam(token, teamId)
+    }
 
 }

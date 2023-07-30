@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.team.cat_hackathon.R
-import com.team.cat_hackathon.data.api.BASE_URL_WITHOUT_API
+import com.team.cat_hackathon.data.api.ApiVars.BASE_URL_WITHOUT_API
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.NotificationCardBinding
 

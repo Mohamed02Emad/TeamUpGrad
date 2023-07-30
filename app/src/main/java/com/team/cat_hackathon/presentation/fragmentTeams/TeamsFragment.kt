@@ -166,6 +166,21 @@ class TeamsFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.leaveTeamState.observe(viewLifecycleOwner){state ->
+            state?.let {
+                when (state) {
+                    is RequestState.Error -> showSnackbar(state.data?.message ?: "error" , requireContext() , binding.root)
+                    is RequestState.Loading -> {}
+                    is RequestState.Sucess -> {
+                        lifecycleScope.launch {
+                            viewModel.updateCachedUserWithoutTeam()
+                            (activity as MainActivity).navigateToHome()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun showDeleteUserIconOnUsers(isVisible: Boolean) {
@@ -282,7 +297,17 @@ class TeamsFragment : Fragment() {
         } else if (cachedUser.team_id == teamId) {
             btnJoin.isVisible = true
             btnJoin?.text = "Leave"
-            //todo : leave team
+            btnJoin.setOnClickListener {
+                showDialog(
+                    requireContext(),
+                    "Leave Team ?",
+                    "are you sure you want to leave ?"
+                ) {
+                    lifecycleScope.launch {
+                        viewModel.leaveTeam()
+                    }
+                }
+            }
         } else if (cachedUser.team_id!! > 0) {
             btnJoin.isVisible = false
         } else {

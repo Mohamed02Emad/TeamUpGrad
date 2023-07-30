@@ -1,6 +1,7 @@
 package com.team.cat_hackathon.data.repositories
 
 import RetrofitInstance
+import android.util.Log
 import com.mo_chatting.chatapp.data.dataStore.DataStoreImpl
 import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.User
@@ -14,7 +15,9 @@ class AuthRepository(val dataStoreImpl: DataStoreImpl) {
     ): Response<AuthResponse>? {
         return try {
             RetrofitInstance.api.loginUser(username, password, deviceName)
-        }catch (e:Exception) {null}
+        }catch (e:Exception) {
+            Log.d("mohamed", "loginUser: ${e.message}")
+            null}
     }
 
     suspend fun registerUser(

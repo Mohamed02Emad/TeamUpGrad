@@ -117,7 +117,7 @@ class HomeFragment : Fragment() {
                 when (requestState) {
                     is RequestState.Error -> {
 
-                        showToast("team was not created ${requestState.message}", requireContext())
+                        showToast(requestState.data?.message ?: "team was not created ${requestState.message}", requireContext())
                         val btnDone = bottomSheetDialog?.findViewById<CircularProgressButton>(R.id.button_done)
                         btnDone?.let{
                             it.apply {

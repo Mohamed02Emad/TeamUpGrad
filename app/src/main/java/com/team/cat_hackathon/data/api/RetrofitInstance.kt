@@ -1,6 +1,7 @@
 
 
-import com.team.cat_hackathon.data.api.BASE_URL
+import androidx.annotation.Keep
+import com.team.cat_hackathon.data.api.ApiVars.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
