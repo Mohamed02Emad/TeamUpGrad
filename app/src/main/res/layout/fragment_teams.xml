@@ -112,16 +112,6 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         />
-                    <ImageView
-                        android:id="@+id/iv_delete_selection"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:padding="3dp"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_trash"
-                        android:visibility="invisible"
-                        tools:visibility="visible"
-                        />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/joinText_inTeam"
@@ -187,7 +177,8 @@
                     android:layout_marginStart="@dimen/team_margin_start"
                     android:layout_marginEnd="@dimen/team_margin_start"
                     android:layout_marginTop="8dp"
-                    android:paddingVertical="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="35dp"
                     android:clipToPadding="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -271,6 +262,37 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:constraint_referenced_ids="lineat_no_Team" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        >
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/btn_delete_team"
+            style="@style/button_Auth"
+            android:background="@drawable/button_auth_background"
+            android:text="@string/delete_team"
+            app:initialCornerAngle="20dp"
+            app:spinning_bar_color="#054163"
+            app:spinning_bar_padding="2dp"
+            app:spinning_bar_width="40dp"
+            android:alpha=".95"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false" />
+
+        <ProgressBar
+            android:id="@+id/btn_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:elevation="20dp"
+            android:indeterminateTint="@color/white"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

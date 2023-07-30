@@ -10,6 +10,8 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -99,7 +101,7 @@ class TeamsFragment : Fragment() {
                         binding.progressBar.isVisible = false
                         state.data?.let { response ->
                             showSnackbar(
-                                state.message ?: "requested",
+                                state.data.message ?: "requested",
                                 requireContext(),
                                 binding.root
                             )
@@ -113,8 +115,6 @@ class TeamsFragment : Fragment() {
         }
         viewModel.isEditMode.observe(viewLifecycleOwner) { isEditMode ->
             val btnJoin = binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam)
-            //todo : replace with button
-            val ivDelete = binding.toolbar.findViewById<ImageView>(R.id.iv_delete_selection)
 
             lifecycleScope.launch {
                 val isThisTeamLeader =
@@ -123,13 +123,12 @@ class TeamsFragment : Fragment() {
 
                 if (isEditMode) {
                     btnJoin.text = "Cancel"
-                    ivDelete.isVisible = true
-                    setIvDeleteClicks(ivDelete)
+                    binding.btnDeleteTeam.isVisible = true
                     showDeleteUserIconOnUsers(true)
 
                 } else {
                     btnJoin.text = "Edit"
-                    ivDelete.isVisible = false
+                    binding.btnDeleteTeam.isVisible = false
                     showDeleteUserIconOnUsers(false)
                 }
             }
@@ -151,6 +150,22 @@ class TeamsFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.deleteTeamState.observe(viewLifecycleOwner){state ->
+            state?.let {
+                when (state) {
+                    is RequestState.Error -> showSnackbar(state.data?.message ?: "error" , requireContext() , binding.root)
+                    is RequestState.Loading -> {}
+                    is RequestState.Sucess -> {
+                        lifecycleScope.launch {
+                            binding.btnProgressBar.isVisible = false
+                            viewModel.updateCachedUserWithoutTeam()
+                            (activity as MainActivity).navigateToHome()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun showDeleteUserIconOnUsers(isVisible: Boolean) {
@@ -159,20 +174,24 @@ class TeamsFragment : Fragment() {
             myAdapter.notifyItemChanged(i)
         }
     }
-
-    private fun setIvDeleteClicks(ivDelete: ImageView) {
-        ivDelete.setOnClickListener {
-            lifecycleScope.launch {
-                // viewModel.deleteSelection()
-                viewModel.triggerEditMode()
-            }
-        }
-    }
-
     private fun setOnClicks() {
         binding.apply {
-            buttonNotInTeam.setOnClickListener{
+            buttonNotInTeam.setOnClickListener {
                 navigateToHome()
+            }
+            btnDeleteTeam.apply {
+                setOnClickListener {
+                    startAnimation {
+                        if (isInternetAvailable(requireContext())) {
+                            binding.btnProgressBar.isVisible = true
+                            lifecycleScope.launch {
+                                viewModel.deleteTeam()
+                            }
+                        }else{
+                            showToast("No Internet Connection" , requireContext())
+                        }
+                    }
+                }
             }
         }
     }
@@ -198,7 +217,6 @@ class TeamsFragment : Fragment() {
         if (currentUserTeamId == teamId) {
             val btnBack = binding.toolbar.findViewById<CardView>(R.id.btn_back)
             btnBack.isGone = true
-            //  binding.toolbar.findViewById<TextView>(R.id.joinText_inTeam).isGone = true
         }
     }
 
