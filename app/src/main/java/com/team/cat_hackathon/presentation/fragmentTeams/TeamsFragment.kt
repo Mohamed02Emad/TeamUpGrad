@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -175,6 +173,20 @@ class TeamsFragment : Fragment() {
                     is RequestState.Sucess -> {
                         lifecycleScope.launch {
                             viewModel.updateCachedUserWithoutTeam()
+                            (activity as MainActivity).navigateToHome()
+                        }
+                    }
+                }
+            }
+        }
+
+        viewModel.updateTeamState.observe(viewLifecycleOwner){state ->
+            state?.let {
+                when (state) {
+                    is RequestState.Error -> showSnackbar(state.data?.message ?: "error" , requireContext() , binding.root)
+                    is RequestState.Loading -> {}
+                    is RequestState.Sucess -> {
+                        lifecycleScope.launch {
                             (activity as MainActivity).navigateToHome()
                         }
                     }
@@ -346,11 +358,9 @@ class TeamsFragment : Fragment() {
             true
         } else {
             try {
-                findNavController().navigate(
-                    TeamsFragmentDirections.actionTeamsFragment2ToProfileFragment(
-                        user
-                    )
-                )
+                val args = ProfileFragmentArgs(user).toBundle()
+                findNavController().navigate(R.id.action_teamsFragment2_to_profileFragment, args)
+
             } catch (e: Exception) {
                 val args = ProfileFragmentArgs(user).toBundle()
                 findNavController().navigate(R.id.action_teamsFragment_to_profileFragment, args)
@@ -361,7 +371,7 @@ class TeamsFragment : Fragment() {
 
 
     val userLongClick: (User, Int) -> Unit = { user, position ->
-        if (!viewModel.isEditMode.value!!) {
+        if (!viewModel.isEditMode.value!! && user.isLeader == 1) {
             viewModel.triggerEditMode()
         }
     }

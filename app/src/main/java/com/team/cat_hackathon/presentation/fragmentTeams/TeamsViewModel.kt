@@ -36,6 +36,11 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
 
     val leaveTeamState: LiveData<RequestState<MessageResponse>?> = _leaveTeamState
 
+    private val _updateTeamState: MutableLiveData<RequestState<MessageResponse>?> =
+        MutableLiveData()
+
+    val updateTeamState: LiveData<RequestState<MessageResponse>?> = _updateTeamState
+
     private val _deleteTeamState: MutableLiveData<RequestState<MessageResponse>?> =
         MutableLiveData()
 
@@ -145,6 +150,13 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
         _leaveTeamState.postValue(RequestState.Loading())
         val response = repository.leaveTeam(teamId!!)
         _leaveTeamState.postValue(handleResponse(response))
+    }
+
+    suspend fun updateTeam(name : String, description : String) {
+        val teamId = getCachedUser().team_id
+        _updateTeamState.postValue(RequestState.Loading())
+        val response = repository.updateTeam(teamId!! , name, description)
+        _updateTeamState.postValue(handleResponse(response))
     }
 
 }

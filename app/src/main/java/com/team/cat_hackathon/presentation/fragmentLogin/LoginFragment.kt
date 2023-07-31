@@ -115,7 +115,6 @@ class LoginFragment : Fragment() {
             if (canSendRequestState == CAN_LOGIN) {
                 lifecycleScope.launch {
                     viewModel.loginUser(viewModel.email.value, viewModel.password.value)
-                    viewModel.setIsLoggedIn(true)
                 }
             } else {
                 showSnackbar(canSendRequestState, requireContext(), binding.root)
