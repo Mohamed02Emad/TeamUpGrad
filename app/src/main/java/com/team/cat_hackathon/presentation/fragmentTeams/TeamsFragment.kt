@@ -220,7 +220,8 @@ class TeamsFragment : Fragment() {
                     is RequestState.Error -> showSnackbar(state.data?.message ?: "error" , requireContext() , binding.root)
                     is RequestState.Loading -> {}
                     is RequestState.Sucess -> {
-                        setActionButtonToSava()
+                        showToast("Team was Updated", requireContext())
+                        setActionButtonToDelete()
                         viewModel.cachedTeamBio = viewModel.currentTeamName
                         viewModel.cachedTeamBio = viewModel.currentTeamBio
                     }
@@ -247,9 +248,9 @@ class TeamsFragment : Fragment() {
                 setOnClickListener {
                     startAnimation {
                         if (isInternetAvailable(requireContext())) {
+
                             binding.btnProgressBar.isVisible = true
                             val btnState = viewModel.actionButtonState.value
-
                             if (btnState == ActionButtonState.SAVE) {
                                 lifecycleScope.launch {
                                     if (viewModel.hasTeamDataChanged()) {
@@ -260,9 +261,20 @@ class TeamsFragment : Fragment() {
                                     }
                                 }
                             } else {
-                                lifecycleScope.launch {
-                                    viewModel.deleteTeam()
-                                }
+                                showDialog(
+                                    requireContext(),
+                                    "Delete Team",
+                                    "are you sure you want to delete this team ?",
+                                    positiveClicked = {
+                                        lifecycleScope.launch {
+                                            viewModel.deleteTeam()
+                                        }
+                                    },
+                                    negativeClicked = {
+                                        binding.btnProgressBar.isVisible = false
+                                        binding.btnTeamAction.revertAnimation()
+                                    }
+                                )
                             }
 
                         } else {
@@ -274,9 +286,11 @@ class TeamsFragment : Fragment() {
         }
     }
 
+
     private fun navigateToHome() {
         (activity as MainActivity).navigateToHome()
     }
+
 
     private suspend fun setViewsVisibility(team: Team?, cachedUser: User) {
         binding.progressBar.isVisible = false
@@ -363,12 +377,13 @@ class TeamsFragment : Fragment() {
                 showDialog(
                     requireContext(),
                     "Leave Team ",
-                    "are you sure you want to leave ?"
-                ) {
+                    "are you sure you want to leave ?",
+                 positiveClicked = {
                     lifecycleScope.launch {
                         viewModel.leaveTeam()
                     }
                 }
+                )
             }
         } else if (cachedUser.team_id!! > 0) {
             btnJoin.isVisible = false
@@ -396,12 +411,13 @@ class TeamsFragment : Fragment() {
                 showDialog(
                     requireContext(),
                     "Remove User",
-                    "remove ${user.name} from team ?"
-                ) {
+                    "remove ${user.name} from team ?",
+                 positiveClicked = {
                     lifecycleScope.launch {
                         viewModel.deleteUser(user, position)
                     }
                 }
+                )
             }
             true
         } else {

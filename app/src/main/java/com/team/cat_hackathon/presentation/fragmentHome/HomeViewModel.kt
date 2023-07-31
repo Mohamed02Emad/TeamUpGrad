@@ -6,11 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.team.cat_hackathon.data.api.RequestState
-import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.MessageResponse
 import com.team.cat_hackathon.data.models.UpdateUserResponse
-import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

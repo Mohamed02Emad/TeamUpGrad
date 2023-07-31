@@ -29,7 +29,8 @@ fun showDialog(
     context: Context,
     title: String,
     message: String,
-    positiveClicked: () -> Unit
+    positiveClicked: () -> Unit,
+    negativeClicked: () -> Unit = {}
 ) {
     val builder = AlertDialog.Builder(context, R.style.CustomAlertDialog)
     builder.setTitle(title)
@@ -40,6 +41,9 @@ fun showDialog(
     }
     builder.setNegativeButton("No") { dialog, _ ->
         dialog.dismiss()
+    }
+    builder.setOnDismissListener {
+        negativeClicked()
     }
     builder.show()
 }

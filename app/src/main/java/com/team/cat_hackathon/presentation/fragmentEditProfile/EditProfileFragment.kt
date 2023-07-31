@@ -245,6 +245,7 @@ class EditProfileFragment : Fragment() {
                             .load(uri)
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .centerInside()
+                            .placeholder(R.drawable.ic_profile)
                             .error(R.drawable.ic_profile)
                             .into(binding.ivUserImage)
                     viewModel.imageChanged.value = true
