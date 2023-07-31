@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import com.team.cat_hackathon.data.models.Team
 import com.team.cat_hackathon.data.models.TeamWithUsers
+import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 
@@ -88,3 +89,13 @@ private fun PackageManager.getPackageInfoCompat(
     } else {
         @Suppress("DEPRECATION") getPackageInfo(packageName, flags)
     }
+
+fun parseErrorMessage(responseBody: String?): String {
+    return try {
+        val json = JSONObject(responseBody)
+        val message = json.getString("message")
+        message
+    } catch (e: Exception) {
+        "General Error" // Return a default message if parsing fails
+    }
+}

@@ -9,9 +9,11 @@ import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.AuthRepository
 import com.team.cat_hackathon.utils.CAN_LOGIN
+import com.team.cat_hackathon.utils.parseErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -58,7 +60,12 @@ class LoginViewModel @Inject constructor(val repository: AuthRepository) : ViewM
                 return RequestState.Sucess(result)
             }
         }
-        return RequestState.Error(response?.body()?.message ?: "error")
+        if (response == null) {
+            return RequestState.Error("Network error")
+        }
+        val errorBody = response.errorBody()?.string()
+        val errorMessage = parseErrorMessage(errorBody)
+        return RequestState.Error(errorMessage)
     }
 
     fun validateData(email: String?, password: String?): String {
@@ -69,15 +76,15 @@ class LoginViewModel @Inject constructor(val repository: AuthRepository) : ViewM
     }
 
     suspend fun cacheUserData(user: User, accessToken: String) {
-      repository.cacheUser(user, accessToken)
+        repository.cacheUser(user, accessToken)
     }
 
-    suspend fun setIsLoggedIn(isLoggedIn: Boolean){
+    suspend fun setIsLoggedIn(isLoggedIn: Boolean) {
         repository.setUserIsLogged(true)
     }
 
     suspend fun getIsLogged(): String {
-         return repository.getIsLogged().toString()
+        return repository.getIsLogged().toString()
     }
 
 

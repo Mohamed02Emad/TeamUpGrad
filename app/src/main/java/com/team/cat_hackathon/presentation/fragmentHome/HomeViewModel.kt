@@ -10,6 +10,7 @@ import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.MessageResponse
 import com.team.cat_hackathon.data.models.UpdateUserResponse
 import com.team.cat_hackathon.data.repositories.HomeRepositoryImpl
+import com.team.cat_hackathon.utils.parseErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,13 +64,17 @@ class HomeViewModel @Inject constructor(val repository: HomeRepositoryImpl) : Vi
          }
     }
 
+
+
     private fun handleCreateTeamResponse(response: Response<MessageResponse>): RequestState<MessageResponse>? {
-        if (response?.isSuccessful == true) {
+        if (response.isSuccessful == true) {
             response.body()?.let { result ->
                 return RequestState.Sucess(result)
             }
         }
-        return RequestState.Error(response?.message() ?: "error")
+        val errorBody = response.errorBody()?.string()
+        val errorMessage = parseErrorMessage(errorBody)
+        return RequestState.Error(errorMessage)
     }
 
     suspend fun updateCachedUser() {

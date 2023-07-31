@@ -76,7 +76,7 @@ class NotificationFragment : Fragment() {
             state?.let {
                 when (state) {
                     is RequestState.Error ->{
-                        showToast(state.data?.message ?: "error", requireContext())
+                      //  showToast(state.data?.message ?: "error", requireContext())
                     }
                     is RequestState.Loading -> {}
                     is RequestState.Sucess -> {

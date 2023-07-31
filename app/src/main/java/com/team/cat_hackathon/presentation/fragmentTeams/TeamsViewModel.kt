@@ -11,6 +11,7 @@ import com.team.cat_hackathon.data.models.TeamWithUsersResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.TeamsRepository
 import com.team.cat_hackathon.utils.mapFullTeamToTeam
+import com.team.cat_hackathon.utils.parseErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -54,7 +55,6 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
         MutableLiveData()
 
     val deleteTeamState: LiveData<RequestState<MessageResponse>?> = _deleteTeamState
-
 
     var isEditMode: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -118,13 +118,20 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
     private fun handleResponse(response: Response<MessageResponse>?, user: User? = null): RequestState<MessageResponse>? {
         if (response?.isSuccessful == true) {
             response.body()?.let { result ->
-                user?.let{
+                user?.let {
                     users.value!!.remove(user)
                 }
                 return RequestState.Sucess(result)
             }
         }
-        return RequestState.Error(response?.message() ?: "error")
+
+        if (response == null) {
+            return RequestState.Error("Network error")
+        }
+
+        val errorBody = response.errorBody()?.string()
+        val errorMessage = parseErrorMessage(errorBody)
+        return RequestState.Error(errorMessage)
     }
 
     suspend fun getCurrentUser(): User = repository.getCachedUser()

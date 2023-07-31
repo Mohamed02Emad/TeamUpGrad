@@ -5,6 +5,7 @@ import com.team.cat_hackathon.data.api.ApiVars.ACCEPT_MEMBER
 import com.team.cat_hackathon.data.api.ApiVars.CREATE_TEAM
 import com.team.cat_hackathon.data.api.ApiVars.DELETE_MEMBER
 import com.team.cat_hackathon.data.api.ApiVars.DELETE_TEAM
+import com.team.cat_hackathon.data.api.ApiVars.EMAIL_VERIFICATION
 import com.team.cat_hackathon.data.api.ApiVars.GET_ALL_DATA_ENDPOINT
 import com.team.cat_hackathon.data.api.ApiVars.GET_JOIN_TEAM_REQUESTS
 import com.team.cat_hackathon.data.api.ApiVars.GET_TEAM_DETAILS
@@ -144,6 +145,15 @@ interface MyAPI {
         linkedinUrl: String? = null
     ): Response<UpdateUserResponse>
 
+    @POST(EMAIL_VERIFICATION)
+    suspend fun verifyUser(
+        @Query("email")
+        email:String,
+        @Query("otp")
+        otp : Int
+    ): Response<AuthResponse>
+
+
     @GET(GET_ALL_DATA_ENDPOINT)
     suspend fun getAllData(
         @Header("Authorization")
@@ -195,5 +205,6 @@ interface MyAPI {
         @Query("user_id")
         user_id: Int
     ): Response<MessageResponse>
-    
+
+
 }

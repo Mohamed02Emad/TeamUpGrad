@@ -6,6 +6,6 @@ import androidx.annotation.Keep
 data class AuthResponse(
     var code: Int = -1,
     var message: String? = null,
-    var access_token: String,
-    var user: User
+    var access_token: String? = null,
+    var user: User? = null
 )

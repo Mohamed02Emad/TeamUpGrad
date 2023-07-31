@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.mo_chatting.chatapp.appClasses.isInternetAvailable
 import com.team.cat_hackathon.data.api.RequestState
+import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.databinding.FragmentSignUpBinding
 import com.team.cat_hackathon.utils.BUTTON_MIN_ANIMATION_DURATION
 import com.team.cat_hackathon.utils.showSnackbar
@@ -51,16 +52,21 @@ class SignUpFragment : Fragment() {
                     is RequestState.Sucess -> {
                         state.data.let {response ->
                             lifecycleScope.launch {
-                                viewModel.cacheUserData(response!!.user, response.access_token)
-                                viewModel.setIsLoggedIn(true)
-                                binding.signupButton.visibility=View.GONE
-                                navigateToHome()
+                                response!!.user.let {
+                                    viewModel.cacheUserData(response!!.user!!)
+                                    binding.signupButton.visibility = View.GONE
+                                    navigateToEmailVerificationScreen(response!!.user!!)
+                                }
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun navigateToEmailVerificationScreen(user:User) {
+      findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToEmailVerificationFragment(user))
     }
 
     private fun setOnClicks() {
@@ -123,10 +129,6 @@ class SignUpFragment : Fragment() {
 
     private fun navigateToLogin() {
         findNavController().navigateUp()
-    }
-
-    private fun navigateToHome(){
-        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragment2ToHomeFragment())
     }
 
 }

@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
                     is RequestState.Sucess -> {
                         lifecycleScope.launch {
                             state.data?.let { response ->
-                                viewModel.cacheUserData(response.user, response.access_token)
+                                viewModel.cacheUserData(response.user!!, response.access_token!!)
                                 viewModel.setIsLoggedIn(true)
                                 navigateToHomeScreen()
                             }

@@ -1,5 +1,6 @@
 package com.team.cat_hackathon.presentation.fragmentSignUp
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,9 +8,11 @@ import com.team.cat_hackathon.data.api.RequestState
 import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.User
 import com.team.cat_hackathon.data.repositories.AuthRepository
+import com.team.cat_hackathon.utils.parseErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Response
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(val repository: AuthRepository) : ViewModel() {
@@ -52,17 +55,25 @@ class SignUpViewModel @Inject constructor(val repository: AuthRepository) : View
                 return RequestState.Sucess(result)
             }
         }
-        if (response == null){
-            return RequestState.Error( "error")
+        if (response == null) {
+            return RequestState.Error("Network error")
         }
-        return RequestState.Error(response.body()?.message ?: "error")
+        val errorBody = response.errorBody()?.string()
+        val errorMessage = parseErrorMessage(errorBody)
+        return RequestState.Error(errorMessage)
     }
 
-    suspend fun cacheUserData(user: User, token: String) {
-        repository.cacheUser(user, token)
+    suspend fun cacheUserData(user: User , token : String? = null) {
+        repository.cacheUser(user , token )
     }
 
     suspend fun setIsLoggedIn(b: Boolean) {
         repository.setUserIsLogged(b)
+    }
+
+    suspend fun verifyUser(code: String, user: User) {
+        _registerRequestState.postValue(RequestState.Loading())
+        val response = repository.verifyUser(code, user)
+        _registerRequestState.postValue(handleUserResponse(response))
     }
 }

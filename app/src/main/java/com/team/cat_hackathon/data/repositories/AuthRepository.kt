@@ -41,9 +41,11 @@ class AuthRepository(val dataStoreImpl: DataStoreImpl) {
         }
     }
 
-    suspend fun cacheUser(user: User, accessToken: String) {
+    suspend fun cacheUser(user: User, accessToken: String? = null) {
         dataStoreImpl.insertUser(user)
-        dataStoreImpl.insertToken(accessToken)
+        accessToken?.let {
+            dataStoreImpl.insertToken(accessToken)
+        }
     }
 
     suspend fun clearDataStore(){
@@ -56,6 +58,11 @@ class AuthRepository(val dataStoreImpl: DataStoreImpl) {
 
     suspend fun getIsLogged(): Boolean {
         return dataStoreImpl.getIsLoggedIn()
+    }
+
+    suspend fun verifyUser(code: String, user: User) : Response<AuthResponse>{
+        val code = code.toInt()
+        return RetrofitInstance.api.verifyUser(user.email,code)
     }
 
 }
