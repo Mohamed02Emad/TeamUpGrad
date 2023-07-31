@@ -21,13 +21,22 @@ import javax.inject.Inject
 @HiltViewModel
 class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : ViewModel() {
 
+    private val _actionButtonState: MutableLiveData<ActionButtonState> =
+        MutableLiveData(ActionButtonState.DELETE)
+    val actionButtonState: LiveData<ActionButtonState> = _actionButtonState
+
+
+    var cachedTeamName: String? = null
+    var cachedTeamBio: String? = null
+
+    var currentTeamName: String? = null
+    var currentTeamBio: String? = null
 
     private val _joinRequestState: MutableLiveData<RequestState<MessageResponse>> =
         MutableLiveData()
     val joinRequestState: LiveData<RequestState<MessageResponse>> = _joinRequestState
 
-    private val _deleteState: MutableLiveData<RequestState<MessageResponse>?> =
-        MutableLiveData()
+    private val _deleteState: MutableLiveData<RequestState<MessageResponse>?> = MutableLiveData()
 
     val deleteState: LiveData<RequestState<MessageResponse>?> = _deleteState
 
@@ -35,6 +44,11 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
         MutableLiveData()
 
     val leaveTeamState: LiveData<RequestState<MessageResponse>?> = _leaveTeamState
+
+    private val _updateTeamState: MutableLiveData<RequestState<MessageResponse>?> =
+        MutableLiveData()
+
+    val updateTeamState: LiveData<RequestState<MessageResponse>?> = _updateTeamState
 
     private val _deleteTeamState: MutableLiveData<RequestState<MessageResponse>?> =
         MutableLiveData()
@@ -147,4 +161,23 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
         _leaveTeamState.postValue(handleResponse(response))
     }
 
+    suspend fun updateTeam(name: String, description: String) {
+        val teamId = getCachedUser().team_id
+        _updateTeamState.postValue(RequestState.Loading())
+        val response = repository.updateTeam(teamId!!, name, description)
+        _updateTeamState.postValue(handleResponse(response))
+    }
+
+    fun hasTeamDataChanged(): Boolean =
+        (currentTeamBio != cachedTeamBio || currentTeamName != cachedTeamName) &&
+                currentTeamName != null &&
+                currentTeamBio != null
+
+   fun setActionButtonState(state : ActionButtonState){
+       _actionButtonState.postValue(state)
+   }
+}
+
+enum class ActionButtonState{
+    DELETE , SAVE
 }

@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
 
     private suspend fun sendDataRequest() {
         if (isInternetAvailable(requireContext())) {
-            if (viewModel.homeDataRequestState.value == null)
+           // if (viewModel.homeDataRequestState.value == null)
                 viewModel.requestHomeData()
         } else {
             showNoInterNetAnim()

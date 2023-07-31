@@ -46,6 +46,7 @@ class NotificationsAdapter(
                 .load(BASE_URL_WITHOUT_API +user.imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerInside()
+                .placeholder(R.drawable.ic_profile)
                 .error(R.drawable.ic_profile)
                 .into(img)
 

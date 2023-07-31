@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.EditText
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -57,29 +56,58 @@ class TeamsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!isInternetAvailable(requireContext())) {
-            binding.lottieNoConnection.isVisible = true
-            binding.lottieNoConnection.playAnimation()
+            showNoInternetState()
         } else {
             CoroutineScope(Dispatchers.Main).launch {
-
                 binding.progressBar.isVisible = true
+
                 val cachedUser = viewModel.getCurrentUser()
                 val currentUserTeamId = cachedUser.team_id
-                val team =
-                    if (navArgs.team != null) navArgs.team
-                    else if (currentUserTeamId == -1) null
-                    else viewModel.getCurrentUserTeam(currentUserTeamId!!)
+
+                val team = getCuurentTeamOrNull(currentUserTeamId)
+
+                setViewModelTeamData(team)
 
                 if (currentUserTeamId == NO_TEAM && team == null) {
                     setViewsVisibility(null, cachedUser)
                 } else {
                     setViewsVisibility(team, cachedUser)
-                    setObservers(team , cachedUser)
+                    setObservers(team, cachedUser)
                 }
-
                 setOnClicks()
+                setOnTextChanges()
             }
         }
+    }
+
+    private fun setOnTextChanges() {
+        binding.apply {
+            teamBioInTeam.doAfterTextChanged { newText ->
+                val bio = newText.toString()
+                viewModel.currentTeamBio = bio
+                if (viewModel.hasTeamDataChanged()) {
+                    setActionButtonToSava()
+                } else {
+                    setActionButtonToDelete()
+                }
+            }
+
+            teamNameInTeam.doAfterTextChanged { newText ->
+                val name = newText.toString()
+                viewModel.currentTeamName = name
+                if (viewModel.hasTeamDataChanged()) {
+                    setActionButtonToSava()
+                } else {
+                    setActionButtonToDelete()
+                }
+            }
+        }
+    }
+
+
+    private fun showNoInternetState() {
+        binding.lottieNoConnection.isVisible = true
+        binding.lottieNoConnection.playAnimation()
     }
 
 
@@ -121,14 +149,16 @@ class TeamsFragment : Fragment() {
                     cachedUser.isLeader == 1 && team != null && team.id == cachedUser.team_id
                 if (!isThisTeamLeader) return@launch
 
+                enableEditTexts(isEnabled = isEditMode)
+
                 if (isEditMode) {
                     btnJoin.text = "Cancel"
-                    binding.btnDeleteTeam.isVisible = true
+                    binding.btnTeamAction.isVisible = true
                     showDeleteUserIconOnUsers(true)
 
                 } else {
                     btnJoin.text = "Edit"
-                    binding.btnDeleteTeam.isVisible = false
+                    binding.btnTeamAction.isVisible = false
                     showDeleteUserIconOnUsers(false)
                 }
             }
@@ -181,7 +211,25 @@ class TeamsFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.updateTeamState.observe(viewLifecycleOwner){state ->
+            state?.let {
+                binding.btnTeamAction.revertAnimation()
+                binding.btnProgressBar.isVisible= false
+                when (state) {
+                    is RequestState.Error -> showSnackbar(state.data?.message ?: "error" , requireContext() , binding.root)
+                    is RequestState.Loading -> {}
+                    is RequestState.Sucess -> {
+                        showToast("Team was Updated", requireContext())
+                        setActionButtonToDelete()
+                        viewModel.cachedTeamBio = viewModel.currentTeamName
+                        viewModel.cachedTeamBio = viewModel.currentTeamBio
+                    }
+                }
+            }
+        }
     }
+
 
     private fun showDeleteUserIconOnUsers(isVisible: Boolean) {
         for (i in 0 until viewModel.users.value!!.size) {
@@ -196,16 +244,41 @@ class TeamsFragment : Fragment() {
             buttonNotInTeam.setOnClickListener {
                 navigateToHome()
             }
-            btnDeleteTeam.apply {
+            btnTeamAction.apply {
                 setOnClickListener {
                     startAnimation {
                         if (isInternetAvailable(requireContext())) {
+
                             binding.btnProgressBar.isVisible = true
-                            lifecycleScope.launch {
-                                viewModel.deleteTeam()
+                            val btnState = viewModel.actionButtonState.value
+                            if (btnState == ActionButtonState.SAVE) {
+                                lifecycleScope.launch {
+                                    if (viewModel.hasTeamDataChanged()) {
+                                        viewModel.updateTeam(
+                                            viewModel.currentTeamName!!,
+                                            viewModel.currentTeamBio!!
+                                        )
+                                    }
+                                }
+                            } else {
+                                showDialog(
+                                    requireContext(),
+                                    "Delete Team",
+                                    "are you sure you want to delete this team ?",
+                                    positiveClicked = {
+                                        lifecycleScope.launch {
+                                            viewModel.deleteTeam()
+                                        }
+                                    },
+                                    negativeClicked = {
+                                        binding.btnProgressBar.isVisible = false
+                                        binding.btnTeamAction.revertAnimation()
+                                    }
+                                )
                             }
-                        }else{
-                            showToast("No Internet Connection" , requireContext())
+
+                        } else {
+                            showToast("No Internet Connection", requireContext())
                         }
                     }
                 }
@@ -213,9 +286,11 @@ class TeamsFragment : Fragment() {
         }
     }
 
+
     private fun navigateToHome() {
         (activity as MainActivity).navigateToHome()
     }
+
 
     private suspend fun setViewsVisibility(team: Team?, cachedUser: User) {
         binding.progressBar.isVisible = false
@@ -236,13 +311,12 @@ class TeamsFragment : Fragment() {
             btnBack.isGone = true
         }
     }
-
     private suspend fun setViews(team: Team) {
         val currentUserTeamId = viewModel.getCurrentUser().team_id
         topBarViewsVisibility(team.id, currentUserTeamId)
-        val teamNameTv = binding.toolbar.findViewById<TextView>(R.id.teamName_inTeam)
-        binding.teamBioInTeam.text = team.description
-        teamNameTv.text = team.name
+        val teamNameTv = binding.toolbar.findViewById<EditText>(R.id.teamName_inTeam)
+        binding.teamBioInTeam.setText(team.description)
+        teamNameTv.setText(team.name)
     }
 
     private fun initRecyclerView() {
@@ -303,12 +377,13 @@ class TeamsFragment : Fragment() {
                 showDialog(
                     requireContext(),
                     "Leave Team ",
-                    "are you sure you want to leave ?"
-                ) {
+                    "are you sure you want to leave ?",
+                 positiveClicked = {
                     lifecycleScope.launch {
                         viewModel.leaveTeam()
                     }
                 }
+                )
             }
         } else if (cachedUser.team_id!! > 0) {
             btnJoin.isVisible = false
@@ -336,21 +411,20 @@ class TeamsFragment : Fragment() {
                 showDialog(
                     requireContext(),
                     "Remove User",
-                    "remove ${user.name} from team ?"
-                ) {
+                    "remove ${user.name} from team ?",
+                 positiveClicked = {
                     lifecycleScope.launch {
                         viewModel.deleteUser(user, position)
                     }
                 }
+                )
             }
             true
         } else {
             try {
-                findNavController().navigate(
-                    TeamsFragmentDirections.actionTeamsFragment2ToProfileFragment(
-                        user
-                    )
-                )
+                val args = ProfileFragmentArgs(user).toBundle()
+                findNavController().navigate(R.id.action_teamsFragment2_to_profileFragment, args)
+
             } catch (e: Exception) {
                 val args = ProfileFragmentArgs(user).toBundle()
                 findNavController().navigate(R.id.action_teamsFragment_to_profileFragment, args)
@@ -361,7 +435,7 @@ class TeamsFragment : Fragment() {
 
 
     val userLongClick: (User, Int) -> Unit = { user, position ->
-        if (!viewModel.isEditMode.value!!) {
+        if (!viewModel.isEditMode.value!! && user.isLeader == 1) {
             viewModel.triggerEditMode()
         }
     }
@@ -375,5 +449,35 @@ class TeamsFragment : Fragment() {
         openGithubIntent(url, requireContext())
     }
 
+
+    private fun enableEditTexts(isEnabled: Boolean) {
+        binding.teamNameInTeam.isEnabled = isEnabled
+        binding.teamBioInTeam.isEnabled = isEnabled
+    }
+
+    private suspend fun setViewModelTeamData(team: Team?) {
+        viewModel.cachedTeamName = team?.name
+        viewModel.cachedTeamBio = team?.name
+        viewModel.currentTeamBio = team?.name
+        viewModel.currentTeamName = team?.name
+    }
+
+    private suspend fun getCuurentTeamOrNull(currentUserTeamId: Int?): Team? =
+        if (navArgs.team != null) navArgs.team
+        else if (currentUserTeamId == -1) null
+        else viewModel.getCurrentUserTeam(currentUserTeamId!!)
+
+
+    private fun setActionButtonToSava() {
+        val btn = binding.btnTeamAction
+        btn.setText("Save")
+        viewModel.setActionButtonState(ActionButtonState.SAVE)
+    }
+
+    private fun setActionButtonToDelete() {
+        val btn = binding.btnTeamAction
+        btn.setText("Delete")
+        viewModel.setActionButtonState(ActionButtonState.DELETE)
+    }
 
 }

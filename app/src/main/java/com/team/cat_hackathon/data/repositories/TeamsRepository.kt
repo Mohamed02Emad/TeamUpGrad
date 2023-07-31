@@ -89,5 +89,9 @@ class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
         val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
         return RetrofitInstance.api.leaveTeam(token, teamId)
     }
+    suspend fun updateTeam(teamId: Int , name :String , description : String): Response<MessageResponse> {
+        val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
+        return RetrofitInstance.api.updateTeam(token, teamId , name , description)
+    }
 
 }

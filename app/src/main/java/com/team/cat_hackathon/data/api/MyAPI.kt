@@ -15,6 +15,7 @@ import com.team.cat_hackathon.data.api.ApiVars.LOG_OUT_ENDPOINT
 import com.team.cat_hackathon.data.api.ApiVars.REGISTER_ENDPOINT
 import com.team.cat_hackathon.data.api.ApiVars.REJECT_MEMBER
 import com.team.cat_hackathon.data.api.ApiVars.UPDATE_PROFILE
+import com.team.cat_hackathon.data.api.ApiVars.UPDATE_TEAM
 import com.team.cat_hackathon.data.models.AllDataResponse
 import com.team.cat_hackathon.data.models.AuthResponse
 import com.team.cat_hackathon.data.models.JoinRequestsResponse
@@ -73,6 +74,18 @@ interface MyAPI {
         token: String,
         @Query("team_id")
         teamId: Int
+    ): Response<MessageResponse>
+
+    @POST(UPDATE_TEAM)
+    suspend fun updateTeam(
+        @Header("Authorization")
+        token: String,
+        @Query("team_id")
+        teamId: Int,
+        @Query("name")
+        name: String,
+        @Query("description")
+        description: String,
     ): Response<MessageResponse>
 
     @POST(CREATE_TEAM)
@@ -182,6 +195,5 @@ interface MyAPI {
         @Query("user_id")
         user_id: Int
     ): Response<MessageResponse>
-
-
+    
 }
