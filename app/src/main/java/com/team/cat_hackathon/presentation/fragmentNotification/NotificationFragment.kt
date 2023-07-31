@@ -35,9 +35,17 @@ class NotificationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         lifecycleScope.launch {
             if (isInternetAvailable(requireContext())) {
+                if(viewModel.getCachedUser().isLeader != 1) {
+                    showNoNotificationsAnimation()
+                    return@launch
+                }
                 viewModel.getRequestList()
+                setOnClicks()
+                setObservers()
             }else{
                 binding.lottieNoConnection.isVisible = true
                 binding.lottieNoConnection.setAnimation(R.raw.anim_no_connection)
@@ -45,8 +53,6 @@ class NotificationFragment : Fragment() {
                 binding.tvTitle.isVisible = false
             }
         }
-        setOnClicks()
-        setObservers()
     }
 
     private fun setObservers() {
@@ -115,7 +121,7 @@ class NotificationFragment : Fragment() {
         )
         binding.rvNotifications.adapter = myAdapter
         if (mutableMembersList.isEmpty()){
-            showNoNotifications()
+            showNoNotificationsAnimation()
         }
     }
 
@@ -123,7 +129,7 @@ class NotificationFragment : Fragment() {
     private fun setOnClicks() {
     }
 
-    fun showNoNotifications(){
+    fun showNoNotificationsAnimation(){
         binding.lottieNoConnection.setAnimation(R.raw.anim_no_notification)
         binding.lottieNoConnection.isVisible = true
         binding.lottieNoConnection.playAnimation()

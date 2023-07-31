@@ -95,7 +95,7 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="CustomAlertDialog" parent="Theme.Material3.Light.Dialog.Alert">
         <!-- Customize the positive button's text color -->
         <item name="colorAccent">@color/primary_blue</item>
 
