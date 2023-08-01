@@ -1,6 +1,62 @@
 <resources>
-    <string name="app_name">cat_Hackathon</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">TeamUpGrad</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">home</string>
+
+    <string name="emailTV">Email</string>
+    <string name="emailEV">Enter Your Email</string>
+    <string name="nameTV">Username</string>
+    <string name="nameEV">Enter Your Name</string>
+    <string name="passwordTV">Password</string>
+    <string name="passwordEV">Enter Your Password</string>
+    <string name="login">Login</string>
+    <string name="accountTV">Create an account</string>
+    <string name="have_accountTV">Have an account?</string>
+    <string name="register">Register</string>
+    <string name="signup_text">Create account</string>
+    <string name="login_text">Login to your account</string>
+    <string name="settings">settings</string>
+    <string name="teams">teams</string>
+    <string name="editProfile">edit profile</string>
+    <string name="skip">Skip</string>
+    <string name="chats">chats</string>
+    <string name="more">more</string>
+    <string name="Teams">Teams</string>
+    <string name="team_num">9/10</string>
+    <string name="team_description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </string>
+    <string name="Individuals">Individuals</string>
+    <string name="View">View</string>
+    <string name="notifications">notifications</string>
+    <string name="edit_profile">Profile</string>
+    <string name="log_out">Log Out</string>
+    <string name="settings2">Settings</string>
+    <string name="full_name">Name</string>
+    <string name="track">Track</string>
+    <string name="github">Github Link</string>
+    <string name="faceBook">Facebook Link</string>
+    <string name="linked">LinkedIn Link</string>
+    <string name="save">Save</string>
+
+    <string name="team_members_names">Team Members</string>
+    <string name="join">Join Us</string>
+    <string name="explore">Explore</string>
+    <string name="search">Search</string>
+    <string name="team_name">Team Name</string>
+    <string name="explore_txt">you are not on a team , you can join a team or create new team</string>
+    <string name="team">team</string>
+    <string name="bio">Bio</string>
+    <string name="invite">Invite To Team</string>
+    <string name="name">"Name:"</string>
+    <string name="profile_track">Track:</string>
+    <string name="profile_email">Email:</string>
+    <string name="profile_bio">Bio:</string>
+    <string name="social_links">Social Links</string>
+    <string name="create_team">Create Team\n</string>
+    <string name="enter_team_name">Enter Team Name\n</string>
+    <string name="done">Done</string>
+    <string name="enter_team_description">Enter Team Description</string>
+    <string name="description">Description</string>
+    <string name="delete_team">Delete Team</string>
+    <string name="verfication">Code Verification</string>
+    <string name="verify">Verification</string>
 </resources>

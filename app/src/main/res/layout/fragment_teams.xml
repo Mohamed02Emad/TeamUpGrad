@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_background">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="20dp"
+        android:indeterminateTint="@color/primary_blue"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_no_connection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_rawRes="@raw/anim_no_connection"
+        app:lottie_autoPlay="false"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:lottie_loop="true"/>
+
+    <View
+        android:id="@+id/dark_background"
+        android:background="#66000000"
+        android:layout_width="match_parent"
+        android:elevation="1dp"
+        android:visibility="gone"
+        android:layout_height="match_parent" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbarFadeDuration="500"
+                app:contentScrim="@android:color/transparent"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:scrimAnimationDuration="500"
+                app:titleCollapseMode="scale">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/my_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@android:color/transparent"
+                    app:layout_collapseMode="none" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:gravity="center_vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/btn_back"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_margin="16dp"
+                        app:cardCornerRadius="35dp"
+                        android:visibility="visible"
+                        app:cardElevation="0dp"
+                        android:elevation="0dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/color_background"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_back_arrow"
+                            app:tint="@color/black" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <EditText
+                        android:id="@+id/teamName_inTeam"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:enabled="false"
+                        android:fontFamily="@font/crimson_text_regular"
+                        android:text="@string/team_name"
+                        android:gravity="start"
+                        android:textColor="@color/color_text"
+                        android:textSize="22sp"
+                        android:background="@null"
+                        android:textStyle="bold"/>
+
+<!--                    <View-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        />-->
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/joinText_inTeam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/team_margin_start"
+                        android:fontFamily="@font/crimson_text_regular"
+                        android:paddingVertical="4dp"
+                        android:text="@string/join"
+                        android:textColor="@color/join_color"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/teamBio_inTeam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/team_margin_start"
+                    android:layout_marginTop="12dp"
+                    android:enabled="false"
+                    android:layout_marginEnd="@dimen/team_margin_start"
+                    android:fontFamily="@font/crimson_text_bold"
+                    android:text="@string/team_description"
+                    android:textColor="@color/team_bio_color"
+                    android:textSize="16sp"
+                    android:background="@null"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/teamMembers_inTeam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/team_margin_start"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/crimson_text_semi_bold"
+                    android:text="@string/team_members_names"
+                    android:textColor="@color/color_text"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/teamBio_inTeam" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_inTeam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/team_margin_start"
+                    android:layout_marginEnd="@dimen/team_margin_start"
+                    android:layout_marginTop="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="35dp"
+                    android:clipToPadding="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/teamMembers_inTeam"
+                    tools:listitem="@layout/member_data_model" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <LinearLayout
+        android:id="@+id/lineat_no_Team"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:paddingVertical="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/img_notInTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/explore_teams" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_notInTeam"
+            android:layout_width="246dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/crimson_text_bold"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/explore_txt"
+        android:textColor="@color/join_color"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_notInTeam" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_notInTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_explore_background"
+        android:fontFamily="@font/crimson_text_regular"
+        android:paddingStart="45dp"
+        android:paddingEnd="45dp"
+        android:text="@string/explore"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_notInTeam" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupInTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:constraint_referenced_ids="coordinatorLayout"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupNotInTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="lineat_no_Team" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        >
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/btn_team_action"
+            style="@style/button_Auth"
+            android:background="@drawable/button_delete_background"
+            android:text="@string/delete_team"
+            app:initialCornerAngle="20dp"
+            app:spinning_bar_color="#054163"
+            app:spinning_bar_padding="2dp"
+            app:spinning_bar_width="40dp"
+            android:alpha=".95"
+            android:textColor="@color/primary_blue"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false" />
+
+        <ProgressBar
+            android:id="@+id/btn_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:elevation="20dp"
+            android:indeterminateTint="@color/white"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            />
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

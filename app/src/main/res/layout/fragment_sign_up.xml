@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.fragmentSignUp.SignUpFragment">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/imageView_signup"
+        android:src="@drawable/signup_img"
+        />
+
+    <TextView
+        android:id="@+id/textView_signup"
+        android:text="@string/signup_text"
+        android:layout_marginTop="-8dp"
+        style="@style/textView_account_Auth"/>
+
+    <TextView
+        android:id="@+id/textView_username_signup"
+        android:text="@string/nameTV"
+        style="@style/textView_Auth"
+        />
+
+    <EditText
+        android:id="@+id/editText_username_signup"
+        style="@style/editView_Auth"
+        android:hint="@string/nameEV"
+        android:inputType="text"
+        android:textSize="18sp"
+        android:background="@drawable/edit_text_background"
+       />
+
+    <TextView
+        android:id="@+id/textView_email_signup"
+        android:text="@string/emailTV"
+        style="@style/textView_Auth"/>
+
+    <EditText
+        android:id="@+id/editText_email_signup"
+        android:hint="@string/emailEV"
+        android:inputType="textEmailAddress"
+        style="@style/editView_Auth"
+        android:textSize="18sp"
+        android:background="@drawable/edit_text_background" />
+
+    <TextView
+        android:id="@+id/textView_password_signup"
+        android:text="@string/passwordTV"
+        style="@style/textView_Auth" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_signup"
+        style="@style/password_layout_Auth"
+        app:hintTextColor="@color/editText_hint_auth"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/editText_hint_auth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:hintAnimationEnabled="false"
+        app:hintEnabled="false"
+        android:layout_marginTop="0dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editText_password_signup"
+        style="@style/password_editView_Auth"
+        android:inputType="textPassword"
+        android:hint="@string/passwordEV"
+        android:textSize="18sp"
+        android:textColorHint="@color/editText_hint_auth"
+        android:background="@drawable/edit_text_background" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        >
+    <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+        android:id="@+id/signupButton"
+        style="@style/button_Auth"
+        android:background="@drawable/button_auth_background"
+        android:text="@string/register"
+        app:initialCornerAngle="20dp"
+        app:spinning_bar_color="#054163"
+        app:spinning_bar_padding="2dp"
+        app:spinning_bar_width="40dp"
+        android:layout_gravity="center_horizontal"
+        android:textAllCaps="false" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:elevation="20dp"
+            android:indeterminateTint="@color/white"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        style="@style/layout_account_Auth"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/textView_account_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/crimson_text_bold"
+            android:text="@string/have_accountTV"
+            android:textColor="#979797"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/textView_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/crimson_text_regular"
+            android:text="@string/login"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+</LinearLayout>
