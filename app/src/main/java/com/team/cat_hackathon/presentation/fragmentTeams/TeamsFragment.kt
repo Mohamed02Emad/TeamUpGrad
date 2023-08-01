@@ -463,10 +463,12 @@ class TeamsFragment : Fragment() {
         viewModel.currentTeamName = team?.name
     }
 
-    private suspend fun getCuurentTeamOrNull(currentUserTeamId: Int?): Team? =
-        if (navArgs.team != null) navArgs.team
+    private suspend fun getCuurentTeamOrNull(currentUserTeamId: Int?): Team? {
+        viewModel.sycnUser()
+       return if (navArgs.team != null) navArgs.team
         else if (currentUserTeamId == -1) null
         else viewModel.getCurrentUserTeam(currentUserTeamId!!)
+    }
 
 
     private fun setActionButtonToSava() {

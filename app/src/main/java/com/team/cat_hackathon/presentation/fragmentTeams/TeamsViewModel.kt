@@ -183,6 +183,10 @@ class TeamsViewModel @Inject constructor(val repository: TeamsRepository) : View
    fun setActionButtonState(state : ActionButtonState){
        _actionButtonState.postValue(state)
    }
+
+    suspend fun sycnUser() {
+        repository.syncUser()
+    }
 }
 
 enum class ActionButtonState{

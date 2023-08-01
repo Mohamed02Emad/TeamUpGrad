@@ -94,4 +94,18 @@ class TeamsRepository(val dataStoreImpl: DataStoreImpl) {
         return RetrofitInstance.api.updateTeam(token, teamId , name , description)
     }
 
+    suspend fun syncUser() {
+        try {
+            val token = "Bearer ${dataStoreImpl.getToken().trimEnd().trimStart()}"
+            val response = RetrofitInstance.api.updateUser(
+                token = token
+            )
+            if (response.isSuccessful){
+                response.body()?.let {response->
+                    updateCacheUser(response.user!!)
+                }
+            }
+        }catch(_:java.lang.Exception){}
+    }
+
 }
