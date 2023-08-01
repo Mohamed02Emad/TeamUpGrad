@@ -24,6 +24,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 
     buildTypes {
@@ -117,5 +118,12 @@ dependencies {
 
     //otp text
     implementation("com.github.GoodieBag:Pinview:v1.4")
+
+    //image stack preview
+    implementation("com.jsibbold:zoomage:1.3.1")
+    implementation("com.github.mayuce:ImageStackViewer:1.1.0")
+
+    // Other dependencies
+    implementation("androidx.palette:palette-ktx:1.0.0")
 
 }
