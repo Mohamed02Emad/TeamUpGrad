@@ -76,11 +76,11 @@ class NotificationFragment : Fragment() {
             state?.let {
                 when (state) {
                     is RequestState.Error ->{
-                      //  showToast(state.data?.message ?: "error", requireContext())
+                        showToast(state.data?.message ?: "error", requireContext())
                     }
                     is RequestState.Loading -> {}
                     is RequestState.Sucess -> {
-                        showToast(state.data!!.message, requireContext())
+                     //   showToast(state.data!!.message, requireContext())
                         viewModel.setAcceptState(null)
                         removeUserFromList(viewModel.currentActionUser.value)
                         viewModel.setCurrentActionUser(null)
@@ -93,7 +93,7 @@ class NotificationFragment : Fragment() {
                 when (state) {
                     is RequestState.Error, is RequestState.Loading -> {}
                     is RequestState.Sucess -> {
-                        showToast(state.data!!.message, requireContext())
+                    //    showToast(state.data!!.message, requireContext())
                         viewModel.setRejectState(null)
                         removeUserFromList(viewModel.currentActionUser.value)
                         viewModel.setCurrentActionUser(null)

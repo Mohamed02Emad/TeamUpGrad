@@ -278,13 +278,14 @@
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/btn_team_action"
             style="@style/button_Auth"
-            android:background="@drawable/button_auth_background"
+            android:background="@drawable/button_delete_background"
             android:text="@string/delete_team"
             app:initialCornerAngle="20dp"
             app:spinning_bar_color="#054163"
             app:spinning_bar_padding="2dp"
             app:spinning_bar_width="40dp"
             android:alpha=".95"
+            android:textColor="@color/primary_blue"
             android:visibility="gone"
             android:layout_gravity="center_horizontal"
             android:textAllCaps="false" />

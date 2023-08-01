@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -470,14 +471,22 @@ class TeamsFragment : Fragment() {
 
     private fun setActionButtonToSava() {
         val btn = binding.btnTeamAction
+        btn.background =
+            ContextCompat.getDrawable(requireContext(), R.drawable.button_auth_background)
+        btn.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_background))
         btn.setText("Save")
         viewModel.setActionButtonState(ActionButtonState.SAVE)
+
     }
 
     private fun setActionButtonToDelete() {
         val btn = binding.btnTeamAction
+        btn.background =
+            ContextCompat.getDrawable(requireContext(), R.drawable.button_delete_background)
+        btn.setTextColor(ContextCompat.getColor(requireContext(), R.color.primary_blue))
         btn.setText("Delete")
         viewModel.setActionButtonState(ActionButtonState.DELETE)
+
     }
 
 }

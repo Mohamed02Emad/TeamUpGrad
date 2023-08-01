@@ -57,4 +57,6 @@
     <string name="enter_team_description">Enter Team Description</string>
     <string name="description">Description</string>
     <string name="delete_team">Delete Team</string>
+    <string name="verfication">Code Verification</string>
+    <string name="verify">Verification</string>
 </resources>

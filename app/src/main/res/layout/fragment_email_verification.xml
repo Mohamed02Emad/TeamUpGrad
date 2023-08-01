@@ -3,22 +3,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".presentation.fragmentEmailVerification.EmailVerificationFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <EditText
-        android:id="@+id/et_verification"
+<!--    <ImageView-->
+<!--        android:id="@+id/backArrow"-->
+<!--        android:layout_width="36dp"-->
+<!--        android:layout_height="36dp"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:background="?selectableItemBackgroundBorderless"-->
+<!--        android:padding="6dp"-->
+<!--        android:src="@drawable/ic_back_arrow"-->
+<!--        app:tint="@color/black" />-->
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/verfication"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:id="@+id/tv_send_to_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Code has been send to \nmennaelgyar@gmail.com"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:layout_marginHorizontal="20dp"/>
+
+
+    <com.goodiebag.pinview.Pinview
+        android:id="@+id/pinview"
+        app:pinBackground="@drawable/verification_box_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:pinWidth="40dp"
+        app:pinHeight="40dp"
+        app:pinLength="6"
+        app:cursorVisible="false"
+        app:forceKeyboard="true"
+        app:hint="0"
+        app:inputType="number"
+        app:password="false"
+        android:layout_marginTop="20dp"/>
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:hint="@string/hello_blank_fragment" />
-<androidx.appcompat.widget.AppCompatButton
-    android:id="@+id/btn_Verify"
-    android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:text="Verify"
-    />
+        />
+    <FrameLayout
+        android:id="@+id/frame_save"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/btn_verify"
+            style="@style/button_Auth"
+            android:background="@drawable/button_auth_background"
+            android:text="@string/verify"
+            app:initialCornerAngle="20dp"
+            app:spinning_bar_color="#054163"
+            app:spinning_bar_padding="2dp"
+            app:spinning_bar_width="40dp"
+            android:layout_gravity="center_horizontal"
+            android:textAllCaps="false" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:elevation="20dp"
+            android:indeterminateTint="@color/white"
+            android:visibility="invisible" />
+    </FrameLayout>
 
 
 </LinearLayout>
