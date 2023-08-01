@@ -15,7 +15,7 @@ The TeamUpGrad app is designed to assist students in finding suitable team membe
 - Eman Elhelaly: [GitHub Profile](https://github.com/EmanElhelaly11)
 
 ### UI/UX Developer
-- Menna Elgayar: [GitHub Profile](https://github.com/menna-elgayar)
+- Menna Elgayar: [GitHub Profile](https://github.com/MennaElgyar)
 
 ## Design Images
 ![Design Image 1](url_to_image_1)
