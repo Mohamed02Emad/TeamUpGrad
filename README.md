@@ -2,7 +2,8 @@
 
 
 ## Description
-The TeamUpGrad app is an app to help students find a team for their graduation project.
+The TeamUpGrad app is designed to assist students in finding suitable team members for their graduation projects.
+
 ## Contributors
 
 ### Android Developers
