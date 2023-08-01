@@ -18,9 +18,8 @@ The TeamUpGrad app is designed to assist students in finding suitable team membe
 - Menna Elgayar: [GitHub Profile](https://github.com/MennaElgyar)
 
 ## Design Images
-![Design Image 1](url_to_image_1)
-![Design Image 2](url_to_image_2)
-![Design Image 3](url_to_image_3)
+![▶ Page 1 - CAT](https://github.com/Mohamed02Emad/TeamUpGrad/assets/108477138/7c86770a-9d21-41b1-aad0-acba07e3b9c0)
+
 
 ## Videos
 
